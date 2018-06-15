@@ -1,0 +1,37 @@
+{
+
+    "head": {
+      "text": "",
+      "class": "header"
+    },    
+
+    "home":{
+      "text": "Home",
+      "icon": "fa fa-folder-o",
+      "url": "home/"
+    },
+
+    "courses":{
+      "text": "Courses",
+      "icon": "fa fa-folder-o",
+      "url": "#"
+    },
+
+    "crm":{
+      "text": "CRM",
+      "icon": "fa fa-folder-o",
+      "url": "#"
+    },  
+    
+
+    "sep": {
+      "text": "",
+      "class": "header"
+    },
+
+    "logout":{
+      "text": "Logout",
+      "icon": "fa fa-sign-out",
+      "url": "login/logout.php"
+    }
+}
