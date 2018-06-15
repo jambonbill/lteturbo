@@ -17,7 +17,7 @@ class Box
     private $style='';
     private $title='';
     private $small='';//
-    private $boxTools='';//(mini top tray on the right)
+    private $tools='';//(mini top tray on the right)
     private $body='';
     private $body_padding=true;//box-body no-padding
     private $footer='';
@@ -56,6 +56,25 @@ class Box
         }
         return $this->title;
     }
+
+    
+    public function tools($htm='')
+    {
+        if ($htm) {
+            $this->tools=$htm;
+        }
+        return $this->tools;
+    }
+
+    /*
+    public function boxTools($htm = '')
+    {
+        if ($htm) {
+            $this->boxTools=$htm;
+        }
+        return $this->boxTools;
+    }
+    */
     
     /**
      * The 'small' title
@@ -200,14 +219,6 @@ class Box
     }
 
     
-    public function boxTools($htm = '')
-    {
-        if ($htm) {
-            $this->boxTools=$htm;
-        }
-        return $this->boxTools;
-    }
-    
     
 
     /**
@@ -259,7 +270,6 @@ class Box
             $STYLE="style='".$this->style()."'";
         }
 
-        $HTML=[];
         
         $class=[];
         $class[]='box';
@@ -267,61 +277,56 @@ class Box
         if($this->collapsed)$class[]='collapsed-box';
         if($this->addClass())$class[]=$this->addClass();
         
-        $HTML[]='<div class="'.implode(" ",$class).'" '.$STYLE.' id="'.$this->id().'">';// box-solid
+        $htm='<div class="'.implode(" ",$class).'" '.$STYLE.' id="'.$this->id().'">';// box-solid
 
-        // box header
-        $HTML[]='<div class="box-header">';
+        $htm.='<div class="box-header">';
         
         if ($this->title) {
-            $HTML[]='<h3 class="box-title">';
+            $htm.='<h3 class="box-title">';
             
             if ($this->icon()) {
                 if (is_array($this->icon())) {
                     foreach ($this->icon() as $ico) {
-                        $HTML[]="<i class='".$ico."'></i> ";
+                        $htm.="<i class='".$ico."'></i> ";
                     }
                 } else {
-                    $HTML[]="<i class='".$this->icon()."'></i> ";
+                    $htm.="<i class='".$this->icon()."'></i> ";
                 }
-                //
-                //$HTML[]="<i class='fa fa-arrow-right'></i> ";
-                //$HTML[]="<i class='fa fa-book'></i> ";
             }
-            $HTML[]=$this->title;
+            $htm.=$this->title;
             if($this->small()){
-                $HTML[]=' <small>'.$this->small().'</small>';
+                $htm.=' <small>'.$this->small().'</small>';
             }
-            $HTML[]='</h3>';
+            $htm.='</h3>';
         }
         
         // pull-right box-tools
-        $HTML[]='<div class="pull-right box-tools">';
+        $htm.='<div class="pull-right box-tools">';
         
-        if($this->boxTools()){
-            $HTML[]=$this->boxTools();
+        if($this->tools()){
+            $htm.=$this->tools();
         }
-
-        // reload
-        //$HTML[]='<button class="btn btn-'.$type.' btn-sm refresh-btn" data-toggle="tooltip" title="" data-original-title="Reload"><i class="fa fa-refresh"></i></button>';
+       
         
-        
-        if($this->collapsable()){
-            if($this->collapsed()){
+        if ($this->collapsable()) {
+            
+            if ($this->collapsed()) {
                 $class="fa fa-plus";
             }else{
                 $class="fa fa-minus";
             }
-            $HTML[]='<button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse"><i class="'.$class.'"></i></button>';
+            
+            $htm.='<button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse"><i class="'.$class.'"></i></button>';
         }
         
         // remove
         if ($this->removable()) {
-            $HTML[]='<button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="" data-original-title="Remove"><i class="fa fa-times"></i></button>';
+            $htm.='<button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="" data-original-title="Remove"><i class="fa fa-times"></i></button>';
         }
 
-        $HTML[]='</div>';
+        $htm.='</div>';
     
-        $HTML[]='</div>';
+        $htm.='</div>';
         
         
         // body
@@ -336,47 +341,46 @@ class Box
             $class[]='no-padding';
         }
 
-        $HTML[]="<div class='".implode(' ',$class)."' style='".implode('',$style)."'>";
+        $htm.="<div class='".implode(' ',$class)."' style='".implode('',$style)."'>";
 
         
         if (is_array($this->body)) {
-            $HTML[]=implode('', $this->body);
+            $htm.=implode('', $this->body);
         } else {
-            $HTML[]=$this->body;
+            $htm.=$this->body;
         }
         
-        $HTML[]='</div>';// body end
+        $htm.='</div>';// body end
 
         // footer
         if ($this->footer()) {
             
             if ($this->collapsed()) {
             //if (false) {
-                $HTML[]="<div class='box-footer collapsed-box' style='display:none;'>";// $collapse
+                $htm.="<div class='box-footer collapsed-box' style='display:none;'>";// $collapse
             } else {
-                $HTML[]="<div class='box-footer'>";// $collapse
+                $htm.="<div class='box-footer'>";// $collapse
             }
             
             
             if (is_array($this->footer())) {
-                $HTML[]=implode('', $this->footer());
+                $htm.=implode('', $this->footer());
             } else {
-                $HTML[]=$this->footer();
+                $htm.=$this->footer();
             }
-            $HTML[]='</div>';
+            $htm.='</div>';
         }
 
         
         if ($this->loading()) {
-            $HTML[]='<div class="overlay"><i class="fa fa-refresh fa-spin"></i></div>';
+            $htm.='<div class="overlay"><i class="fa fa-refresh fa-spin"></i></div>';
         }else{
-            $HTML[]='<div class="overlay" style="display:none"><i class="fa fa-refresh fa-spin"></i></div>';
+            $htm.='<div class="overlay" style="display:none"><i class="fa fa-refresh fa-spin"></i></div>';
         }
 
-        // end
-        $HTML[]='</div>';// /.box -->
+        $htm.='</div>';// end.box
 
-        return implode("", $HTML);
+        return $htm;
     }
     
     public function __toString()
