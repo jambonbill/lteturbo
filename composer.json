@@ -20,7 +20,7 @@
         "psr-0": {
             "LTE": "src"
         }
-    }
+    },
     "minimum-stability" : "dev",
     "prefer-stable" : true
 }
