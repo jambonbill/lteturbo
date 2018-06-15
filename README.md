@@ -1,4 +1,4 @@
-# lteturbo
+# LTE Turbo
 lteturbo package
 
 ## Installation
@@ -23,3 +23,12 @@ sudo lol
 ## Documentation
 
 not yet
+
+
+### Author
+
+Jambonbill - <jambonbill@gmail.com> - <http://twitter.com/jambonbill><br />
+
+### License
+
+MIT License - see the `LICENSE` file for details
