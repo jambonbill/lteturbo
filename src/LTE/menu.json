@@ -11,10 +11,10 @@
       "url": "home/"
     },
 
-    "courses":{
-      "text": "Courses",
+    "data":{
+      "text": "Data table",
       "icon": "fa fa-folder-o",
-      "url": "#"
+      "url": "datatable"
     },
 
     "crm":{
