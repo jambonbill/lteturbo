@@ -26,7 +26,7 @@ class Box
     private $removable=false;
     private $loading=false;
 
-    public function __construct ()
+    public function __construct()
     {
         $this->id = md5(rand(0, time()));
     }
@@ -58,7 +58,7 @@ class Box
     }
 
     
-    public function tools($htm='')
+    public function tools($htm = '')
     {
         if ($htm) {
             $this->tools=$htm;
@@ -66,15 +66,6 @@ class Box
         return $this->tools;
     }
 
-    /*
-    public function boxTools($htm = '')
-    {
-        if ($htm) {
-            $this->boxTools=$htm;
-        }
-        return $this->boxTools;
-    }
-    */
     
     /**
      * The 'small' title
@@ -108,7 +99,8 @@ class Box
      * @param  string $url [description]
      * @return [type]      [description]
      */
-    public function iconUrl($url = ''){
+    public function iconUrl($url = '')
+    {
         if ($url) {
             $this->iconUrl=$url;
         }
