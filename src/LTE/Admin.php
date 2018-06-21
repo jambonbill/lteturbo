@@ -1,7 +1,6 @@
 <?php
 /**
  * Php class for quick integration of AdminLTE2
- * configuration done through file : config.json
  * @author jambonbill
  */
 
@@ -17,7 +16,7 @@ class Admin
      * Static path to assets
      * @var string
      */
-    private $path='';// static path
+    private $path='../';// static path
     private $config=[];//admin config from json file
     private $title= 'title';// document title
     private $headHtml= '';
@@ -62,9 +61,11 @@ class Admin
         }else{
             //find the correct path for assets
             $diff=count(explode("/",realpath('.')))-count(explode("/",realpath(__DIR__."/../../web")));
-            //echo "diff=$diff\n";
-            $this->path=str_repeat("../", $diff);
+            if($diff){
+                $this->path=str_repeat("../", $diff);    
+            }
         }
+        return true;
     }
     
     
