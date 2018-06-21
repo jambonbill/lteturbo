@@ -61,7 +61,7 @@ class Admin
         }else{
             //find the correct path for assets
             $diff=count(explode("/",realpath('.')))-count(explode("/",realpath(__DIR__."/../../web")));
-            if($diff){
+            if ($diff > 0) {
                 $this->path=str_repeat("../", $diff);    
             }
         }
