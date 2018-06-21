@@ -27,7 +27,8 @@
     
     "autoload": {
         "psr-0": {
-            "LTE": "src"
+            "LTE": "src",
+            "Django": "src"
         }
     },
     "minimum-stability" : "dev",
