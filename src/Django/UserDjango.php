@@ -39,21 +39,12 @@ class UserDjango
     public function __construct ($db)
     {
         
-        if(!$db){
+        if (!$db) {
             throw new Exception("No db connection", 1);
-            
         }
 
         $this->db = $db;
-        
-        /*
-        $this->log = new Logger('UserDjango');
-        $this->log->pushHandler(new StreamHandler('/tmp/login.log', Logger::DEBUG)); // <<< uses a file
-        $this->log->pushProcessor(function ($record) {
-            $record['extra']['user_id'] = $this->user_id();
-            return $record;
-        });
-        */
+
     }
 
 
