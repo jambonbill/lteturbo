@@ -36,7 +36,7 @@ class UserDjango
     private $session=null;
     private $log=null;
 
-    public function __construct ($db)
+    public function __construct($db)
     {
         
         if (!$db) {
@@ -54,8 +54,8 @@ class UserDjango
      */
     public function user_id()
     {
-        if(isset($this->user['id'])){
-            return $this->user['id'];    
+        if (isset($this->user['id'])) {
+            return $this->user['id'];
         }
         return 0;
     }
@@ -63,14 +63,18 @@ class UserDjango
 
     public function is_active()
     {
-        if($this->user)return $this->user['is_active'];
+        if ($this->user) {
+            return $this->user['is_active'];
+        }
         return 0;
     }
 
     
     public function is_staff()
     {
-        if($this->user)return $this->user['is_staff'];
+        if ($this->user) {
+            return $this->user['is_staff'];
+        }
         return 0;
     }
 
@@ -191,7 +195,7 @@ class UserDjango
         $sql = "INSERT IGNORE INTO django_session ( session_key, session_data, expire_date ) ";
         $sql.= "VALUES ('$session_id','$userid', NOW());";
 
-        $this->db->query($sql) or die( print_r($this->db->errorInfo()) );
+        $this->db->query($sql) or die(print_r($this->db->errorInfo()));
 
         return true;
     }

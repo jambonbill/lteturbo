@@ -6,13 +6,13 @@
 
 namespace LTE;
 
-Class Callout
+class Callout
 {
     private $type ='default';
     private $title='title';
     private $body ='body';
 
-    public function __construct ($type = '', $title = '', $body = '')
+    public function __construct($type = '', $title = '', $body = '')
     {
         $this->type = $type;
         $this->title = $title;

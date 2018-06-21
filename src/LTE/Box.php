@@ -246,7 +246,7 @@ class Box
      * Return the LTE Box as html
      * @return [type] [description]
      */
-    public function html($body = '',$footer = '')
+    public function html($body = '', $footer = '')
     {
 
         if ($body) {
@@ -266,10 +266,14 @@ class Box
         $class=[];
         $class[]='box';
         $class[]='box-'.$this->type();
-        if($this->collapsed)$class[]='collapsed-box';
-        if($this->addClass())$class[]=$this->addClass();
+        if ($this->collapsed) {
+            $class[]='collapsed-box';
+        }
+        if ($this->addClass()) {
+            $class[]=$this->addClass();
+        }
         
-        $htm='<div class="'.implode(" ",$class).'" '.$STYLE.' id="'.$this->id().'">';// box-solid
+        $htm='<div class="'.implode(" ", $class).'" '.$STYLE.' id="'.$this->id().'">';// box-solid
 
         $htm.='<div class="box-header">';
         
@@ -286,7 +290,7 @@ class Box
                 }
             }
             $htm.=$this->title;
-            if($this->small()){
+            if ($this->small()) {
                 $htm.=' <small>'.$this->small().'</small>';
             }
             $htm.='</h3>';
@@ -295,7 +299,7 @@ class Box
         // pull-right box-tools
         $htm.='<div class="pull-right box-tools">';
         
-        if($this->tools()){
+        if ($this->tools()) {
             $htm.=$this->tools();
         }
        
@@ -304,7 +308,7 @@ class Box
             
             if ($this->collapsed()) {
                 $class="fa fa-plus";
-            }else{
+            } else {
                 $class="fa fa-minus";
             }
             
@@ -324,16 +328,16 @@ class Box
         // body
         $class=$style=[];
         $class[]='box-body';
-        if($this->collapsed()){
+        if ($this->collapsed()) {
             $class[]='collapsed-box';
             $style[]='display:none;';
         }
         
-        if(!$this->body_padding()){
+        if (!$this->body_padding()) {
             $class[]='no-padding';
         }
 
-        $htm.="<div class='".implode(' ',$class)."' style='".implode('',$style)."'>";
+        $htm.="<div class='".implode(' ', $class)."' style='".implode('', $style)."'>";
 
         
         if (is_array($this->body)) {
@@ -366,7 +370,7 @@ class Box
         
         if ($this->loading()) {
             $htm.='<div class="overlay"><i class="fa fa-refresh fa-spin"></i></div>';
-        }else{
+        } else {
             $htm.='<div class="overlay" style="display:none"><i class="fa fa-refresh fa-spin"></i></div>';
         }
 

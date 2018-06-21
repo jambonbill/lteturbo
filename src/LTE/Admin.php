@@ -35,22 +35,24 @@ class Admin
         // get the config file. it must be located next to the class
         $configjson=__DIR__."/config.json";
 
-        if(is_file($configjson)){
+        if (is_file($configjson)) {
             
             //exit('todo: must decode file width a dedicated method');
             $this->configLoad($configjson);
            
-        }else{
+        } else {
             //throw new \Exception("Error : config.json file not found in ".realpath("."), 1);
         }
 
 
         $this->lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);// set language
-        if($this->lang!='fr')$this->lang='en';
+        if ($this->lang!='fr') {
+            $this->lang='en';
+        }
     }
 
     
-    private function configLoad($filename='')
+    private function configLoad($filename = '')
     {
         $string = file_get_contents($filename);
         $this->config=json_decode($string);
@@ -58,11 +60,11 @@ class Admin
         
         if ($err) {
             die("Error: Invalid config.json");
-        }else{
+        } else {
             //find the correct path for assets
-            $diff=count(explode("/",realpath('.')))-count(explode("/",realpath(__DIR__."/../../web")));
+            $diff=count(explode("/", realpath('.')))-count(explode("/", realpath(__DIR__."/../../web")));
             if ($diff > 0) {
-                $this->path=str_repeat("../", $diff);    
+                $this->path=str_repeat("../", $diff);
             }
         }
         return true;
@@ -74,7 +76,7 @@ class Admin
      * @param  array  $config [description]
      * @return [type]         [description]
      */
-    public function config($config=[])
+    public function config($config = [])
     {
         if ($config) {
             $this->config=$config;
@@ -129,7 +131,7 @@ class Admin
      * GET/SET config meta's
      * @return [type] [description]
      */
-    public function meta($meta=[])
+    public function meta($meta = [])
     {
         if (isset($meta)&&is_array($meta)) {
             $this->config->meta=$meta;
@@ -151,7 +153,7 @@ class Admin
         $htm.= '<meta charset="UTF-8">';
         $htm.= "<title>" . $this->title . "</title>";
         
-        if(isset($this->config->apple_app_icon)){
+        if (isset($this->config->apple_app_icon)) {
             $htm.= '<link rel="apple-touch-icon" href="' . $this->path . $this->config->apple_app_icon . '">';
         }
 
@@ -160,23 +162,23 @@ class Admin
         $htm.= '<meta name="apple-mobile-web-app-capable" content="yes" />';
 
         if (isset($this->config->meta)&&is_array($this->config->meta)) {
-            foreach($this->config->meta as $meta){
+            foreach ($this->config->meta as $meta) {
                 $values=[];
-                foreach($meta as $k=>$v){
+                foreach ($meta as $k => $v) {
                     $values[]=$k.'="'.$v.'"';
                 }
-                $htm.="<meta ".implode(' ',$values).">";
+                $htm.="<meta ".implode(' ', $values).">";
             }
         }
 
-        if(isset($this->config->favicon) && is_file($this->path.$this->config->favicon)){
+        if (isset($this->config->favicon) && is_file($this->path.$this->config->favicon)) {
             $htm.='<link id="favicon" rel="shortcut icon" href="'.$this->path.$this->config->favicon.'">';
         }
 
         // Css
-        if(isset($this->config->css)){
+        if (isset($this->config->css)) {
             foreach ($this->config->css as $v) {
-                if (preg_match("/^http/i",$v)) {
+                if (preg_match("/^http/i", $v)) {
                     $htm.='<link href="'.$v.'" rel="stylesheet" type="text/css" />';
                 } else {
                     $htm.='<link href="'.$this->path.$v.'" rel="stylesheet" type="text/css" />';
@@ -202,7 +204,7 @@ class Admin
      * Get/Set extra html to <head> (apple links, tracking code, what you want)
      * @return [type] [description]
      */
-    public function headHtml($htm='')
+    public function headHtml($htm = '')
     {
         $this->headHtml=$htm;
         return $this->headHtml;
@@ -221,26 +223,29 @@ class Admin
         //$class[]='skin-blue';
         
         
-        if(isset($this->config()->layout->skin))$class[]=$this->config()->layout->skin;
-        else $class[]='skin-blue';
+        if (isset($this->config()->layout->skin)) {
+            $class[]=$this->config()->layout->skin;
+        } else {
+            $class[]='skin-blue';
+        }
 
-        if(isset($this->config()->layout->fixed)){
+        if (isset($this->config()->layout->fixed)) {
             $class[]='fixed';
         }
         
-        if(isset($this->config()->layout->{'sidebar-collapse'})){
-            if($this->config()->layout->{'sidebar-collapse'}){
-                $class[]='sidebar-collapse';    
+        if (isset($this->config()->layout->{'sidebar-collapse'})) {
+            if ($this->config()->layout->{'sidebar-collapse'}) {
+                $class[]='sidebar-collapse';
             }
         }
         
-        if(isset($this->config()->layout->{'layout-boxed'})){
-            $class[]='layout-boxed';    
+        if (isset($this->config()->layout->{'layout-boxed'})) {
+            $class[]='layout-boxed';
         }
     
         
 
-        $htm="<body class='".implode(" ",$class)."'>";
+        $htm="<body class='".implode(" ", $class)."'>";
         $htm.='<div class="wrapper">';
         return $htm;
     }
@@ -261,59 +266,37 @@ class Admin
             $title=$this->config->title;
         }
 
-        //$htm.='<a href="?" class="logo">';
-        if(isset($this->config->homeurl))$homeurl=$this->path.$this->config->homeurl;
-        else $homeurl='#';
-        //$htm.="<a href='$homeurl'>$title</a>";
-        //$htm.='<a class="navbar-brand" href="#">Navbar</a>';
-        //$htm.='</a>';
-
-        // Header Navbar: style can be found in header.less -->
-        //$htm.='<nav class="navbar navbar-static-top" role="navigation">';
-
-        // Sidebar toggle button //
-        /*
-        $htm.='<a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">';
-        $htm.='<span class="sr-only">Toggle navigation</span>';
-        $htm.='</a>';
-        */
-        /*
-        $htm.='<li class="nav-item" style="list-style: none;">';
-        $htm.='<button class="nav-link navbar-toggler sidebar-toggle hidden-md-down" data-toggle="offcanvas" ></button>';
-        $htm.='</li>';
-        */
-        /*
-        $htm.='<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">';
-        $htm.='<span class="navbar-toggler-icon"></span>';
-        $htm.='</button>';
-        */
-
-
-        // Navbar right menu
-        /*
-        $htm.='<div class="navbar-custom-menu">';
-        //$htm.='navbar-custom-menu';
-        $htm.=$this->navbarCustomMenu;
-        $htm.='</div>';
-        */
-
-        //$htm.='</nav>';
-
-        $htm.=$this->newNav();
-        //$htm.='</header>';
+        if (isset($this->config->homeurl)) {
+            $homeurl=$this->path.$this->config->homeurl;
+        } else {
+            $homeurl='#';
+        }
+        
+        $htm.=$this->topNav();
 
         return $htm;
     }
 
     private $user=[];
-    public function user($USR=[]){
+    
+    public function user($USR = [])
+    {
         $this->user=$USR;
     }
 
-    private function newNav(){
+    
+    /**
+     * Top navigation thing
+     * @return [type] [description]
+     */
+    private function topNav()
+    {
 
-        if(isset($this->config->homeurl))$homeurl=$this->path.$this->config->homeurl;
-        else $homeurl='#';
+        if (isset($this->config->homeurl)) {
+            $homeurl=$this->path.$this->config->homeurl;
+        } else {
+            $homeurl='#';
+        }
 
         $htm='<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">';
 
@@ -328,15 +311,17 @@ class Admin
         $htm.='<div class="collapse navbar-collapse" id="navbarsExampleDefault">';
 
         $htm.='<ul class="navbar-nav mr-auto">';
-          $htm.='<li class="nav-item">';
-            if($this->user)$htm.='<a class="nav-link disabled" href="#">'.$this->user['email'].'</a>';
-          $htm.='</li>';
+        $htm.='<li class="nav-item">';
+        if ($this->user) {
+            $htm.='<a class="nav-link disabled" href="#">'.$this->user['email'].'</a>';
+        }
+        $htm.='</li>';
 
         $htm.='</ul>';
 
         $htm.='<ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">';
 
-        if($this->user){
+        if ($this->user) {
             $htm.='<li class="nav-item dropdown">';
             $htm.='<a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
 
@@ -372,11 +357,13 @@ class Admin
      */
     public function navbarCustomMenu($htm = '')
     {
-        if($htm&&is_array($htm)){
-            $htm=implode('',$htm);
+        if ($htm&&is_array($htm)) {
+            $htm=implode('', $htm);
         }
 
-        if($htm)$this->navbarCustomMenu=$htm;
+        if ($htm) {
+            $this->navbarCustomMenu=$htm;
+        }
         return $this->navbarCustomMenu;
     }
 
@@ -388,11 +375,15 @@ class Admin
      */
     public function userPanel($htm = '')
     {
-        if($htm&&is_array($htm)){
-            $htm=implode('',$htm);
+        
+        if ($htm&&is_array($htm)) {
+            $htm=implode('', $htm);
         }
 
-        if($htm)$this->userPanel=$htm;
+        if ($htm) {
+            $this->userPanel=$htm;
+        }
+        
         return $this->userPanel;
     }
 
@@ -416,7 +407,7 @@ class Admin
 
 
         // search field /
-        if(isset($this->config->menusearch) && $this->config->menusearch){
+        if (isset($this->config->menusearch) && $this->config->menusearch) {
             $htm.='<div class="sidebar-form input-group">';
             $htm.='<input type="text" id="q" name="q" class="form-control" placeholder="Search ...">';
             $htm.='<span class="input-group-btn">';
@@ -439,18 +430,17 @@ class Admin
      * Return left menu
      * @return string html
      */
-    public function menu($json = ''){
+    public function menu($json = '')
+    {
 
         $menu=$this->config->menu;
 
-        if(!isset($menu)){
+        if (!isset($menu)) {
             //throw new \Exception("Error : $this->config->menu must be a object", 1);
             return '';
         }
 
-        if(!is_object($this->config->menu))
-        {
-
+        if (!is_object($this->config->menu)) {
             if ($this->config->menu&&is_file(__DIR__.'/'.$this->config->menu)) {
 
                 $content=file_get_contents(__DIR__.'/'.$this->config->menu);
@@ -458,7 +448,7 @@ class Admin
 
                 $err=json_last_error();
 
-                if($err){
+                if ($err) {
                     die("error $err".json_last_error_msg()."<br>$content");
                     //throw new \Exception("JSON Error $err", 1);
                 }
@@ -467,48 +457,63 @@ class Admin
                 //die("this->config->menu not found");
                 return '';
             }
-        }else{
+        } else {
 
         }
 
         $htm='<ul class="sidebar-menu">';
 
-        foreach(@$this->config->menu as $name=>$o){
+        foreach (@$this->config->menu as $name => $o) {
 
             $title='';
             $class='';
 
-            if(!$o)continue;
-            if(isset($o->class))$class='class="'.$o->class.'"';
-            if(isset($o->title))$title='title="'.$o->title.'"';
-            if(isset($o->sub))
-            {
+            if (!$o) {
+                continue;
+            }
+            if (isset($o->class)) {
+                $class='class="'.$o->class.'"';
+            }
+            if (isset($o->title)) {
+                $title='title="'.$o->title.'"';
+            }
+            if (isset($o->sub)) {
                 $htm.='<li class="treeview" '.$title.'>';
                 //if(!isset($o->url))$o->url='#';
-                if(!isset($o->icon))$o->icon='';
+                if (!isset($o->icon)) {
+                    $o->icon='';
+                }
                 $htm.='<a href="'.@$o->url.'">';
                 $htm.='<i class="'.$o->icon.'"></i> <span>'.$o->text.'</span>';
                 $htm.='<i class="fa fa-angle-left pull-right"></i>';
                 $htm.='</a>';
                 $htm.='<ul class="treeview-menu">';
-                foreach($o->sub as $obj){
+                foreach ($o->sub as $obj) {
                     $htm.='<li>';
-                    if(isset($obj->url))$htm.="<a href='".$this->path.$obj->url."'>";
-                    if(isset($obj->icon))$htm.="<i class='".$obj->icon."'></i> ";
+                    if (isset($obj->url)) {
+                        $htm.="<a href='".$this->path.$obj->url."'>";
+                    }
+                    if (isset($obj->icon)) {
+                        $htm.="<i class='".$obj->icon."'></i> ";
+                    }
                     $htm.='<span>'.$obj->text.'</span></a>';
                     $htm.='</li>';
                 }
                 $htm.='</ul>';
                 $htm.='</li>';
-            }
-            else
-            {
+            } else {
                 $htm.='<li '.$class.' '.$title.'>';
-                if(isset($o->url))$htm.='<a href="'.$this->path.$o->url.'">';
-                if(isset($o->icon))$htm.='<i class="'.$o->icon.'"></i> ';
+                if (isset($o->url)) {
+                    $htm.='<a href="'.$this->path.$o->url.'">';
+                }
+                if (isset($o->icon)) {
+                    $htm.='<i class="'.$o->icon.'"></i> ';
+                }
                 $htm.='<span>'.@$o->text.'</span>';
                 //$htm.='<small class="label pull-right bg-green">new</small>';//small
-                if(isset($o->url))$htm.='</a>';
+                if (isset($o->url)) {
+                    $htm.='</a>';
+                }
                 $htm.='</li>';
             }
         }
@@ -523,7 +528,7 @@ class Admin
     */
     public function scripts()
     {
-        if(!isset($this->config->js)){
+        if (!isset($this->config->js)) {
             return '';
         }
 
@@ -547,7 +552,8 @@ class Admin
      * @param  string $body [description]
      * @return [type]       [description]
      */
-    public function footer($body=''){
+    public function footer($body = '')
+    {
         if ($body) {
             
             $htm='<footer class="main-footer">';

@@ -12,7 +12,7 @@
 
 namespace LTE;
 
-Class Modal
+class Modal
 {
     private $id ='myModal';
     private $type ='default';
@@ -21,51 +21,63 @@ Class Modal
     private $body ='modal-body';
     private $footer ='<button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Cancel</button>';
 
-    public function __construct ($title = '', $body = '', $footer='')
+    public function __construct($title = '', $body = '', $footer = '')
     {
-        if($title)$this->title($title);
-        if($body)$this->body($body);
-        if($footer)$this->footer($footer);
+        if ($title) {
+            $this->title($title);
+        }
+        if ($body) {
+            $this->body($body);
+        }
+        if ($footer) {
+            $this->footer($footer);
+        }
     }
 
-    public function id($str = ''){
+    public function id($str = '')
+    {
         if ($str) {
-          $this->id=$str;
+            $this->id=$str;
         }
         return $this->id;
     }
 
-    public function type($str = ''){
+    public function type($str = '')
+    {
         if ($str) {
-          $this->type=$str;
+            $this->type=$str;
         }
         return $this->type;
     }
 
-    public function title($str = ''){
+    public function title($str = '')
+    {
         if ($str) {
-          $this->title=$str;
+            $this->title=$str;
         }
         return $this->title;
     }
 
-    public function body($str = ''){
+    public function body($str = '')
+    {
         if ($str) {
-          $this->body=$str;
+            $this->body=$str;
         }
         return $this->body;
     }
 
-    public function footer($str = ''){
+    public function footer($str = '')
+    {
         if ($str) {
-          $this->footer=$str;
+            $this->footer=$str;
         }
         return $this->footer;
     }
 
-    public function icon($str = ''){
+    public function icon($str = '')
+    {
         if ($str) {
-          $this->icon=$str;
+            $this->icon=$str;
         }
         return $this->icon;
     }
