@@ -4,10 +4,10 @@ session_start();
 
 require __DIR__ . "/../../vendor/autoload.php";
 
+print_r($_POST);
+// Login logic//
 
-// Login logic //
-
-//1st, db creds
-//2nd db connection
+//1st, db creds, connection
 //3 : db check
 //4 : db register
+//5 redirect

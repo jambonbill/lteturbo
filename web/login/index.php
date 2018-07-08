@@ -6,16 +6,14 @@ require __DIR__ . "/../../vendor/autoload.php";
 
 $admin = new LTE\Admin;
 $admin->title("Login");
-$admin->config()->menu = (object)[];//unset the global menu
-$admin->config()->layout->{'sidebar-collapse'}=true;
 echo $admin->head();
 ?>
 
 <body class="text-center">
-    <form class="form-signin" method="post">
+    <form class="form-signin" method="post" target="login.php">
       <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
       <label for="inputEmail" class="sr-only">Email address</label>
-      <input type="email" name=email id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+      <input type="email" name=email id="inputEmail" class="form-control" placeholder="Email address" required autofocus autocomplete="false">
       <label for="inputPassword" class="sr-only">Password</label>
       <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
       
