@@ -17,43 +17,100 @@ class Admin
      * @var string
      */
     private $path='../';// static path
-    private $config=[];//admin config from json file
-    private $title= 'title';// document title
+    
+    /**
+     * path to json config file
+     * @var string
+     */
+    private $config_file='';
+    
+    /**
+     * Config object
+     * @var array
+     */
+    private $config=[];
+    
     private $headHtml= '';
-    private $lang= 'en';//$_SERVER['HTTP_ACCEPT_LANGUAGE']
+    
+    private $lang= 'en';
 
     private $navbarCustomMenu='';//html
+    
     private $userPanel='';//html
+    
     private $DEBUG=false;
 
+    
     /**
      * AdminLte Constructor
      * @param boolean $private [description]
      */
-    public function __construct()
+    public function __construct($configfile='')
     {
         // get the config file. it must be located next to the class
-        $configjson=__DIR__."/config.json";
-
-        if (is_file($configjson)) {
-            
-            //exit('todo: must decode file width a dedicated method');
-            $this->configLoad($configjson);
-           
-        } else {
-            //throw new \Exception("Error : config.json file not found in ".realpath("."), 1);
+        
+        if ($configfile) {            
+            if (is_file($configfile)) {            
+                $this->config_file=$configfile;
+            } else {
+                throw new \Exception("Error : config file '$configfile' not found", 1);
+            }
         }
 
+        if(isset($_SESSION['lteconfig'])){
+            $this->config_file=$_SESSION['lteconfig'];
+        }
 
+        if ($this->config_file) {
+            $this->configLoad($this->config_file);
+        }
+        
+        /*
         $this->lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);// set language
         if ($this->lang!='fr') {
             $this->lang='en';
         }
+        */
     }
 
     
+    /**
+     * Register path to configfile
+     * @param  string $filename [description]
+     * @return [type]           [description]
+     */
+    public function configfile($filename='')
+    {
+        //echo __FUNCTION__."($filename)";exit;
+        if (is_file($filename)) {
+            
+            //make sure it decode well
+            $string = file_get_contents($filename);
+            $this->config=json_decode($string);
+            $err=json_last_error();
+            if ($err) {
+                throw new Exception("Error decoding json from $filename", 1);
+            }else{
+                //exit("yes sir");
+            }
+            //register to sessions
+            $this->config_file=$filename;
+            $_SESSION['lteconfig']=$this->config_file;
+            //exit('_SESSION[lteconfig]='.$this->config_file);
+            
+            $this->configLoad($this->config_file);
+        }else if($filename){
+            throw new Exception("$filename not found", 1);
+            
+        }
+        
+        return $this->config_file;
+    }
+    
+    
     private function configLoad($filename = '')
     {
+        //echo __FUNCTION__."($filename)";exit;
         $string = file_get_contents($filename);
         $this->config=json_decode($string);
         $err=json_last_error();
@@ -96,14 +153,17 @@ class Admin
 
 
     /**
-     * Set page title
+     * Get/Set document title
      * @param  string $title [description]
      * @return [type]        [description]
      */
     public function title($title = '')
     {
-        $this->title = $title;
-        return $this->title;
+        if ($title) {
+            $this->config->title=$title;    
+        }
+        
+        return $this->config->title;
     }
 
     /**
@@ -147,19 +207,19 @@ class Admin
      */
     public function head()
     {
-        $htm='<!DOCTYPE html>';
-        $htm.= '<html lang="' . $this->lang() . '">';
-        $htm.= '<head>';
-        $htm.= '<meta charset="UTF-8">';
-        $htm.= "<title>" . $this->title . "</title>";
+        $htm='<!DOCTYPE html>'."\n";
+        $htm.='<html lang="' . $this->lang() . '">'."\n";
+        $htm.='<head>'."\n";
+        $htm.='<meta charset="UTF-8">'."\n";
+        $htm.='<title>' . $this->config->title . '</title>'."\n";
         
         if (isset($this->config->apple_app_icon)) {
             $htm.= '<link rel="apple-touch-icon" href="' . $this->path . $this->config->apple_app_icon . '">';
         }
 
-        $htm.= "<meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>";
-        $htm.= '<meta name="apple-mobile-web-app-status-bar-style" content="black" />';
-        $htm.= '<meta name="apple-mobile-web-app-capable" content="yes" />';
+        $htm.= "<meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>\n";
+        $htm.='<meta name="apple-mobile-web-app-status-bar-style" content="black" />'."\n";
+        $htm.='<meta name="apple-mobile-web-app-capable" content="yes" />'."\n";
 
         if (isset($this->config->meta)&&is_array($this->config->meta)) {
             foreach ($this->config->meta as $meta) {
@@ -167,21 +227,21 @@ class Admin
                 foreach ($meta as $k => $v) {
                     $values[]=$k.'="'.$v.'"';
                 }
-                $htm.="<meta ".implode(' ', $values).">";
+                $htm.="<meta ".implode(' ', $values).">\n";
             }
         }
 
         if (isset($this->config->favicon) && is_file($this->path.$this->config->favicon)) {
-            $htm.='<link id="favicon" rel="shortcut icon" href="'.$this->path.$this->config->favicon.'">';
+            $htm.='<link id="favicon" rel="shortcut icon" href="'.$this->path.$this->config->favicon.'">'."\n";
         }
 
         // Css
         if (isset($this->config->css)) {
             foreach ($this->config->css as $v) {
                 if (preg_match("/^http/i", $v)) {
-                    $htm.='<link href="'.$v.'" rel="stylesheet" type="text/css" />';
+                    $htm.='<link href="'.$v.'" rel="stylesheet" type="text/css" />'."\n";
                 } else {
-                    $htm.='<link href="'.$this->path.$v.'" rel="stylesheet" type="text/css" />';
+                    $htm.='<link href="'.$this->path.$v.'" rel="stylesheet" type="text/css" />'."\n";
                 }
             }
         }
@@ -201,7 +261,7 @@ class Admin
 
 
     /**
-     * Get/Set extra html to <head> (apple links, tracking code, what you want)
+     * Get/Set extra html to <head> (apple links, tracking code, etc)
      * @return [type] [description]
      */
     public function headHtml($htm = '')
@@ -218,7 +278,6 @@ class Admin
      */
     public function body()
     {
-        $HTML=[];
         $class=[];
         //$class[]='skin-blue';
         
@@ -226,7 +285,7 @@ class Admin
         if (isset($this->config()->layout->skin)) {
             $class[]=$this->config()->layout->skin;
         } else {
-            $class[]='skin-blue';
+            $class[]='skin-black';
         }
 
         if (isset($this->config()->layout->fixed)) {
@@ -245,7 +304,7 @@ class Admin
     
         
 
-        $htm="<body class='".implode(" ", $class)."'>";
+        $htm="\n<body class='".implode(" ", $class)."'>\n";
         $htm.='<div class="wrapper">';
         return $htm;
     }
@@ -260,8 +319,6 @@ class Admin
     {
         $htm='';
         
-
-        $title="Admin";
         if (isset($this->config->title)) {
             $title=$this->config->title;
         }
@@ -321,12 +378,12 @@ class Admin
 
         $htm.='<ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">';
 
-        if ($this->user) {
+        if (true) {
             $htm.='<li class="nav-item dropdown">';
             $htm.='<a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
 
             //$htm.='User NAME';
-            $htm.=$this->user['first_name'].' '.$this->user['last_name'];
+            $htm.='username';
 
             $htm.='</a>';
             $htm.='<div class="dropdown-menu dropdown-menu-right" aria-labelledby="bd-versions">';
@@ -535,9 +592,9 @@ class Admin
         $htm='';
         foreach ($this->config->js as $k => $js) {
             if (preg_match("/^http/", $js)) {
-                $htm.='<script src="' . $js . '" type="text/javascript"></script>';
+                $htm.='<script src="' . $js . '" type="text/javascript"></script>'."\n";
             } else {
-                $htm.='<script src="' . $this->path . $js . '" type="text/javascript"></script>';
+                $htm.='<script src="' . $this->path . $js . '" type="text/javascript"></script>'."\n";
             }
         }
         return $htm;
