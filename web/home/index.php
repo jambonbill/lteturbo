@@ -6,13 +6,13 @@ session_start();
 require __DIR__."/../../vendor/autoload.php";
 
 $admin = new LTE\Admin;
-$admin->title("Home");
+//$admin = new LTE\Admin("configtest.json");
+$admin->configfile(__DIR__."/configtest.json");
+//$admin->userPanel('hello');// left menu user section
 echo $admin;
 
-// https://adminlte.io/themes/AdminLTE/index2.html
-
-$UD=new Django\UserDjango;
-
+//https://adminlte.io/themes/AdminLTE/index2.html
+//$UD=new Django\UserDjango;
 ?>
 <!--Content header-->
 <section class="content-header">
@@ -38,7 +38,7 @@ $UD=new Django\UserDjango;
 			<?php
 			
 			$tools='<div class="has-feedback">';
-            $tools.='<input class="form-control input-sm" placeholder="Search ..." type="text">';
+            $tools.='<input class="form-control form-control-sm" placeholder="Search ..." type="text">';
             $tools.='<span class="glyphicon glyphicon-search form-control-feedback"></span>';
             $tools.='</div>';
 
@@ -49,17 +49,19 @@ $UD=new Django\UserDjango;
 			$box->removable(1);
 			$box->collapsable(1);
 			echo $box;
+
+			echo '<pre>';print_r($_SESSION);echo '</pre>';
 			?>
 		</div>
 		<div class="col-6">
 		<?php
 		$box=new LTE\Box;
-		$box->id('boxId');
+		//$box->id('boxId');
 		//$box->icon('fa fa-edit');
-		$box->title('title');
+		$box->title('new LTE\Box');
 		//$box->small('subtitle');
 		$box->body('<pre>no data</pre>');
-		$box->footer('<a href=# class="btn btn-default"><i class="fa fa-save"></i> Save</a>');
+		$box->footer('<a href=# class="btn btn-default"><i class="fa fa-folder-open-o"></i> LTE\Modal window</a>');
 		$box->collapsable(1);
 		//$box->loading(0);
 		echo $box;
@@ -68,5 +70,3 @@ $UD=new Django\UserDjango;
 	</div>
 
 </section>
-
-
