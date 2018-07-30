@@ -55,9 +55,7 @@ class Admin
             } else {
                 throw new \Exception("Error : config file '$configfile' not found", 1);
             }
-        }
-
-        if(isset($_SESSION['lteconfig'])){
+        } else if(isset($_SESSION['lteconfig'])) {
             $this->config_file=$_SESSION['lteconfig'];
         }
 
