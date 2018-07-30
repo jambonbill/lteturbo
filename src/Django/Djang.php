@@ -1,8 +1,9 @@
 <?php
 /**
  * Djang : Django Session / Id base functions
+ * Do not use, UserDjango is probably what you want
  * Ver 0.1 - 2018-02-01
- * Author : jambonbill
+ * @author : jambonbill
  */
 
 namespace Django;
