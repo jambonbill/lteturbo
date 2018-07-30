@@ -9,7 +9,7 @@
  * @package   phpSec
  */
 
-namespace Admin;
+namespace Django;
 
 /**
  * Provides methods for encrypting data.
