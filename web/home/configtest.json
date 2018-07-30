@@ -1,0 +1,16 @@
+{
+	"title":"Hello Title",
+	"css":[
+		"https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css",
+    	"https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css",
+    	"dist/css/AdminLTE.css",
+    	"dist/css/skins/skin-black.min.css"
+	],
+	"js":[
+	    "https://code.jquery.com/jquery-3.2.1.min.js",
+    	"https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js",
+    	"dist/plugins/jquery-tablesorter.min.js",
+    	"dist/plugins/slimScroll/jquery.slimscroll.min.js",
+    	"dist/js/app.min.js"
+	]
+}
