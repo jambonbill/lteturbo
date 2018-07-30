@@ -100,7 +100,7 @@ class Admin
             
             $this->configLoad($this->config_file);
         }else if($filename){
-            throw new Exception("$filename not found", 1);
+            throw new \Exception("$filename not found", 1);
             
         }
         
@@ -211,7 +211,10 @@ class Admin
         $htm.='<html lang="' . $this->lang() . '">'."\n";
         $htm.='<head>'."\n";
         $htm.='<meta charset="UTF-8">'."\n";
-        $htm.='<title>' . $this->config->title . '</title>'."\n";
+        
+        if (isset($this->config->title)) {
+            $htm.='<title>' . $this->config->title . '</title>'."\n";
+        }
         
         if (isset($this->config->apple_app_icon)) {
             $htm.= '<link rel="apple-touch-icon" href="' . $this->path . $this->config->apple_app_icon . '">';
@@ -357,8 +360,12 @@ class Admin
 
         $htm='<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">';
 
-        $htm.='<a class="navbar-brand" href="'.$homeurl.'">'.$this->config()->title.'</a>';
-
+        if(isset($this->config()->title)){
+            $htm.='<a class="navbar-brand" href="'.$homeurl.'">'.$this->config()->title.'</a>';
+        }else{
+            $htm.='<a class="navbar-brand" href="'.$homeurl.'">LTETurbo</a>';
+        }
+        
           //<!--nav-link navbar-toggler sidebar-toggle-->
         $htm.='<button class="nav-link navbar-toggler sidebar-toggle" data-toggle="offcanvas" style="display:inline">';
         $htm.='    <span class="navbar-toggler-icon"></span>';
@@ -490,11 +497,12 @@ class Admin
     public function menu($json = '')
     {
 
-        $menu=$this->config->menu;
 
-        if (!isset($menu)) {
+        if (!isset($this->config()->menu)) {
             //throw new \Exception("Error : $this->config->menu must be a object", 1);
             return '';
+        }else{
+            $menu=$this->config()->menu;
         }
 
         if (!is_object($this->config->menu)) {
