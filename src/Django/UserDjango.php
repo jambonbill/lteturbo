@@ -202,7 +202,7 @@ class UserDjango
 
 
     /**
-     * Return current session data.
+     * @brief Return current session data.
      * @return [type] [description]
      */
     public function djangoSession()
@@ -226,7 +226,7 @@ class UserDjango
 
 
     /**
-     * Log in (jambon session system)
+     * @brief Log in (jambon session system)
      * @return bool true on success
      */
     public function login($email = '', $pass = '')
@@ -238,7 +238,7 @@ class UserDjango
             @session_regenerate_id(true);
             $sid=session_id();
             $this->djangoSessionRegister($sid, $this->user['id']);
-            $this->log->addInfo(__FUNCTION__, ['email' => $email,'id' => $this->user['id']]);
+            //$this->log->addInfo(__FUNCTION__, ['email' => $email,'id' => $this->user['id']]);
             return true;
         }
         return false;
@@ -246,7 +246,7 @@ class UserDjango
 
 
     /**
-     * Stop/Delete current session (jambon system)
+     * @brief Stop/Delete current session (jambon system)
      */
     public function logout()
     {
@@ -256,8 +256,7 @@ class UserDjango
         $sql = "DELETE FROM django_session WHERE session_key='$sid';";
         $q=$this->db->query($sql) or die(print_r($this->db->errorInfo()));
         
-        $this->log->addInfo(__FUNCTION__, ['session_key' => $sid]);
-        
+        //$this->log->addInfo(__FUNCTION__, ['session_key' => $sid]);        
         //ob_clean();//this clear the output buffer, i'm not sure why i need it
         
         if (@session_regenerate_id(true)) {
