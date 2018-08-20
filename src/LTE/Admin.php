@@ -382,12 +382,12 @@ class Admin
         $htm.='</ul>';
 
         $htm.='<ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">';
-
-        if (true) {
+        /*
+        if (false) {
+            
             $htm.='<li class="nav-item dropdown">';
             $htm.='<a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
 
-            //$htm.='User NAME';
             $htm.='username';
 
             $htm.='</a>';
@@ -398,10 +398,8 @@ class Admin
             $htm.='</div>';
             $htm.='</li>';
         }
-
-
+        */
         $htm.='</ul>';
-
 
         $htm.='</div>';
         $htm.='</nav>';
