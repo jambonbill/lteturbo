@@ -200,8 +200,22 @@ class UserDjango
 
         $this->db->query($sql) or die(print_r($this->db->errorInfo()));
 
+        return true;
+    }
+
+    
+    /**
+     * Update "last_login" time
+     * @return [type] [description]
+     */
+    public function updateLastLogin($userid=0)
+    {
+        $userid*=1;
         
-        // Update "last_login" time
+        if (!$userid) {
+            return false;
+        }
+        
         $sql = "UPDATE auth_user SET last_login=NOW() WHERE id=$userid LIMIT 1;";
         $this->db->query($sql) or die(print_r($this->db->errorInfo()));
 
