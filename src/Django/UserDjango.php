@@ -121,12 +121,6 @@ class UserDjango
                     $salt = $chunks[2];
                     $hash = $chunks[3];
 
-                    //echo "<li>pbkdf2<br />";
-                    //echo "<li>algorithm=$algorithm<br />";
-                    //echo "<li>iter=$iter<br />";
-                    //echo "<li>salt=$salt<br />";
-                    //echo "<li>hash=$hash<br />";
-
                     if ($algorithm === 'sha1') {
                         $digest_size = 20;
                     } elseif ($algorithm === 'sha256') {
@@ -259,7 +253,11 @@ class UserDjango
             //Create a new session, deleting the previous session data
             @session_regenerate_id(true);
             $sid=session_id();
-            $this->djangoSessionRegister($sid, $this->user['id']);
+            
+            if($this->djangoSessionRegister($sid, $this->user['id'])){
+                $this->updateLastLogin($this->userid);
+            }
+            
             //$this->log->addInfo(__FUNCTION__, ['email' => $email,'id' => $this->user['id']]);
             return true;
         }
