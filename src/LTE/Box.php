@@ -277,7 +277,8 @@ class Box
 
         $htm.='<div class="box-header">';
         
-        if ($this->title) {
+        if ($this->title||$this->icon()) {
+            
             $htm.='<h3 class="box-title">';
             
             if ($this->icon()) {
