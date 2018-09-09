@@ -502,9 +502,12 @@ class Admin
         }
 
         if (!is_object($this->config->menu)) {
-            if ($this->config->menu&&is_file(__DIR__.'/'.$this->config->menu)) {
 
-                $content=file_get_contents(__DIR__.'/'.$this->config->menu);
+            $DIR=dirname(realpath($this->config_file));//get config folder
+            
+            if ($this->config->menu&&is_file($DIR.'/'.$this->config->menu)) {
+
+                $content=file_get_contents($DIR.'/'.$this->config->menu);
                 $this->config->menu=json_decode($content);
 
                 $err=json_last_error();
