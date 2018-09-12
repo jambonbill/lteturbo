@@ -255,7 +255,7 @@ class UserDjango
             $sid=session_id();
             
             if($this->djangoSessionRegister($sid, $this->user['id'])){
-                $this->updateLastLogin($this->userid);
+                $this->updateLastLogin($this->user['id']);
             }
             
             //$this->log->addInfo(__FUNCTION__, ['email' => $email,'id' => $this->user['id']]);
