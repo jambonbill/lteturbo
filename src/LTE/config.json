@@ -1,5 +1,7 @@
 {
 	"title":"Admin",
+	"description":"La petite description dans la prairie",
+	"canonical":"https://www.jambonbill.org",
 	"homeurl":"index.php",
 	"favicon":"dist/img/favicon.ico",
 	"menusearch":false,
