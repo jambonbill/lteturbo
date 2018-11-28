@@ -122,6 +122,25 @@ class Admin
                 $this->path=str_repeat("../", $diff);
             }
         }
+
+        
+        if($this->config->meta){//decode meta//
+            $type=gettype($this->config->meta);            
+            if ($type=='string') {
+                $DIR=dirname(realpath($this->config_file));//get config folder            
+                if (is_file($DIR.'/'.$this->config->meta)) {
+                    $content=file_get_contents($DIR.'/'.$this->config->meta);
+                    $this->config->meta=json_decode($content);
+                    if ($err=json_last_error()) {
+                        die("error $err".json_last_error_msg()."<br>$content");
+                    }else{
+                        //ok
+                    }
+                }
+            }
+            //exit('<li>okla:'.$type);
+        }
+
         return true;
     }
     
@@ -186,15 +205,117 @@ class Admin
 
 
     /**
-     * GET/SET config meta's
+     * GET config meta's
+     * debug with https://search.google.com/structured-data/testing-tool/u/0/
      * @return [type] [description]
      */
-    public function meta($meta = [])
+    
+    public function meta($meta=null)
     {
-        if (isset($meta)&&is_array($meta)) {
-            $this->config->meta=$meta;
-        }
         return $this->config->meta;
+    }
+
+
+    // opengraph methods //
+    public function ogUrl($str='')
+    {
+        $this->addMeta(['property'=>'og:url',      'content'=>$str]);
+    }
+
+    public function ogType($str='')
+    {
+        $this->addMeta(['property'=>"og:type",     'content'=>$str]);
+    }
+
+    public function ogTitle($str='')
+    {
+        $this->addMeta(['property'=>"og:title",    'content'=>$str]);
+    }
+
+    public function ogDescription($str='')
+    {
+        $this->addMeta(['property'=>"og:description", 'content'=>$str]);
+    }
+
+    public function ogImage($str='')
+    {
+        $this->addMeta(['property'=>"og:image",    'content'=>$str]);
+    }
+
+    public function ogLocale($str='')
+    {
+        $this->addMeta(['property'=>"og:locale",   'content'=>$str]);
+    }
+
+    // twitter methods //
+    public function twitterTitle($title='Jambonbill LTETurbo')
+    {
+        $this->addMeta(['name'=>"twitter:title",   'content'=>$title]);
+    }
+
+    public function twitterCard($type='summary')
+    {
+        $this->addMeta(['name'=>"twitter:card",   'content'=>$type]);        
+    }
+
+    public function twitterSite($str='@jambonbill')
+    {
+        $this->addMeta(['name'=>"twitter:site",   'content'=>$str]);
+    }
+
+
+    public function twitterDescription($str='description')
+    {
+        $this->addMeta(['name'=>"twitter:description",   'content'=>$str]);
+    }
+
+    public function twitterImage($url='')
+    {
+        $this->addMeta(['name'=>"twitter:image",   'content'=>$url]);
+    }
+
+
+    /**
+     * Add one meta record.
+     * auto-replace duplicates
+     * @param array $newmeta [description]
+     */
+    public function addMeta($newmeta=[])
+    {
+        //echo "addMeta()";
+        //print_r($meta);
+        if(!isset($this->config->meta)){
+            $this->config->meta=[];
+        }
+
+        if(!is_array($this->config->meta)){
+            $this->config->meta=[];
+        }
+        
+        $key=false;       
+        
+        if(isset($newmeta['name'])){
+            $key=$newmeta['name'];
+        }
+        
+        if(isset($newmeta['property'])){
+            $key=$newmeta['property'];
+        }
+
+        $meta=[];        
+        foreach ($this->config->meta as $k=>$metar) {//Replace previous property-value, or name-value if any
+            $replace=false;
+            foreach($metar as $name=>$value){
+                if($value==$key)$replace=$newmeta;
+            }
+            if ($replace) {
+                $meta[]=$replace;    
+            } else {
+                $meta[]=$metar;    
+            }            
+        }        
+        $this->config->meta=$meta;
+        return true;
     }
 
 
@@ -222,14 +343,22 @@ class Admin
         $htm.='<meta name="apple-mobile-web-app-status-bar-style" content="black" />'."\n";
         $htm.='<meta name="apple-mobile-web-app-capable" content="yes" />'."\n";
 
-        if (isset($this->config->meta)&&is_array($this->config->meta)) {
-            foreach ($this->config->meta as $meta) {
-                $values=[];
-                foreach ($meta as $k => $v) {
-                    $values[]=$k.'="'.$v.'"';
+
+        //echo "<pre>";var_dump($this->config);exit;
+
+        if (isset($this->config->meta)) {
+                        
+            if( is_array($this->config->meta)) {
+                //echo "<pre>";print_r($this->config->meta);exit;
+                foreach ($this->config->meta as $meta) {
+                    $values=[];
+                    foreach ($meta as $k => $v) {
+                        $values[]=$k.'="'.$v.'"';
+                    }
+                    $htm.="<meta ".implode(' ', $values).">\n";
                 }
-                $htm.="<meta ".implode(' ', $values).">\n";
             }
+
         }
 
         if (isset($this->config->favicon) && is_file($this->path.$this->config->favicon)) {
