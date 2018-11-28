@@ -6,11 +6,10 @@ session_start();
 require __DIR__."/../../vendor/autoload.php";
 
 $admin = new LTE\Admin;
-//$admin = new LTE\Admin("configtest.json");
 $admin->configfile(__DIR__."/configtest.json");
-//$admin->userPanel('hello');// left menu user section
 echo $admin;
 
+//echo "<pre>";print_r($admin->meta());exit;
 //https://adminlte.io/themes/AdminLTE/index2.html
 //$UD=new Django\UserDjango;
 ?>
