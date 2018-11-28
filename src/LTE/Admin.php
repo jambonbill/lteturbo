@@ -108,7 +108,6 @@ class Admin
     
     private function configLoad($filename = '')
     {
-        //echo __FUNCTION__."($filename)";exit;
         $string = file_get_contents($filename);
         $this->config=json_decode($string);
         $err=json_last_error();
@@ -136,14 +135,10 @@ class Admin
                     $this->config->meta=json_decode($content);
                     if ($err=json_last_error()) {
                         die("error $err".json_last_error_msg()."<br>$content");
-                    }else{
-                        //ok
                     }
                 }
             }
-            //exit('<li>okla:'.$type);
         }
-
         return true;
     }
     
