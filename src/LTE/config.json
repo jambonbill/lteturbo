@@ -4,7 +4,13 @@
 	"favicon":"dist/img/favicon.ico",
 	"menusearch":false,
 
-	"meta":[],
+	"meta":[
+		{"property":"og:url",      "content":"https://www.jambonbill.org"},
+		{"property":"og:title",    "content":"jambonbill LTE Turbo"},
+		{"property":"og:content",  "content":"article"},
+		{"property":"og:description",  "content":"jambonbill LTE Turbo is good"}		
+	],
+	
 	"css":[
 		"https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css",
     	"https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css",
@@ -31,5 +37,4 @@
 	},
 	
 	"menu":"menu.json"
-
 }
