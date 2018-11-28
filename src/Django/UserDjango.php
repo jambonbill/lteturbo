@@ -38,7 +38,7 @@ class UserDjango
 
     public function __construct($db)
     {
-        
+
         if (!$db) {
             throw new Exception("No db connection", 1);
         }
@@ -59,7 +59,7 @@ class UserDjango
         }
         return 0;
     }
-    
+
 
     public function is_active()
     {
@@ -69,7 +69,7 @@ class UserDjango
         return 0;
     }
 
-    
+
     public function is_staff()
     {
         if ($this->user) {
@@ -95,7 +95,7 @@ class UserDjango
 
         //echo __FUNCTION__."\n";
 
-        $query  = $this->db->prepare('SELECT id, email, password, is_active, is_superuser FROM auth_user WHERE email =  ?');
+        $query  = $this->db->prepare('SELECT id, email, password, is_active, is_staff, is_superuser FROM auth_user WHERE email =  ?');
 
         if ($query->execute(array($email))) {
             $row = $query->fetch(\PDO::FETCH_ASSOC);
@@ -141,7 +141,7 @@ class UserDjango
         }
     }
 
-    
+
     /**
     * @brief Helper function for checkPassword
     * @param $str The String to be searched
@@ -182,11 +182,11 @@ class UserDjango
     public function djangoSessionRegister($session_id = '', $userid = 0)
     {
         $userid*=1;
-        
+
         if (!$userid) {
             return false;
         }
-        
+
         $session_id=session_id();
 
         $sql = "INSERT IGNORE INTO django_session ( session_key, session_data, expire_date ) ";
@@ -197,7 +197,7 @@ class UserDjango
         return true;
     }
 
-    
+
     /**
      * Update "last_login" time
      * @return [type] [description]
@@ -205,11 +205,11 @@ class UserDjango
     public function updateLastLogin($userid=0)
     {
         $userid*=1;
-        
+
         if (!$userid) {
             return false;
         }
-        
+
         $sql = "UPDATE auth_user SET last_login=NOW() WHERE id=$userid LIMIT 1;";
         $this->db->query($sql) or die(print_r($this->db->errorInfo()));
 
@@ -230,7 +230,7 @@ class UserDjango
         if (!$sid) {
             return false;
         }
-        
+
         $sql = "SELECT * FROM django_session WHERE session_key='$sid';";
         //$q=$this->db->query($sql);// or die( $this->db->)
         $q=$this->db->query($sql) or die(print_r($this->db->errorInfo()));
@@ -253,11 +253,36 @@ class UserDjango
             //Create a new session, deleting the previous session data
             @session_regenerate_id(true);
             $sid=session_id();
-            
+
             if($this->djangoSessionRegister($sid, $this->user['id'])){
-                $this->updateLastLogin($this->userid);
+                $this->updateLastLogin($this->user['id']);
             }
-            
+
+            //$this->log->addInfo(__FUNCTION__, ['email' => $email,'id' => $this->user['id']]);
+            return true;
+        }
+        return false;
+    }
+
+
+    /**
+     * Log in for staff only
+     * @param  string $email [description]
+     * @param  string $pass  [description]
+     * @return [type]        [description]
+     */
+    public function loginStaff($email='', $pass='')
+    {
+        $this->user = $this->checkPassword($email, $pass);
+        //print_r($user);exit;
+        if ($this->user && $this->user['is_active'] && $this->user['is_staff']) {
+            //Create a new session, deleting the previous session data
+            @session_regenerate_id(true);
+            $sid=session_id();
+
+            if($this->djangoSessionRegister($sid, $this->user['id'])){
+                $this->updateLastLogin($this->user['id']);
+            }
             //$this->log->addInfo(__FUNCTION__, ['email' => $email,'id' => $this->user['id']]);
             return true;
         }
@@ -275,10 +300,10 @@ class UserDjango
         $sid=session_id();
         $sql = "DELETE FROM django_session WHERE session_key='$sid';";
         $q=$this->db->query($sql) or die(print_r($this->db->errorInfo()));
-        
-        //$this->log->addInfo(__FUNCTION__, ['session_key' => $sid]);        
+
+        //$this->log->addInfo(__FUNCTION__, ['session_key' => $sid]);
         //ob_clean();//this clear the output buffer, i'm not sure why i need it
-        
+
         if (@session_regenerate_id(true)) {
             @$_SESSION['configfile']='';
             return session_id();
@@ -288,7 +313,7 @@ class UserDjango
     }
 
 
-    
+
 
     /**
     * @brief check if a user exists
@@ -310,7 +335,7 @@ class UserDjango
         return false;
     }
     */
-    
+
     /**
      * Return current user
      * @return [type] [description]
@@ -329,7 +354,7 @@ class UserDjango
     public function auth_user($uid = 0)
     {
         $uid*=1;
-        
+
         if (!$uid) {
             return false;
         }
@@ -340,7 +365,7 @@ class UserDjango
         return $r;
     }
 
-    
+
     public function isActive($uid = 0)
     {
         $uid*=1;
@@ -353,7 +378,7 @@ class UserDjango
         return $q->fetch(\PDO::FETCH_ASSOC)[0];
     }
 
-    
+
     public function isStaff($uid = 0)
     {
         $uid*=1;
