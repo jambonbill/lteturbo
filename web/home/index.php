@@ -7,6 +7,7 @@ require __DIR__."/../../vendor/autoload.php";
 
 $admin = new LTE\Admin;
 $admin->configfile(__DIR__."/configtest.json");
+//$admin->description("Testing the tests is my hobby");
 echo $admin;
 
 //echo "<pre>";print_r($admin->meta());exit;
@@ -22,7 +23,7 @@ echo $admin;
 </section>
 
 <!--Main content-->
-<section class="content-header">
+<section class="container">
 	<div class="row">
 		<div class="col-12">
 			<?php
@@ -69,3 +70,5 @@ echo $admin;
 	</div>
 
 </section>
+<?php
+$admin->end();
