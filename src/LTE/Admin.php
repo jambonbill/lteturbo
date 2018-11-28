@@ -122,9 +122,12 @@ class Admin
                 $this->path=str_repeat("../", $diff);
             }
         }
-
         
-        if($this->config->meta){//decode meta//
+        if(isset($this->config->description)){
+            $this->description($this->config->description);
+        }
+        
+        if(isset($this->config->meta)){//decode meta//
             $type=gettype($this->config->meta);            
             if ($type=='string') {
                 $DIR=dirname(realpath($this->config_file));//get config folder            
@@ -182,6 +185,24 @@ class Admin
         
         return $this->config->title;
     }
+
+    
+    /**
+     * Get/Set document description
+     * @param  string $title [description]
+     * @return [type]        [description]
+     */
+    public function description($str = '')
+    {
+        if ($str) {
+            $this->config->description=trim($str);
+            $this->addMeta(['name'=>'description','content'=>$str]);
+        }
+        
+        return false;
+    }
+
+
 
     /**
      * return the admin html
@@ -282,8 +303,8 @@ class Admin
      */
     public function addMeta($newmeta=[])
     {
-        //echo "addMeta()";
-        //print_r($meta);
+        //echo "addMeta()";print_r($newmeta);exit;
+
         if(!isset($this->config->meta)){
             $this->config->meta=[];
         }
@@ -303,17 +324,24 @@ class Admin
         }
 
         $meta=[];        
+        $replace=false;
         foreach ($this->config->meta as $k=>$metar) {//Replace previous property-value, or name-value if any
-            $replace=false;
+            
             foreach($metar as $name=>$value){
                 if($value==$key)$replace=$newmeta;
             }
+            
             if ($replace) {
                 $meta[]=$replace;    
             } else {
                 $meta[]=$metar;    
-            }            
-        }        
+            }
+        }
+
+        if(!$replace){//we didnt replace one, so we must add it
+            $meta[]=$newmeta;
+        }
+
         $this->config->meta=$meta;
         return true;
     }
