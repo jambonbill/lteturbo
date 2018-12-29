@@ -1,0 +1,115 @@
+{
+
+    "home":{
+        "text": "Dashboard",
+        "icon": "fa fa-home",
+        "url": "#home",
+        "sub":[{
+            "text": "Activities",
+            "icon": "fa fa-folder-o",
+            "url": "activities/"
+        },{
+            "text": "Rooms",
+            "icon": "fa fa-list",
+            "url": "rooms/"
+        }]
+    },
+
+    "Users":{
+
+        "text": "Users",
+        "icon": "fa fa-folder-o",
+        "url": "#menuUsers",
+
+        "sub":[{
+            "text": "Search",
+            "icon": "fa fa-search",
+            "url": "users/"
+        },{
+            "text": "Teachers",
+            "icon": "fa fa-users",
+            "url": "teachers/"
+        },{
+            "text": "Students",
+            "icon": "fa fa-users",
+            "url": "students/"
+        }]
+    },
+
+    "prods":{
+        "text": "Products",
+        "icon": "fa fa-folder-o",
+        "url": "tables/"
+    },
+
+    "Orga":{
+        "text": "Organisation",
+        "icon": "fa fa-folder-o",
+        "url": "#menuOrga",
+        "sub":[{
+            "text": "Activities",
+            "icon": "fa fa-folder-o",
+            "url": "activities/"
+        },{
+            "text": "Rooms",
+            "icon": "fa fa-list",
+            "url": "rooms/"
+        },{
+            "text": "Inventory",
+            "icon": "fa fa-folder-o",
+            "url": "inventory/"
+        },{
+            "text": "Urls",
+            "icon": "fa fa-folder-o",
+            "url": "urls/"
+        }]
+    },
+
+
+    "calendar":{
+        "text": "Calendar",
+        "icon": "fa fa-calendar",
+        "url": "calendar/"
+    },
+
+    "finance":{
+        "text": "Finance",
+        "icon": "fa fa-bar-chart",
+        "url": "#menuFinance",
+        "sub":[{
+           "text": "Sales",
+            "icon": "fa fa-folder-o",
+            "url": "sales/"
+        },{
+            "text": "Invoices",
+            "icon": "fa fa-folder-o",
+            "url": "invoices/"
+        }]
+    },
+
+    "market":{
+        "text": "Marketing",
+        "icon": "fa fa-bullhorn",
+        "url": "#menuMkt",
+        "sub":[{
+           "text": "Customers",
+            "icon": "fa fa-folder-o",
+            "url": "#"
+        },{
+            "text": "Leads",
+            "icon": "fa fa-folder-o",
+            "url": "#"
+        }]
+    },
+
+    "sep":{
+        "header": "LOGOUT"
+    },
+
+    "logout":{
+        "text": "Logout",
+        "icon": "fa fa-sign-out",
+        "url": "login/logout.php"
+    }
+
+}
