@@ -14,6 +14,7 @@ class Card
     private $iconUrl='';
     private $color='';
     private $class='';
+    private $p0=false;//no padding
     private $style='';
     private $title='';
     private $small='';//
@@ -21,7 +22,7 @@ class Card
 
     private $body='';
     //private $body_padding=true;//box-body no-padding
-    //private $footer='';//no footer in cards
+    private $footer='';
     private $collapsable=false;
     private $collapsed=false;
     private $removable=false;
@@ -156,21 +157,22 @@ class Card
      * @param  boolean $padding [description]
      * @return [type]           [description]
      */
-    public function body_padding($padding = true)
+    public function p0($padding = true)
     {
-        if ($padding == false) {
-            $this->body_padding=$padding;
+        if ($padding) {
+            $this->p0=true;
+        }else{
+            $this->p0=false;
         }
-        return $this->body_padding;
+        return $this->p0;
     }
 
 
     /**
-     * Box html footer
+     * Card html footer
      * @param  string $footer [description]
-     * @return [type]         [description]
+     * @return string
      */
-    /*
     public function footer($footer = '')
     {
         if ($footer) {
@@ -178,7 +180,6 @@ class Card
         }
         return $this->footer;
     }
-    */
 
 
     /**
@@ -282,9 +283,11 @@ class Card
 
         $htm='<div class="'.implode(" ", $class).'" '.$STYLE.' id="'.$this->id().'">';// box-solid
 
-        $htm.='<div class="card-header">';
+
 
         if ($this->title||$this->icon()) {
+
+          $htm.='<div class="card-header">';
 
             $htm.='<h3 class="card-title">';
 
@@ -297,42 +300,44 @@ class Card
                     $htm.="<i class='".$this->icon()."'></i> ";
                 }
             }
+
             $htm.=$this->title;
+
             if ($this->small()) {
                 $htm.=' <small>'.$this->small().'</small>';
             }
+
             $htm.='</h3>';
-        }
 
+            $htm.='<div class="card-tools">';// pull-right box-tools
 
-        $htm.='<div class="card-tools">';// pull-right box-tools
-
-        if ($this->tools()) {
-            $htm.=$this->tools();
-        }
-
-
-        if ($this->collapsable()) {
-
-            if ($this->collapsed()) {
-                $class="fa fa-plus";
-            } else {
-                $class="fa fa-minus";
+            if ($this->tools()) {
+                $htm.=$this->tools();
             }
 
-            $htm.='<button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse"><i class="'.$class.'"></i></button>';
+            if ($this->collapsable()) {
+
+                if ($this->collapsed()) {
+                    $class="fa fa-plus";
+                } else {
+                    $class="fa fa-minus";
+                }
+
+                $htm.='<button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse"><i class="'.$class.'"></i></button>';
+            }
+
+            // remove
+            /*
+            if ($this->removable()) {
+                $htm.='<button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="" data-original-title="Remove"><i class="fa fa-times"></i></button>';
+            }
+            */
+
+            $htm.='</div>';
+            $htm.='</div>';
         }
 
-        // remove
-        /*
-        if ($this->removable()) {
-            $htm.='<button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="" data-original-title="Remove"><i class="fa fa-times"></i></button>';
-        }
-        */
 
-        $htm.='</div>';
-
-        $htm.='</div>';
 
 
         // body
@@ -350,6 +355,10 @@ class Card
             $class[]='no-padding';
         }
         */
+        if($this->p0){
+          $class[]='p-0';
+        }
+
 
         $htm.="<div class='".implode(' ', $class)."' style='".implode('', $style)."'>";
 
@@ -362,26 +371,12 @@ class Card
 
         $htm.='</div>';// body end
 
-        // footer
-        /*
+        //Card footer
         if ($this->footer()) {
-
-            if ($this->collapsed()) {
-            //if (false) {
-                $htm.="<div class='box-footer collapsed-box' style='display:none;'>";// $collapse
-            } else {
-                $htm.="<div class='box-footer'>";// $collapse
-            }
-
-
-            if (is_array($this->footer())) {
-                $htm.=implode('', $this->footer());
-            } else {
-                $htm.=$this->footer();
-            }
+            $htm.="<div class='card-footer'>";// $collapse
+            $htm.=$this->footer();
             $htm.='</div>';
         }
-        */
 
         if ($this->loading()) {
             $htm.='<div class="overlay"><i class="fa fa-refresh fa-spin"></i></div>';
