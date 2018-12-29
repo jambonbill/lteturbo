@@ -303,23 +303,28 @@ class Admin
 
         //<!-- Sidebar -->
         $htm.='<div class="sidebar">'."\n";
-        //<!-- Sidebar user panel (optional) -->
-        $htm.='<div class="user-panel mt-3 pb-3 mb-3 d-flex">';
-        $htm.='<div class="image"><img src="../dist/img/user2-128x128.jpg" class="img-circle elevation-2" alt="User Image"></div>';
-        $htm.='<div class="info"><a href="#" class="d-block">Jambon Bill</a></div>';
-        $htm.='</div>';
+
+            //<!-- Sidebar user panel (optional) -->
+            $htm.='<div class="user-panel mt-3 pb-3 mb-3 d-flex">';
+                $htm.='<div class="image"><img src="../dist/img/user2-128x128.jpg" class="img-circle elevation-2" alt="User Image"></div>';
+                $htm.='<div class="info"><a href="#" class="d-block">Jambon Bill</a></div>';
+            $htm.='</div>';
 
 
 
         //<!-- Sidebar Menu -->
+        /*
         $htm.='<nav class="mt-2">';
+
         $htm.='<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">';
           //<!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
           $htm.='<li class="nav-item has-treeview">';
+
             $htm.='<a href="#" class="nav-link">';
               $htm.='<i class="nav-icon fa fa-users"></i>';
               $htm.='<p>Users <i class="right fa fa-angle-left"></i></p>';
             $htm.='</a>';
+
             $htm.='<ul class="nav nav-treeview">';
               $htm.='<li class="nav-item">';
                 $htm.='<a href="../index.html" class="nav-link"><i class="fa fa-circle-o nav-icon"></i><p>Dashboard v1</p></a>';
@@ -329,12 +334,20 @@ class Admin
               $htm.='</li>';
 
             $htm.='</ul>';
+
           $htm.='</li>';
 
           $htm.='<li class="nav-item">';
-            $htm.='<a href="widgets.html" class="nav-link active">';
+            $htm.='<a href="../infobox" class="nav-link">';
               $htm.='<i class="nav-icon fa fa-th"></i>';
-              $htm.='<p>Widgets <span class="right badge badge-danger">New</span></p>';
+              $htm.='<p>Infobox <span class="right badge badge-danger">New</span></p>';
+            $htm.='</a>';
+          $htm.='</li>';
+
+          $htm.='<li class="nav-item">';
+            $htm.='<a href="widgets.html" class="nav-link">';
+              $htm.='<i class="nav-icon fa fa-th"></i>';
+              $htm.='<p>AdminLTE3</p>';
             $htm.='</a>';
           $htm.='</li>';
 
@@ -346,11 +359,169 @@ class Admin
             $htm.='</a>';
           $htm.='</li>';
 
+        $htm.='</ul>';
+        $htm.='</nav>';
+        */
+
+        $htm.='<nav class="mt-2">';
+        $htm.=$this->menuHTML()."\n";
+        $htm.='</nav>';
+
         $htm.='</div>'."\n";
 
         $htm.='</aside>'."\n";
         return $htm;
     }
+
+
+    /**
+     * Decode the menu object
+     * @param  [type] $json [description]
+     * @return [type]       [description]
+     */
+    private function menuDecode($json)
+    {
+
+        if (!isset($this->config()->menu)) {
+            //throw new \Exception("Error : $this->config->menu must be a object", 1);
+            return '';
+        }else{
+            $menu=$this->config()->menu;
+        }
+
+        if (!is_object($this->config->menu)) {
+
+            $DIR=dirname(realpath($this->config_file));//get config folder
+
+            if ($this->config->menu&&is_file($DIR.'/'.$this->config->menu)) {
+
+                $content=file_get_contents($DIR.'/'.$this->config->menu);
+                $this->config->menu=json_decode($content);
+
+                $err=json_last_error();
+
+                if ($err) {
+                    die("error $err".json_last_error_msg()."<br>$content");
+                    //throw new \Exception("JSON Error $err", 1);
+                }
+
+            } else {
+                //die("this->config->menu not found");
+                return '';
+            }
+
+        }
+
+        return true;
+
+    }
+
+
+    /**
+     * Return menu for inspection/manipulation
+     * @return [type] [description]
+     */
+    public function menu(){
+        return $this->config->menu;
+    }
+
+    /**
+     * Return left menu
+     * @return string html
+     */
+    public function menuHTML($json = '')
+    {
+
+        $this->menuDecode($json);
+
+
+        //$htm='<ul class="sidebar-menu">';//old
+        $htm='<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">';
+        /*
+        $htm.='<li class="nav-item">';
+            $htm.='<a href="widgets.html" class="nav-link">';
+              $htm.='<i class="nav-icon fa fa-th"></i>';
+              $htm.='<p>AdminLTE3</p>';
+            $htm.='</a>';
+          $htm.='</li>';
+        */
+
+        foreach (@$this->config->menu as $name => $o) {
+
+            $title='';
+            $class='';
+
+            if (!$o) {
+                continue;
+            }
+
+            /*
+            if (isset($o->class)) {
+                $class='class="nav-item '.$o->class.'"';
+            }
+            */
+
+            if (isset($o->title)) {
+                $title='title="'.$o->title.'"';
+            }
+
+            if (isset($o->header)) {
+
+                $htm.='<li class="nav-header">'.$o->header.'</li>';
+
+            } else if (isset($o->sub)) {
+                //continue;
+                $htm.='<li class="nav-item has-treeview" '.$title.'>';
+                //if(!isset($o->url))$o->url='#';
+                if (!isset($o->icon)) {
+                    $o->icon='';
+                }
+                $htm.='<a href="'.@$o->url.'" class="nav-link">';
+                $htm.='<i class="nav-icon '.$o->icon.'"></i>';
+                //$htm.=' <span>'.$o->text.'</span>';
+                $htm.='<p>'.$o->text;
+                $htm.='<i class="fa fa-angle-left right"></i>';
+                $htm.='</p>';
+                $htm.='</a>';
+                $htm.='<ul class="nav nav-treeview">';
+                foreach ($o->sub as $obj) {
+
+                    $htm.='<li class="nav-item">';
+
+                    if (isset($obj->url)) {
+                        $htm.='<a class="nav-link" href="'.$this->path.$obj->url.'">';
+                    }
+
+                    if (isset($obj->icon)) {
+                        $htm.="<i class='nav-icon ".$obj->icon."'></i> ";
+                    }
+
+                    $htm.='<p>'.$obj->text.'</p></a>';
+                    $htm.='</li>';
+                }
+                $htm.='</ul>';
+                $htm.='</li>';
+            } else {
+                $htm.='<li class="nav-item" '.$title.'>';
+                if (isset($o->url)) {
+                    $htm.='<a class="nav-link" href="'.$this->path.$o->url.'">';
+                }
+                if (isset($o->icon)) {
+                    $htm.='<i class="nav-icon '.$o->icon.'"></i> ';
+                }
+                $htm.='<p>'.@$o->text.'</p>';
+                //$htm.='<small class="label pull-right bg-green">new</small>';//small
+                if (isset($o->url)) {
+                    $htm.='</a>';
+                }
+                $htm.='</li>';
+            }
+        }
+
+        $htm.='</ul>';
+        return $htm;
+    }
+
 
 
     /**
@@ -696,6 +867,7 @@ class Admin
      * @param  string $htm [description]
      * @return [type]      [description]
      */
+    /*
     public function navbarCustomMenu($htm = '')
     {
         if ($htm&&is_array($htm)) {
@@ -707,6 +879,7 @@ class Admin
         }
         return $this->navbarCustomMenu;
     }
+    */
 
 
     /**
@@ -714,6 +887,7 @@ class Admin
      * @param  string $htm [description]
      * @return [type]      [description]
      */
+    /*
     public function userPanel($htm = '')
     {
 
@@ -727,7 +901,7 @@ class Admin
 
         return $this->userPanel;
     }
-
+    */
 
 
 
@@ -767,104 +941,6 @@ class Admin
     }
 
 
-    /**
-     * Return left menu
-     * @return string html
-     */
-    public function menu($json = '')
-    {
-
-
-        if (!isset($this->config()->menu)) {
-            //throw new \Exception("Error : $this->config->menu must be a object", 1);
-            return '';
-        }else{
-            $menu=$this->config()->menu;
-        }
-
-        if (!is_object($this->config->menu)) {
-
-            $DIR=dirname(realpath($this->config_file));//get config folder
-
-            if ($this->config->menu&&is_file($DIR.'/'.$this->config->menu)) {
-
-                $content=file_get_contents($DIR.'/'.$this->config->menu);
-                $this->config->menu=json_decode($content);
-
-                $err=json_last_error();
-
-                if ($err) {
-                    die("error $err".json_last_error_msg()."<br>$content");
-                    //throw new \Exception("JSON Error $err", 1);
-                }
-
-            } else {
-                //die("this->config->menu not found");
-                return '';
-            }
-        } else {
-
-        }
-
-        $htm='<ul class="sidebar-menu">';
-
-        foreach (@$this->config->menu as $name => $o) {
-
-            $title='';
-            $class='';
-
-            if (!$o) {
-                continue;
-            }
-            if (isset($o->class)) {
-                $class='class="'.$o->class.'"';
-            }
-            if (isset($o->title)) {
-                $title='title="'.$o->title.'"';
-            }
-            if (isset($o->sub)) {
-                $htm.='<li class="treeview" '.$title.'>';
-                //if(!isset($o->url))$o->url='#';
-                if (!isset($o->icon)) {
-                    $o->icon='';
-                }
-                $htm.='<a href="'.@$o->url.'">';
-                $htm.='<i class="'.$o->icon.'"></i> <span>'.$o->text.'</span>';
-                $htm.='<i class="fa fa-angle-left pull-right"></i>';
-                $htm.='</a>';
-                $htm.='<ul class="treeview-menu">';
-                foreach ($o->sub as $obj) {
-                    $htm.='<li>';
-                    if (isset($obj->url)) {
-                        $htm.="<a href='".$this->path.$obj->url."'>";
-                    }
-                    if (isset($obj->icon)) {
-                        $htm.="<i class='".$obj->icon."'></i> ";
-                    }
-                    $htm.='<span>'.$obj->text.'</span></a>';
-                    $htm.='</li>';
-                }
-                $htm.='</ul>';
-                $htm.='</li>';
-            } else {
-                $htm.='<li '.$class.' '.$title.'>';
-                if (isset($o->url)) {
-                    $htm.='<a href="'.$this->path.$o->url.'">';
-                }
-                if (isset($o->icon)) {
-                    $htm.='<i class="'.$o->icon.'"></i> ';
-                }
-                $htm.='<span>'.@$o->text.'</span>';
-                //$htm.='<small class="label pull-right bg-green">new</small>';//small
-                if (isset($o->url)) {
-                    $htm.='</a>';
-                }
-                $htm.='</li>';
-            }
-        }
-        $htm.='</ul>';
-        return $htm;
-    }
 
 
     /**
