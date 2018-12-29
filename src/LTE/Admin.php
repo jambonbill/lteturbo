@@ -260,9 +260,9 @@ class Admin
         $htm.='</ul>';
 
         //<!-- SEARCH FORM -->
-        $htm.='<form class="form-inline ml-3">';
+        $htm.='<form class="form-inline ml-3" action="../search" method=post>';
         $htm.='<div class="input-group input-group-sm">';
-            $htm.='<input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">';
+            $htm.='<input class="form-control form-control-navbar" name=q type="search" placeholder="Search" aria-label="Search" autocomplete="off">';
         $htm.='<div class="input-group-append">';
             $htm.='<button class="btn btn-navbar" type="submit"><i class="fa fa-search"></i></button>';
         $htm.='</div>';
@@ -272,9 +272,12 @@ class Admin
         //<!-- Right navbar links -->
         $htm.='<ul class="navbar-nav ml-auto">';
 
+        /*
+        //<!-- Control sidebar -->
         $htm.='<li class="nav-item">';
         $htm.='<a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#"><i class="fa fa-th-large"></i></a>';
         $htm.='</li>';
+        */
 
         $htm.='<li class="nav-item" title="Sign out">';
         $htm.='<a class="nav-link" href="#"><i class="fa fa-sign-out"></i></a>';
