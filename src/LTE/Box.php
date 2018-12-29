@@ -4,8 +4,10 @@ namespace LTE;
 
 /**
  * AdminLte Box Maker
+ * LTE3 do not use boxes
  * http://almsaeedstudio.com/AdminLTE/pages/widgets.html
  */
+
 class Box
 {
     private $id='';
@@ -43,7 +45,7 @@ class Box
         }
         return $this->type;
     }
-    
+
     /**
      * The box title
      * @param  string $title [description]
@@ -57,7 +59,7 @@ class Box
         return $this->title;
     }
 
-    
+
     public function tools($htm = '')
     {
         if ($htm) {
@@ -66,7 +68,7 @@ class Box
         return $this->tools;
     }
 
-    
+
     /**
      * The 'small' title
      * @param  string $title [description]
@@ -147,8 +149,8 @@ class Box
         }
         return $this->body;
     }
-    
-    
+
+
     /**
      * Set the body padding (add the class 'no-padding to the box boddy')
      * Padding is set (true) by default
@@ -200,7 +202,7 @@ class Box
         return $this->collapsable;
     }
 
-    
+
     public function collapsed($collapsed = false)
     {
         if ($collapsed) {
@@ -210,8 +212,8 @@ class Box
         return $this->collapsed;
     }
 
-    
-    
+
+
 
     /**
      * Add a top-right "x" button that allow box desctruction
@@ -262,7 +264,7 @@ class Box
             $STYLE="style='".$this->style()."'";
         }
 
-        
+
         $class=[];
         $class[]='box';
         $class[]='box-'.$this->type();
@@ -272,15 +274,15 @@ class Box
         if ($this->addClass()) {
             $class[]=$this->addClass();
         }
-        
+
         $htm='<div class="'.implode(" ", $class).'" '.$STYLE.' id="'.$this->id().'">';// box-solid
 
         $htm.='<div class="box-header">';
-        
+
         if ($this->title||$this->icon()) {
-            
+
             $htm.='<h3 class="box-title">';
-            
+
             if ($this->icon()) {
                 if (is_array($this->icon())) {
                     foreach ($this->icon() as $ico) {
@@ -296,36 +298,36 @@ class Box
             }
             $htm.='</h3>';
         }
-        
+
         // pull-right box-tools
         $htm.='<div class="pull-right box-tools">';
-        
+
         if ($this->tools()) {
             $htm.=$this->tools();
         }
-       
-        
+
+
         if ($this->collapsable()) {
-            
+
             if ($this->collapsed()) {
                 $class="fa fa-plus";
             } else {
                 $class="fa fa-minus";
             }
-            
+
             $htm.='<button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse"><i class="'.$class.'"></i></button>';
         }
-        
+
         // remove
         if ($this->removable()) {
             $htm.='<button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="" data-original-title="Remove"><i class="fa fa-times"></i></button>';
         }
 
         $htm.='</div>';
-    
+
         $htm.='</div>';
-        
-        
+
+
         // body
         $class=$style=[];
         $class[]='box-body';
@@ -333,33 +335,33 @@ class Box
             $class[]='collapsed-box';
             $style[]='display:none;';
         }
-        
+
         if (!$this->body_padding()) {
             $class[]='no-padding';
         }
 
         $htm.="<div class='".implode(' ', $class)."' style='".implode('', $style)."'>";
 
-        
+
         if (is_array($this->body)) {
             $htm.=implode('', $this->body);
         } else {
             $htm.=$this->body;
         }
-        
+
         $htm.='</div>';// body end
 
         // footer
         if ($this->footer()) {
-            
+
             if ($this->collapsed()) {
             //if (false) {
                 $htm.="<div class='box-footer collapsed-box' style='display:none;'>";// $collapse
             } else {
                 $htm.="<div class='box-footer'>";// $collapse
             }
-            
-            
+
+
             if (is_array($this->footer())) {
                 $htm.=implode('', $this->footer());
             } else {
@@ -368,7 +370,7 @@ class Box
             $htm.='</div>';
         }
 
-        
+
         if ($this->loading()) {
             $htm.='<div class="overlay"><i class="fa fa-refresh fa-spin"></i></div>';
         } else {
@@ -379,7 +381,7 @@ class Box
 
         return $htm;
     }
-    
+
     public function __toString()
     {
         return $this->html();
