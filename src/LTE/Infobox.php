@@ -9,23 +9,27 @@ namespace LTE;
 class Infobox
 {
     private $id='';
-    private $type='solid';
+    private $type='';//danger, success, info, warning, etc
+    private $bg='';//danger, success, info, warning, etc
+
     private $icon='';
-    private $iconUrl='';
+    //private $iconUrl='';
     private $color='';
     private $class='';
     private $style='';
-    private $title='';
+    //private $title='';
     private $small='';//
-    private $tools='';//(mini top tray on the right)
 
-    private $body='';
-    //private $body_padding=true;//box-body no-padding
-    //private $footer='';//no footer in cards
+    private $progress=null;//%
+    private $progress_description='';// 70% Increase in 30 Days
+
+    private $text='';
+    private $number='';
+
     //private $collapsable=false;
     //private $collapsed=false;
     //private $removable=false;
-    private $loading=false;
+    //private $loading=false;
 
     public function __construct()
     {
@@ -45,45 +49,24 @@ class Infobox
         return $this->type;
     }
 
+
     /**
-     * The card title
-     * @param  string $title [description]
-     * @return [type]        [description]
+     * Info box bg type -- <div class="info-box bg-{type}">
+     * @param  string $type [description]
+     * @return [type]       [description]
      */
-    public function title($title = '')
+    public function bg($type='')
     {
-        if ($title) {
-            $this->title=$title;
+        if ($type) {
+            $this->bg=$type;
         }
-        return $this->title;
-    }
+        return $this->bg;
 
-
-    public function tools($htm = '')
-    {
-        if ($htm) {
-            $this->tools=$htm;
-        }
-        return $this->tools;
     }
 
 
     /**
-     * The 'small' title
-     * @param  string $title [description]
-     * @return [type]        [description]
-     */
-    public function small($str = '')
-    {
-        if ($str) {
-            $this->small=$str;
-        }
-        return $this->small;
-    }
-
-    /**
-     * Card icon class. Use font awesome names, ex: 'fa fa-user'
-     * You can pass multiple icons in a array, ex: ['fa fa-user','fa fa-file']
+     * Infobox icon class. Use font awesome names, ex: 'fa fa-user'
      * @param  string $classname [description]
      * @return [type]            [description]
      */
@@ -100,6 +83,7 @@ class Infobox
      * @param  string $url [description]
      * @return [type]      [description]
      */
+    /*
     public function iconUrl($url = '')
     {
         if ($url) {
@@ -107,6 +91,7 @@ class Infobox
         }
         return $this->iconUrl;
     }
+    */
 
     /**
      * Color Used for the 'tiles'
@@ -135,50 +120,45 @@ class Infobox
     }
 
     /**
-     * Box html body
+     * Box text
      * @param  string $body [description]
      * @return [type]       [description]
      */
-    public function body($body = '')
+    public function text($str = '')
     {
-        if (is_array($body)) {
-            $this->body=implode('', $body);
-        } elseif ($body) {
-            $this->body=$body;
+        if ($str) {
+          $this->text=$str;
         }
-        return $this->body;
+        return $this->text;
     }
 
 
-    /**
-     * Set the body padding (add the class 'no-padding to the box boddy')
-     * Padding is set (true) by default
-     * @param  boolean $padding [description]
-     * @return [type]           [description]
-     */
-    public function body_padding($padding = true)
+    public function number($str = '')
     {
-        if ($padding == false) {
-            $this->body_padding=$padding;
+        if ($str) {
+          $this->number=$str;
         }
-        return $this->body_padding;
+        return $this->number;
+    }
+
+    public function progress($n=0)
+    {
+        if ($n) {
+          $this->progress=$n;
+        }
+        return $this->progress;
+    }
+
+    public function progress_description($str = '')
+    {
+        if ($str) {
+          $this->progress_description=$str;
+        }
+        return $this->progress_description;
     }
 
 
-    /**
-     * Box html footer
-     * @param  string $footer [description]
-     * @return [type]         [description]
-     */
-    /*
-    public function footer($footer = '')
-    {
-        if ($footer) {
-            $this->footer=$footer;
-        }
-        return $this->footer;
-    }
-    */
+
 
 
     /**
@@ -187,6 +167,7 @@ class Infobox
      * @param  boolean $loading [description]
      * @return boolean
      */
+    /*
     public function loading($loading = false)
     {
         if ($loading) {
@@ -194,25 +175,7 @@ class Infobox
         }
         return $this->loading;
     }
-
-
-    public function collapsable($collapsable = false)
-    {
-        if ($collapsable) {
-            $this->collapsable=$collapsable;
-        }
-        return $this->collapsable;
-    }
-
-
-    public function collapsed($collapsed = false)
-    {
-        if ($collapsed) {
-            $this->collapsable=true;
-            $this->collapsed=true;
-        }
-        return $this->collapsed;
-    }
+    */
 
 
 
@@ -222,6 +185,7 @@ class Infobox
      * @param  boolean $removable [description]
      * @return [type]             [description]
      */
+    /*
     public function removable($removable = false)
     {
         if ($removable) {
@@ -229,6 +193,7 @@ class Infobox
         }
         return $this->removable;
     }
+    */
 
     public function addClass($str = '')
     {
@@ -250,16 +215,17 @@ class Infobox
      * Return the LTE Box as html
      * @return [type] [description]
      */
-    public function html($body = '', $footer = '')
+    public function html($text = '', $number = '')
     {
 
-        if ($body) {
-            $this->body($body);
+        if ($text) {
+            $this->text($text);
         }
 
-        if ($footer) {
-            $this->footer($footer);
+        if ($number) {
+            $this->number($number);
         }
+
 
         $STYLE='';
         if ($this->style()) {
@@ -268,13 +234,12 @@ class Infobox
 
 
         $class=[];
-        $class[]='card';
-        $class[]='card-'.$this->type();
-        /*
-        if ($this->collapsed) {
-            $class[]='collapsed-box';
+        $class[]='info-box';
+        //$class[]='card-'.$this->type();
+
+        if($this->bg()){
+            $class[]='bg-'.$this->bg();
         }
-        */
 
         if ($this->addClass()) {
             $class[]=$this->addClass();
@@ -282,112 +247,43 @@ class Infobox
 
         $htm='<div class="'.implode(" ", $class).'" '.$STYLE.' id="'.$this->id().'">';// box-solid
 
-        $htm.='<div class="card-header">';
-
-        if ($this->title||$this->icon()) {
-
-            $htm.='<h3 class="card-title">';
-
-            if ($this->icon()) {
-                if (is_array($this->icon())) {
-                    foreach ($this->icon() as $ico) {
-                        $htm.="<i class='".$ico."'></i> ";
-                    }
-                } else {
-                    $htm.="<i class='".$this->icon()."'></i> ";
-                }
-            }
-            $htm.=$this->title;
-            if ($this->small()) {
-                $htm.=' <small>'.$this->small().'</small>';
-            }
-            $htm.='</h3>';
+        //Icon
+        if($this->type()){
+            //exit($this->type());
+            $htm.='<span class="info-box-icon bg-'.$this->type().'"><i class="'.$this->icon().'"></i></span>';//bg-warning
+        }else{
+            $htm.='<span class="info-box-icon"><i class="'.$this->icon().'"></i></span>';//bg-warning
         }
-
-
-        $htm.='<div class="card-tools">';// pull-right box-tools
-
-        if ($this->tools()) {
-            $htm.=$this->tools();
-        }
-
-
-        if ($this->collapsable()) {
-
-            if ($this->collapsed()) {
-                $class="fa fa-plus";
-            } else {
-                $class="fa fa-minus";
-            }
-
-            $htm.='<button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse"><i class="'.$class.'"></i></button>';
-        }
-
-        // remove
-        /*
-        if ($this->removable()) {
-            $htm.='<button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="" data-original-title="Remove"><i class="fa fa-times"></i></button>';
-        }
-        */
-
-        $htm.='</div>';
-
-        $htm.='</div>';
 
 
         // body
         $class=$style=[];
-        $class[]='card-body';
-        /*
-        if ($this->collapsed()) {
-            $class[]='collapsed-box';
-            $style[]='display:none;';
-        }
-        */
-
-        /*
-        if (!$this->body_padding()) {
-            $class[]='no-padding';
-        }
-        */
+        $class[]='info-box-content';
 
         $htm.="<div class='".implode(' ', $class)."' style='".implode('', $style)."'>";
 
+        $htm.='<span class="info-box-text">'.$this->text().'</span>';
+        $htm.='<span class="info-box-number">'.$this->number().'</span>';
 
-        if (is_array($this->body)) {
-            $htm.=implode('', $this->body);
-        } else {
-            $htm.=$this->body;
+        if($this->progress()){
+            $htm.='<div class="progress"><div class="progress-bar" style="width: '.$this->progress().'%"></div></div>';
         }
 
-        $htm.='</div>';// body end
 
-        // footer
+        if($this->progress_description()){
+            $htm.='<span class="progress-description">'.$this->progress_description().'</span>';
+        }
+
+
+        $htm.='</div>';// content end
+
         /*
-        if ($this->footer()) {
-
-            if ($this->collapsed()) {
-            //if (false) {
-                $htm.="<div class='box-footer collapsed-box' style='display:none;'>";// $collapse
-            } else {
-                $htm.="<div class='box-footer'>";// $collapse
-            }
-
-
-            if (is_array($this->footer())) {
-                $htm.=implode('', $this->footer());
-            } else {
-                $htm.=$this->footer();
-            }
-            $htm.='</div>';
-        }
-        */
-
         if ($this->loading()) {
             $htm.='<div class="overlay"><i class="fa fa-refresh fa-spin"></i></div>';
         } else {
             $htm.='<div class="overlay" style="display:none"><i class="fa fa-refresh fa-spin"></i></div>';
         }
+        */
 
         $htm.='</div>';// end.box
 
@@ -399,57 +295,3 @@ class Infobox
         return $this->html();
     }
 }
-
-/*
-<div class="card">
-  <div class="card-header no-border">
-    <h3 class="card-title">Online Store Overview</h3>
-    <div class="card-tools">
-      <a href="#" class="btn btn-sm btn-tool">
-        <i class="fa fa-download"></i>
-      </a>
-      <a href="#" class="btn btn-sm btn-tool">
-        <i class="fa fa-bars"></i>
-      </a>
-    </div>
-  </div>
-  <div class="card-body">
-    <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
-      <p class="text-success text-xl">
-        <i class="ion ion-ios-refresh-empty"></i>
-      </p>
-      <p class="d-flex flex-column text-right">
-        <span class="font-weight-bold">
-          <i class="ion ion-android-arrow-up text-success"></i> 12%
-        </span>
-        <span class="text-muted">CONVERSION RATE</span>
-      </p>
-    </div>
-    <!-- /.d-flex -->
-    <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
-      <p class="text-warning text-xl">
-        <i class="ion ion-ios-cart-outline"></i>
-      </p>
-      <p class="d-flex flex-column text-right">
-        <span class="font-weight-bold">
-          <i class="ion ion-android-arrow-up text-warning"></i> 0.8%
-        </span>
-        <span class="text-muted">SALES RATE</span>
-      </p>
-    </div>
-    <!-- /.d-flex -->
-    <div class="d-flex justify-content-between align-items-center mb-0">
-      <p class="text-danger text-xl">
-        <i class="ion ion-ios-people-outline"></i>
-      </p>
-      <p class="d-flex flex-column text-right">
-        <span class="font-weight-bold">
-          <i class="ion ion-android-arrow-down text-danger"></i> 1%
-        </span>
-        <span class="text-muted">REGISTRATION RATE</span>
-      </p>
-    </div>
-    <!-- /.d-flex -->
-  </div>
-</div>
-*/
