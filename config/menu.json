@@ -7,18 +7,18 @@
         "sub":[{
             "text": "Activities",
             "icon": "fa fa-folder-o",
-            "url": "activities/"
+            "url": "#"
         },{
             "text": "Rooms",
             "icon": "fa fa-list",
-            "url": "rooms/"
+            "url": "#"
         }]
     },
 
     "Users":{
 
         "text": "Users",
-        "icon": "fa fa-folder-o",
+        "icon": "fa fa-folder-open-o",
         "url": "#menuUsers",
 
         "sub":[{
@@ -36,32 +36,26 @@
         }]
     },
 
-    "prods":{
-        "text": "Products",
-        "icon": "fa fa-folder-o",
-        "url": "tables/"
-    },
-
     "Orga":{
         "text": "Organisation",
-        "icon": "fa fa-folder-o",
+        "icon": "fa fa-folder-open-o",
         "url": "#menuOrga",
         "sub":[{
             "text": "Activities",
             "icon": "fa fa-folder-o",
-            "url": "activities/"
+            "url": "#"
         },{
             "text": "Rooms",
             "icon": "fa fa-list",
-            "url": "rooms/"
+            "url": "#"
         },{
             "text": "Inventory",
             "icon": "fa fa-folder-o",
-            "url": "inventory/"
+            "url": "#"
         },{
             "text": "Urls",
             "icon": "fa fa-folder-o",
-            "url": "urls/"
+            "url": "#"
         }]
     },
 
@@ -78,12 +72,12 @@
         "url": "#menuFinance",
         "sub":[{
            "text": "Sales",
-            "icon": "fa fa-folder-o",
-            "url": "sales/"
+            "icon": "fa fa-list",
+            "url": "#"
         },{
             "text": "Invoices",
-            "icon": "fa fa-folder-o",
-            "url": "invoices/"
+            "icon": "fa fa-list",
+            "url": "#"
         }]
     },
 
