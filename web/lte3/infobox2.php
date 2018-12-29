@@ -1,80 +1,52 @@
 <div class="col-md-3 col-sm-6 col-12">
-            <div class="info-box bg-info">
-              <span class="info-box-icon"><i class="fa fa-bookmark-o"></i></span>
+    <?php
+    $box=new LTE\Infobox;
+    $box->icon('fa fa-flag-o');
+    $box->bg('info');
+    $box->text('Coffee');
+    $box->number(410);
+    $box->progress(95);
+    $box->progress_description('Envie de chier');
+    echo $box;
+    ?>
+</div>
 
-              <div class="info-box-content">
-                <span class="info-box-text">Bookmarks</span>
-                <span class="info-box-number">41,410</span>
+<div class="col-md-3 col-sm-6 col-12">
+    <?php
+    $box=new LTE\Infobox;
+    $box->icon('fa fa-flag-o');
+    //$box->type('danger');
+    $box->bg('success');
+    $box->text('Coffee');
+    $box->number(410);
+    $box->progress(95);
+    $box->progress_description('Envie de chier');
+    echo $box;
+    ?>
+</div>
 
-                <div class="progress">
-                  <div class="progress-bar" style="width: 70%"></div>
-                </div>
-                <span class="progress-description">
-                  70% Increase in 30 Days
-                </span>
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-          </div>
-          <!-- /.col -->
-          <div class="col-md-3 col-sm-6 col-12">
-            <div class="info-box bg-success">
-              <span class="info-box-icon"><i class="fa fa-thumbs-o-up"></i></span>
+<div class="col-md-3 col-sm-6 col-12">
+    <?php
+    $box=new LTE\Infobox;
+    $box->icon('fa fa-flag-o');
+    $box->bg('warning');
+    $box->text('Coffee');
+    $box->number(410);
+    $box->progress(45);
+    $box->progress_description('Envie de chier');
+    echo $box;
+    ?>
+</div>
 
-              <div class="info-box-content">
-                <span class="info-box-text">Likes</span>
-                <span class="info-box-number">41,410</span>
-
-                <div class="progress">
-                  <div class="progress-bar" style="width: 70%"></div>
-                </div>
-                <span class="progress-description">
-                  70% Increase in 30 Days
-                </span>
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-          </div>
-          <!-- /.col -->
-          <div class="col-md-3 col-sm-6 col-12">
-            <div class="info-box bg-warning">
-              <span class="info-box-icon"><i class="fa fa-calendar"></i></span>
-
-              <div class="info-box-content">
-                <span class="info-box-text">Events</span>
-                <span class="info-box-number">41,410</span>
-
-                <div class="progress">
-                  <div class="progress-bar" style="width: 70%"></div>
-                </div>
-                <span class="progress-description">
-                  70% Increase in 30 Days
-                </span>
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-          </div>
-          <!-- /.col -->
-          <div class="col-md-3 col-sm-6 col-12">
-            <div class="info-box bg-danger">
-              <span class="info-box-icon"><i class="fa fa-comments-o"></i></span>
-
-              <div class="info-box-content">
-                <span class="info-box-text">Comments</span>
-                <span class="info-box-number">41,410</span>
-
-                <div class="progress">
-                  <div class="progress-bar" style="width: 70%"></div>
-                </div>
-                <span class="progress-description">
-                  70% Increase in 30 Days
-                </span>
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-          </div>
-          <!-- /.col -->
+<div class="col-md-3 col-sm-6 col-12">
+    <?php
+    $box=new LTE\Infobox;
+    $box->icon('fa fa-flag-o');
+    $box->bg('danger');
+    $box->text('Coffee');
+    $box->number(410);
+    $box->progress(95);
+    $box->progress_description('Envie de chier');
+    echo $box;
+    ?>
+</div>

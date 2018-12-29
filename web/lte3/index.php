@@ -16,8 +16,6 @@ if(true){
   require "navbar.php";
   require "sidebar.php";
 }
-
-
 ?>
 
   <!-- Content Wrapper. Contains page content -->
@@ -44,14 +42,16 @@ if(true){
     <!-- Main content -->
     <section class="content">
 
+      <?php
+      //echo '<pre>';print_r($admin->menu());echo '</pre>';
+      ?>
 
       <div class="container-fluid">
 
         <h5 class="mb-2">Info Box</h5>
-
         <div class="row">
           <?php
-          require "infobox1.php";
+          //require "infobox1.php";
           ?>
         </div>
         <!-- /.row -->
@@ -60,17 +60,16 @@ if(true){
         <h5 class="mt-4 mb-2">Info Box With <code>bg-*</code></h5>
         <div class="row">
           <?php
-          require "infobox2.php";
+          //require "infobox2.php";
           ?>
         </div>
         <!-- /.row -->
 
         <!-- =========================================================== -->
         <h5 class="mt-4 mb-2">Info Box With <code>bg-*-gradient</code></h5>
-
         <div class="row">
           <?php
-          require "infobox3.php";
+          //require "infobox3.php";
           ?>
         </div>
         <!-- /.row -->
