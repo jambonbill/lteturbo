@@ -27,6 +27,7 @@
     "autoload": {
         "psr-0": {
             "LTE": "src",
+            "CRM": "src",
             "Django": "src"
         }
     },
