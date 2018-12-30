@@ -6,64 +6,67 @@ session_start();
 require __DIR__."/../../vendor/autoload.php";
 
 $admin = new LTE\Admin;
-//$admin->configfile(__DIR__."/configtest.json");
 $admin->configfile(__DIR__."/../../config/config.json");
 //$admin->description("Testing the tests is my hobby");
 echo $admin;
 
-//echo "<pre>";print_r($admin->meta());exit;
-//https://adminlte.io/themes/AdminLTE/index2.html
-//$UD=new Django\UserDjango;
+$B=new CRM\Base;
+
 ?>
 <div class="content-wrapper">
 
-<!--Content header-->
-<section class="content-header">
-  <h1>
-    Home
-    <small>sweet home</small>
-  </h1>
-</section>
+	<!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Home</h1>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
 
-<!--Main content-->
-<section class="container">
+	<!--Main content-->
+	<section class="container">
 
-	<div class="row">
+		<div class="row">
 
-		<div class="col-12">
-			<?php
+			<div class="col-12">
+				<?php
 
-			$C=new LTE\Callout("warning","Callout","This is a new LTE\Callout");
-			echo $C;
+				$C=new LTE\Callout("warning","Callout","This is a new LTE\Callout");
+				echo $C;
 
-			$A=new LTE\Alert("info","Alert","I'm a new LTE\Alert and i can be removed");
-			echo $A;
-			?>
+				$A=new LTE\Alert("info","Alert","I'm a new LTE\Alert and i can be removed");
+				echo $A;
+				?>
+			</div>
+
+			<div class="col-md-12">
+				<?php
+
+				$tools='<div class="has-feedback">';
+	            $tools.='<input class="form-control form-control-sm" placeholder="Search ..." type="text">';
+	            $tools.='<span class="glyphicon glyphicon-search form-control-feedback"></span>';
+	            $tools.='</div>';
+
+	            $htm='<pre>'.print_r($B->user(),1).'</pre>';
+
+				$box=new LTE\Card;
+				$box->title("Card");
+				//$box->tools($tools);
+				$box->body($htm);
+				$box->removable(1);
+				$box->collapsable(1);
+				echo $box;
+
+				//echo '<pre>';print_r($_SESSION);echo '</pre>';
+				?>
+			</div>
+
 		</div>
 
-		<div class="col-md-6">
-			<?php
-
-			$tools='<div class="has-feedback">';
-            $tools.='<input class="form-control form-control-sm" placeholder="Search ..." type="text">';
-            $tools.='<span class="glyphicon glyphicon-search form-control-feedback"></span>';
-            $tools.='</div>';
-
-			$box=new LTE\Card;
-			$box->title("Box");
-			$box->tools($tools);
-			$box->body("[]");
-			//$box->removable(1);
-			//$box->collapsable(1);
-			echo $box;
-
-			//echo '<pre>';print_r($_SESSION);echo '</pre>';
-			?>
-		</div>
-
-	</div>
-
-</section>
+	</section>
 </div>
 <?php
 $admin->end();
