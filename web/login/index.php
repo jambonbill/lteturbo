@@ -1,21 +1,26 @@
 <?php
+
 header('Content-Type: text/html; charset=utf-8');
 session_start();
 
 require __DIR__ . "/../../vendor/autoload.php";
 
-$admin = new LTE\Admin;
-$admin->title("Login");
+$admin = new LTE\Admin(__DIR__."/../../config/config.json");
+//$admin->title("Login");
+//$admin->config()->menu = (object)[];//unset the global menu
+//$admin->config()->layout->{'sidebar-collapse'}=true;
 echo $admin->head();
 ?>
 
 <body class="text-center">
-    <form class="form-signin" method="post" target="login.php">
+    <form class="form-signin" method="post" action="login.php" autocomplete="off">
       <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
       <label for="inputEmail" class="sr-only">Email address</label>
-      <input type="email" name=email id="inputEmail" class="form-control" placeholder="Email address" required autofocus autocomplete="false">
+      <input type="email" name=email id="inputEmail" class="form-control" 
+      placeholder="Email address" required autofocus autocomplete="off">
       <label for="inputPassword" class="sr-only">Password</label>
-      <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
+      <input type="password" name="password" id="inputPassword" class="form-control" 
+      placeholder="Password" required autocomplete="off">
       
       <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
     </form>
