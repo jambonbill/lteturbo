@@ -5,13 +5,13 @@
         "icon": "fa fa-home",
         "url": "#home",
         "sub":[{
-            "text": "Activities",
+            "text": "Tickets",
             "icon": "fa fa-folder-o",
-            "url": "#"
+            "url": "tickets"
         },{
-            "text": "Rooms",
-            "icon": "fa fa-list",
-            "url": "#"
+            "text": "Chat",
+            "icon": "fa fa-comments",
+            "url": "chat/"
         }]
     },
 
@@ -28,11 +28,11 @@
         },{
             "text": "Teachers",
             "icon": "fa fa-users",
-            "url": "teachers/"
+            "url": "users/"
         },{
             "text": "Students",
             "icon": "fa fa-users",
-            "url": "students/"
+            "url": "users/"
         }]
     },
 
@@ -95,6 +95,8 @@
             "url": "#"
         }]
     },
+
+    
 
     "sep":{
         "header": "LOGOUT"
