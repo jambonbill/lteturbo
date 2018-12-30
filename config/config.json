@@ -23,7 +23,7 @@
 
 	"jsbak":[
 		"dist/plugins/jQuery/jquery-3.2.1.min.js",
-	    "dist/plugins/jQuery/jquery-tablesorter.min.js",
+	    
 	    "dist/plugins/jQueryUI/jquery-ui-1.10.3.min.js",
 	    "dist/plugins/popper.js/popper.min.js"
 	],
@@ -34,6 +34,7 @@
     	"dist/plugins/slimScroll/jquery.slimscroll.min.js",
     	"dist/fullcalendar/moment.js",
     	"dist/fullcalendar/fullcalendar.min.js",
+    	"dist/js/jquery-tablesorter.min.js",
     	"dist/js/adminlte.js"
 	],
 
