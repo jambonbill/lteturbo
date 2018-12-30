@@ -323,15 +323,14 @@ class Card
                     $class="fa fa-minus";
                 }
 
-                $htm.='<button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse"><i class="'.$class.'"></i></button>';
+                $htm.='<button class="btn btn-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse"><i class="'.$class.'"></i></button>';
             }
 
             // remove
-            /*
+
             if ($this->removable()) {
-                $htm.='<button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="" data-original-title="Remove"><i class="fa fa-times"></i></button>';
+                $htm.='<button class="btn btn-tool" data-widget="remove"><i class="fa fa-times"></i></button>';
             }
-            */
 
             $htm.='</div>';
             $htm.='</div>';
