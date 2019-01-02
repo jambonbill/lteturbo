@@ -1,64 +1,17 @@
 {
 
     "home":{
-        "text": "Dashboard",
+        "text": "Home",
         "icon": "fa fa-home",
-        "url": "#home",
-        "sub":[{
-            "text": "Tickets",
-            "icon": "fa fa-folder-o",
-            "url": "tickets"
-        },{
-            "text": "Chat",
-            "icon": "fa fa-comments",
-            "url": "chat/"
-        }]
+        "url": "home/"
     },
 
     "Users":{
 
         "text": "Users",
-        "icon": "fa fa-folder-open-o",
-        "url": "#menuUsers",
-
-        "sub":[{
-            "text": "Search",
-            "icon": "fa fa-search",
-            "url": "users/"
-        },{
-            "text": "Teachers",
-            "icon": "fa fa-users",
-            "url": "users/"
-        },{
-            "text": "Students",
-            "icon": "fa fa-users",
-            "url": "users/"
-        }]
+        "icon": "fa fa-users",
+        "url": "users"
     },
-
-    "Orga":{
-        "text": "Organisation",
-        "icon": "fa fa-folder-open-o",
-        "url": "#menuOrga",
-        "sub":[{
-            "text": "Activities",
-            "icon": "fa fa-folder-o",
-            "url": "#"
-        },{
-            "text": "Rooms",
-            "icon": "fa fa-list",
-            "url": "#"
-        },{
-            "text": "Inventory",
-            "icon": "fa fa-folder-o",
-            "url": "#"
-        },{
-            "text": "Urls",
-            "icon": "fa fa-folder-o",
-            "url": "#"
-        }]
-    },
-
 
     "calendar":{
         "text": "Calendar",
@@ -75,9 +28,9 @@
             "icon": "fa fa-list",
             "url": "#"
         },{
-            "text": "Invoices",
-            "icon": "fa fa-list",
-            "url": "#"
+            "text": "Invoice",
+            "icon": "fa fa-file",
+            "url": "invoice"
         }]
     },
 
@@ -86,9 +39,9 @@
         "icon": "fa fa-bullhorn",
         "url": "#menuMkt",
         "sub":[{
-           "text": "Customers",
-            "icon": "fa fa-folder-o",
-            "url": "#"
+           "text": "Chat",
+            "icon": "fa fa-comments",
+            "url": "chat"
         },{
             "text": "Leads",
             "icon": "fa fa-folder-o",
@@ -96,7 +49,12 @@
         }]
     },
 
-    
+    "search":{
+        "text": "Search",
+        "icon": "fa fa-search",
+        "url": "search/"
+    },
+
 
     "sep":{
         "header": "LOGOUT"
