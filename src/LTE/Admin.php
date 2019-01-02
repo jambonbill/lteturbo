@@ -36,8 +36,6 @@ class Admin
 
     private $_lang= 'en';
 
-    //private $navbarCustomMenu='';//html
-
     /**
      * The string to match against the menu, to highlight menu item
      */
@@ -268,6 +266,11 @@ class Admin
      */
     public function navbar()
     {
+
+        if (!isset($this->config->navbar)) {
+            return '';
+        }
+
         //<!-- Navbar -->
         $htm='<nav class="main-header navbar navbar-expand bg-white navbar-light border-bottom">';
 
@@ -275,21 +278,26 @@ class Admin
         $htm.='<li class="nav-item">';
         $htm.='<a class="nav-link" data-widget="pushmenu" href="#"><i class="fa fa-bars"></i></a>';
         $htm.='</li>';
-        /*
-          <li class="nav-item d-none d-sm-inline-block"><a href="#" class="nav-link">Home</a></li>
-          <li class="nav-item d-none d-sm-inline-block"><a href="#" class="nav-link">Contact</a></li>
-        */
+
+        // Links //
+
+        $htm.='<li class="nav-item d-none d-sm-inline-block"><a href="../home" class="nav-link">Home</a></li>';
+        //$htm.='<li class="nav-item d-none d-sm-inline-block"><a href="../calendar" class="nav-link">Calendar</a></li>';
+
+
         $htm.='</ul>';
 
-        //<!-- SEARCH FORM -->
-        $htm.='<form class="form-inline ml-3" action="../search/" method="get">';
-        $htm.='<div class="input-group input-group-sm">';
-            $htm.='<input class="form-control form-control-navbar" name=q type="search" placeholder="Search" aria-label="Search" autocomplete="off">';
-            $htm.='<div class="input-group-append">';
-                $htm.='<button class="btn btn-navbar" type="submit"><i class="fa fa-search"></i></button>';
+        if (isset($this->config->navbar->search)&&$this->config->navbar->search) {
+            //<!-- SEARCH FORM -->
+            $htm.='<form class="form-inline ml-3" action="../search/" method="get">';
+            $htm.='<div class="input-group input-group-sm">';
+                $htm.='<input class="form-control form-control-navbar" name=q type="search" placeholder="Search" aria-label="Search" autocomplete="off">';
+                $htm.='<div class="input-group-append">';
+                    $htm.='<button class="btn btn-navbar" type="submit"><i class="fa fa-search"></i></button>';
+                $htm.='</div>';
             $htm.='</div>';
-        $htm.='</div>';
-        $htm.='</form>';
+            $htm.='</form>';
+        }
 
         //<!-- Right navbar links -->
         $htm.='<ul class="navbar-nav ml-auto">';
@@ -302,7 +310,7 @@ class Admin
         */
 
         $htm.='<li class="nav-item" title="Sign out">';
-        $htm.='<a class="nav-link" href="#"><i class="fa fa-sign-out"></i></a>';
+        $htm.='<a class="nav-link" href="#"><i class="fa fa-sign-out"></i> Sign out</a>';
         $htm.='</li>';
 
         $htm.='</ul>';
@@ -325,8 +333,16 @@ class Admin
 
         //<!-- Brand Logo -->
         if (isset($this->config()->title)) {
-            $htm.='<a href="#" class="brand-link"><span class="brand-text font-weight-light">'.$this->config()->title.'</span></a>';
+            $htm.='<a href="#" class="brand-link">';
+            /*
+            if (isset($this->config()->{'title-mini'})) {
+                $htm.='<span class="logo-mini">'.$this->config()->{'title-mini'}.'</span>';
+            }
+            */
+            $htm.='<span class="brand-text font-weight-light">'.$this->config()->title.'</span>';
+            $htm.='</a>';
         }
+
 
 
         //<!-- Sidebar -->
@@ -969,11 +985,25 @@ class Admin
 
         //print_r($this->config()->footer);exit;
 
+        if (!isset($this->config()->footer)) {
+            return false;
+        }
+
         $htm='<footer class="main-footer">';
+
+        if (isset($this->config()->footer->right)) {
             $htm.='<div class="float-right d-none d-sm-block">';
-                $htm.='<b>Version</b> 3.0.0-alpha';
+            $htm.=$this->config()->footer->right;
             $htm.='</div>';
-            $htm.='<strong>Powered by <a href="https://jambonbill.org">Jambonbill</a> LTETurbo</strong>';
+        }
+
+        if ($this->config()->footer->left) {
+            $htm.=$this->config()->footer->left;
+        }
+
+
+
+
         $htm.='</footer>';
 
         return $htm;
