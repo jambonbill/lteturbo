@@ -1,7 +1,7 @@
 <?php
 /**
  * Php class for quick integration of AdminLTE2
- * @author jambonbill
+ * @author Jambonbill <jambonbill@gmail.com>
  */
 
 namespace LTE;
@@ -14,31 +14,44 @@ class Admin
 
     /**
      * Static path to assets
-     * @var string
      */
-    private $path='../';// static path
+    private $_path='../';// static path
 
     /**
-     * path to json config file
-     * @var string
+     * Path to json config file
      */
-    private $config_file='';
+    private $_config_file='';
 
     /**
      * Config object
-     * @var array
      */
-    private $config=[];
+    private $_config=[];
 
-    private $headHtml= '';
+    /**
+     * Menu object
+     */
+    private $_menu=[];
 
-    private $lang= 'en';
+    private $_headHtml= '';//?
 
-    private $navbarCustomMenu='';//html
+    private $_lang= 'en';
 
-    private $userPanel='';//html
+    //private $navbarCustomMenu='';//html
 
-    private $DEBUG=false;
+    /**
+     * The string to match against the menu, to highlight menu item
+     */
+    private $_menuMatch='';
+
+    //private $userPanel='';//html
+
+
+    /**
+     * DEBUG mode (spit vars on screen)
+     *
+     * @var boolean
+     */
+    //public $DEBUG=false;
 
 
     /**
@@ -51,30 +64,32 @@ class Admin
 
         if ($configfile) {
             if (is_file($configfile)) {
-                $this->config_file=$configfile;
+                $this->_config_file=$configfile;
             } else {
                 throw new \Exception("Error : config file '$configfile' not found", 1);
             }
-        } else if(isset($_SESSION['lteconfig'])) {
+        } elseif (isset($_SESSION['lteconfig'])) {
             $this->config_file=$_SESSION['lteconfig'];
         }
 
-        if ($this->config_file) {
-            $this->configLoad($this->config_file);
+        if ($this->_config_file) {
+            $this->configLoad($this->_config_file);
         }
 
-        /*
-        $this->lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);// set language
-        if ($this->lang!='fr') {
-            $this->lang='en';
+        $dirname=pathinfo($_SERVER['SCRIPT_FILENAME'])['dirname'];
+        if (preg_match("/\b\/([a-z-0-9]+)$/i", $dirname, $o)) {
+            $this->_menuMatch=$o[1];
+            //exit($this->_menuMatch);
         }
-        */
+
     }
 
 
     /**
      * Register path to configfile
-     * @param  string $filename [description]
+     *
+     * @param string $filename [description]
+     *
      * @return [type]           [description]
      */
     public function configfile($filename='')
@@ -84,29 +99,37 @@ class Admin
 
             //make sure it decode well
             $string = file_get_contents($filename);
-            $this->config=json_decode($string);
+            $this->_config=json_decode($string);
             $err=json_last_error();
+
             if ($err) {
                 throw new Exception("Error decoding json from $filename", 1);
-            }else{
+            } else {
                 //exit("yes sir");
             }
             //register to sessions
-            $this->config_file=$filename;
-            $_SESSION['lteconfig']=$this->config_file;
+            $this->_config_file=$filename;
+            $_SESSION['lteconfig']=$this->_config_file;
             //exit('_SESSION[lteconfig]='.$this->config_file);
 
-            $this->configLoad($this->config_file);
-        }else if($filename){
+            $this->configLoad($this->_config_file);
+        } elseif ($filename) {
             throw new \Exception("$filename not found", 1);
 
         }
 
-        return $this->config_file;
+        return $this->_config_file;
     }
 
 
-    private function configLoad($filename = '')
+    /**
+     * Load and decode config file
+     *
+     * @param  string $filename [description]
+     *
+     * @return [type]           [description]
+     */
+    public function configLoad($filename = '')
     {
         $string = file_get_contents($filename);
         $this->config=json_decode($string);
@@ -122,11 +145,11 @@ class Admin
             }
         }
 
-        if(isset($this->config->description)){
+        if (isset($this->config->description)) {
             $this->description($this->config->description);
         }
 
-        if(isset($this->config->meta)){//decode meta//
+        if (isset($this->config->meta)) {//decode meta//
             $type=gettype($this->config->meta);
             if ($type=='string') {
                 $DIR=dirname(realpath($this->config_file));//get config folder
@@ -145,7 +168,9 @@ class Admin
 
     /**
      * Get/Set config
-     * @param  array  $config [description]
+     *
+     * @param array  $config [description]
+     *
      * @return [type]         [description]
      */
     public function config($config = [])
@@ -159,17 +184,20 @@ class Admin
 
     /**
      * Return detected language
+     *
      * @return [type] [description]
      */
     public function lang()
     {
-        return $this->lang;
+        return $this->_lang;
     }
 
 
     /**
      * Get/Set document title
+     *
      * @param  string $title [description]
+     *
      * @return [type]        [description]
      */
     public function title($title = '')
@@ -184,7 +212,9 @@ class Admin
 
     /**
      * Get/Set document description
+     *
      * @param  string $title [description]
+     *
      * @return [type]        [description]
      */
     public function description($str = '')
@@ -199,7 +229,11 @@ class Admin
 
 
 
-
+    /**
+     * Return the html blob
+     *
+     * @return string [description]
+     */
     public function __toString()
     {
         return $this->html();
@@ -207,24 +241,11 @@ class Admin
     }
 
 
-    /**
-     * return the admin html
-     * @return string html
-     */
-    /*
-    public function html()
-    {
-        $htm=$this->head();
-        $htm.=$this->body();
-        $htm.=$this->header();
-        $htm.=$this->leftside();
-        //$htm.=$this->scripts();//in head()
-        $htm.='<aside class="right-side">';
-        return $htm;
-    }
-    */
+
     /**
      * LTE3 Version 2019
+     *
+     * @return string [html]
      */
     public function html()
     {
@@ -241,7 +262,8 @@ class Admin
 
 
     /**
-     * Return navbar
+     * Return navbar (top navbar)
+     *
      * @return [type] [description]
      */
     public function navbar()
@@ -260,12 +282,12 @@ class Admin
         $htm.='</ul>';
 
         //<!-- SEARCH FORM -->
-        $htm.='<form class="form-inline ml-3" action="../search" method=post>';
+        $htm.='<form class="form-inline ml-3" action="../search/" method="get">';
         $htm.='<div class="input-group input-group-sm">';
             $htm.='<input class="form-control form-control-navbar" name=q type="search" placeholder="Search" aria-label="Search" autocomplete="off">';
-        $htm.='<div class="input-group-append">';
-            $htm.='<button class="btn btn-navbar" type="submit"><i class="fa fa-search"></i></button>';
-        $htm.='</div>';
+            $htm.='<div class="input-group-append">';
+                $htm.='<button class="btn btn-navbar" type="submit"><i class="fa fa-search"></i></button>';
+            $htm.='</div>';
         $htm.='</div>';
         $htm.='</form>';
 
@@ -302,17 +324,21 @@ class Admin
         $htm.='<aside class="main-sidebar sidebar-dark-primary elevation-4">';
 
         //<!-- Brand Logo -->
-        //$htm.='<a href="#" class="brand-link"><span class="brand-text font-weight-light">AL&CO</span></a>';
+        if (isset($this->config()->title)) {
+            $htm.='<a href="#" class="brand-link"><span class="brand-text font-weight-light">'.$this->config()->title.'</span></a>';
+        }
+
 
         //<!-- Sidebar -->
         $htm.='<div class="sidebar">'."\n";
 
             //<!-- Sidebar user panel (optional) -->
+            /*
             $htm.='<div class="user-panel mt-3 pb-3 mb-3 d-flex">';
                 $htm.='<div class="image"><img src="../dist/img/user2-128x128.jpg" class="img-circle elevation-2" alt="User Image"></div>';
                 $htm.='<div class="info"><a href="#" class="d-block">Jambon Bill</a></div>';
             $htm.='</div>';
-
+            */
 
 
         //<!-- Sidebar Menu -->
@@ -379,7 +405,9 @@ class Admin
 
     /**
      * Decode the menu object
-     * @param  [type] $json [description]
+     *
+     * @param [type] $json [description]
+     *
      * @return [type]       [description]
      */
     private function menuDecode($json)
@@ -388,13 +416,13 @@ class Admin
         if (!isset($this->config()->menu)) {
             //throw new \Exception("Error : $this->config->menu must be a object", 1);
             return '';
-        }else{
+        } else {
             $menu=$this->config()->menu;
         }
 
         if (!is_object($this->config->menu)) {
 
-            $DIR=dirname(realpath($this->config_file));//get config folder
+            $DIR=dirname(realpath($this->_config_file));//get config folder
 
             if ($this->config->menu&&is_file($DIR.'/'.$this->config->menu)) {
 
@@ -424,19 +452,44 @@ class Admin
      * Return menu for inspection/manipulation
      * @return [type] [description]
      */
-    public function menu(){
+    public function menu()
+    {
         return $this->config->menu;
     }
 
+
+
+
+
+
+
+
+    /**
+     * Define matching string for menu selection
+     *
+     * @param string $str [description]
+     *
+     * @return [type]      [description]
+     */
+    public function menuHighlight($str='')
+    {
+        $this->_menuMatch=$str;
+        return $this->_menuMatch;
+    }
+
+
     /**
      * Return left menu
+     *
      * @return string html
      */
     public function menuHTML($json = '')
     {
-
+        //echo '<pre>';print_r($_SERVER);exit;
         $this->menuDecode($json);
 
+
+        //exit($this->_menuMatch);
 
         //$htm='<ul class="sidebar-menu">';//old
         $htm='<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">';
@@ -473,13 +526,41 @@ class Admin
                 $htm.='<li class="nav-header">'.$o->header.'</li>';
 
             } else if (isset($o->sub)) {
-                //continue;
-                $htm.='<li class="nav-item has-treeview" '.$title.'>';
-                //if(!isset($o->url))$o->url='#';
+
+                $sub='';
+                $active='';
+                $open='';
+                foreach ($o->sub as $obj) {
+                    $active='';
+                    $sub.='<li class="nav-item">';
+
+                    if (isset($obj->url)) {
+                        if (strpos($obj->url, $this->_menuMatch)!==false) {
+                            $active='active';
+                            $open='menu-open';
+                        }
+                        $sub.='<a class="nav-link '.$active.'" href="'.$this->path.$obj->url.'">';
+                    }
+
+                    if (isset($obj->icon)) {
+                        $sub.="<i class='nav-icon ".$obj->icon."'></i> ";
+                    }
+
+                    $sub.='<p>'.$obj->text.'</p></a>';
+                    $sub.='</li>';
+                }
+
+                $htm.='<li class="nav-item has-treeview '.$open.'" '.$title.'>';
+
                 if (!isset($o->icon)) {
                     $o->icon='';
                 }
-                $htm.='<a href="'.@$o->url.'" class="nav-link">';
+
+                if ($open) {
+                    $active='active';
+                }
+
+                $htm.='<a href="'.@$o->url.'" class="nav-link '.$active.'">';
                 $htm.='<i class="nav-icon '.$o->icon.'"></i>';
                 //$htm.=' <span>'.$o->text.'</span>';
                 $htm.='<p>'.$o->text;
@@ -487,36 +568,37 @@ class Admin
                 $htm.='</p>';
                 $htm.='</a>';
                 $htm.='<ul class="nav nav-treeview">';
-                foreach ($o->sub as $obj) {
 
-                    $htm.='<li class="nav-item">';
+                //SUB HERE
+                $htm.=$sub;
 
-                    if (isset($obj->url)) {
-                        $htm.='<a class="nav-link" href="'.$this->path.$obj->url.'">';
-                    }
-
-                    if (isset($obj->icon)) {
-                        $htm.="<i class='nav-icon ".$obj->icon."'></i> ";
-                    }
-
-                    $htm.='<p>'.$obj->text.'</p></a>';
-                    $htm.='</li>';
-                }
                 $htm.='</ul>';
                 $htm.='</li>';
+
             } else {
-                $htm.='<li class="nav-item" '.$title.'>';
-                if (isset($o->url)) {
-                    $htm.='<a class="nav-link" href="'.$this->path.$o->url.'">';
+
+                //match active
+                $active='';
+                if (strpos($o->url, $this->_menuMatch)!==false) {
+                    $active='active';
                 }
+
+                $htm.='<li class="nav-item" '.$title.'>';
+
+                if (isset($o->url)) {
+                    $htm.='<a class="nav-link '.$active.'" href="'.$this->path.$o->url.'">';
+                }
+
                 if (isset($o->icon)) {
                     $htm.='<i class="nav-icon '.$o->icon.'"></i> ';
                 }
+
                 $htm.='<p>'.@$o->text.'</p>';
-                //$htm.='<small class="label pull-right bg-green">new</small>';//small
+
                 if (isset($o->url)) {
                     $htm.='</a>';
                 }
+
                 $htm.='</li>';
             }
         }
@@ -571,27 +653,65 @@ class Admin
     }
 
     // twitter methods //
+
+    /**
+     * Define twitter title
+     *
+     * @param string $title [description]
+     *
+     * @return [type]        [description]
+     */
     public function twitterTitle($title='Jambonbill LTETurbo')
     {
         $this->addMeta(['name'=>"twitter:title",   'content'=>$title]);
     }
 
+
+    /**
+     * Define twittercard type
+     *
+     * @param  string $type [description]
+     *
+     * @return [type]       [description]
+     */
     public function twitterCard($type='summary')
     {
         $this->addMeta(['name'=>"twitter:card",   'content'=>$type]);
     }
 
+
+    /**
+     * Define twitter site
+     *
+     * @param  string $str [description]
+     *
+     * @return [type]      [description]
+     */
     public function twitterSite($str='@jambonbill')
     {
         $this->addMeta(['name'=>"twitter:site",   'content'=>$str]);
     }
 
 
+    /**
+     * Set twitter description
+     *
+     * @param string $str [description]
+     *
+     * @return [type]      [description]
+     */
     public function twitterDescription($str='description')
     {
         $this->addMeta(['name'=>"twitter:description",   'content'=>$str]);
     }
 
+    /**
+     * Set twitter image
+     *
+     * @param string $url [description]
+     *
+     * @return [type]      [description]
+     */
     public function twitterImage($url='')
     {
         $this->addMeta(['name'=>"twitter:image",   'content'=>$url]);
@@ -601,36 +721,41 @@ class Admin
     /**
      * Add one meta record.
      * auto-replace duplicates
+     *
      * @param array $newmeta [description]
+     *
+     * @return bool      [description]
      */
     public function addMeta($newmeta=[])
     {
         //echo "addMeta()";print_r($newmeta);exit;
 
-        if(!isset($this->config->meta)){
+        if (!isset($this->config->meta)) {
             $this->config->meta=[];
         }
 
-        if(!is_array($this->config->meta)){
+        if (!is_array($this->config->meta)) {
             $this->config->meta=[];
         }
 
         $key=false;
 
-        if(isset($newmeta['name'])){
+        if (isset($newmeta['name'])) {
             $key=$newmeta['name'];
         }
 
-        if(isset($newmeta['property'])){
+        if (isset($newmeta['property'])) {
             $key=$newmeta['property'];
         }
 
         $meta=[];
         $replace=false;
-        foreach ($this->config->meta as $k=>$metar) {//Replace previous property-value, or name-value if any
-
-            foreach($metar as $name=>$value){
-                if($value==$key)$replace=$newmeta;
+        foreach ($this->config->meta as $k=>$metar) {
+            //Replace previous property-value, or name-value if any
+            foreach ($metar as $name=>$value) {
+                if ($value==$key) {
+                    $replace=$newmeta;
+                }
             }
 
             if ($replace) {
@@ -640,7 +765,7 @@ class Admin
             }
         }
 
-        if(!$replace){//we didnt replace one, so we must add it
+        if (!$replace) {//we didnt replace one, so we must add it
             $meta[]=$newmeta;
         }
 
@@ -650,8 +775,8 @@ class Admin
 
 
     /**
-     * head
-     * bring the headers, and initial assets
+     * Bring the headers, and initial assets
+     *
      * @return [type] [description]
      */
     public function head()
@@ -662,7 +787,7 @@ class Admin
         $htm.='<meta charset="UTF-8">'."\n";
 
         if (isset($this->config->title)) {
-            $htm.='<title>' . $this->config->title . '</title>'."\n";
+            $htm.='<title>' . strip_tags($this->config->title) . '</title>'."\n";
         }
 
         if (isset($this->config->apple_app_icon)) {
@@ -678,7 +803,7 @@ class Admin
 
         if (isset($this->config->meta)) {
 
-            if( is_array($this->config->meta)) {
+            if (is_array($this->config->meta)) {
                 //echo "<pre>";print_r($this->config->meta);exit;
                 foreach ($this->config->meta as $meta) {
                     $values=[];
@@ -707,8 +832,8 @@ class Admin
         }
 
         // extra head //
-        if ($this->headHtml) {
-            $htm.=$this->headHtml;
+        if ($this->_headHtml) {
+            $htm.=$this->_headHtml;
         }
 
         //Scripts goes here
@@ -722,6 +847,7 @@ class Admin
 
     /**
      * Get/Set extra html to <head> (apple links, tracking code, etc)
+     *
      * @return [type] [description]
      */
     public function headHtml($htm = '')
@@ -732,8 +858,8 @@ class Admin
 
 
     /**
-     * body
-     * bring the headers, and initial assets
+     * Bring the headers, and initial assets
+     *
      * @return [type] [description]
      */
     public function body()
@@ -777,8 +903,8 @@ class Admin
 
 
     /**
-     * header
-     * this is NOT the html header, but the ADMIN header (top bar)
+     * This is NOT the html header, but the ADMIN header (top bar)
+     *
      * @return [type] [description]
      */
     public function header()
@@ -804,155 +930,14 @@ class Admin
 
 
 
-
-    private $user=[];
-
-    public function user($USR = [])
-    {
-        $this->user=$USR;
-    }
-
-
     /**
-     * Top navigation thing
-     * @return [type] [description]
+     * The list of js scripts to be included
+     *
+     * @return html
      */
-    /*
-    private function topNav()
-    {
-
-        if (isset($this->config->homeurl)) {
-            $homeurl=$this->path.$this->config->homeurl;
-        } else {
-            $homeurl='#';
-        }
-
-        $htm='<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">';
-
-        if(isset($this->config()->title)){
-            $htm.='<a class="navbar-brand" href="'.$homeurl.'">'.$this->config()->title.'</a>';
-        }else{
-            $htm.='<a class="navbar-brand" href="'.$homeurl.'">LTETurbo</a>';
-        }
-
-          //<!--nav-link navbar-toggler sidebar-toggle-->
-        $htm.='<button class="nav-link navbar-toggler sidebar-toggle" data-toggle="offcanvas" style="display:inline">';
-        $htm.='    <span class="navbar-toggler-icon"></span>';
-        $htm.='</button>';
-
-
-        $htm.='<div class="collapse navbar-collapse" id="navbarsExampleDefault">';
-
-        $htm.='<ul class="navbar-nav mr-auto">';
-        $htm.='<li class="nav-item">';
-        if ($this->user) {
-            $htm.='<a class="nav-link disabled" href="#">'.$this->user['email'].'</a>';
-        }
-        $htm.='</li>';
-
-        $htm.='</ul>';
-
-        $htm.='<ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">';
-
-        $htm.='</ul>';
-
-        $htm.='</div>';
-        $htm.='</nav>';
-        return $htm;
-    }
-    */
-
-
-
-    /**
-     * Set top navbar html
-     * Usefull for user messages
-     * @param  string $htm [description]
-     * @return [type]      [description]
-     */
-    /*
-    public function navbarCustomMenu($htm = '')
-    {
-        if ($htm&&is_array($htm)) {
-            $htm=implode('', $htm);
-        }
-
-        if ($htm) {
-            $this->navbarCustomMenu=$htm;
-        }
-        return $this->navbarCustomMenu;
-    }
-    */
-
-
-    /**
-     * Get/Set the menu user panel (first thing to appear in the left menu)
-     * @param  string $htm [description]
-     * @return [type]      [description]
-     */
-    /*
-    public function userPanel($htm = '')
-    {
-
-        if ($htm&&is_array($htm)) {
-            $htm=implode('', $htm);
-        }
-
-        if ($htm) {
-            $this->userPanel=$htm;
-        }
-
-        return $this->userPanel;
-    }
-    */
-
-
-
-    /**
-     * left side (old)
-     */
-    public function leftside()
-    {
-
-        $htm='<div class="wrapper row-offcanvas row-offcanvas-left">';
-        //$htm.='<aside class="left-side sidebar-offcanvas">';//old
-        $htm.='<aside class="main-sidebar">';//new
-        // sidebar: style can be found in sidebar.less -->
-        $htm.='<section class="sidebar">';
-
-        // Sidebar user panel -->
-        $htm.=$this->userPanel();
-
-
-        // search field /
-        if (isset($this->config->menusearch) && $this->config->menusearch) {
-            $htm.='<div class="sidebar-form input-group">';
-            $htm.='<input type="text" id="q" name="q" class="form-control" placeholder="Search ...">';
-            $htm.='<span class="input-group-btn">';
-            $htm.='<button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>';
-            $htm.='</span>';
-            $htm.='</div>';
-        }
-
-        // sidebar menu: : style can be found in sidebar.less -->
-        //$htm.= $this->menu();
-        $htm.= $this->menu();
-
-        $htm.='</section>';
-        $htm.='</aside>';
-        return $htm;
-    }
-
-
-
-
-    /**
-    * @brief the list of js scripts to be included
-    * @returns html
-    */
     public function scripts()
     {
-        //echo "<li>scripts()<br />";
+
         if (!isset($this->config->js)) {
             return '';
         }
@@ -974,7 +959,9 @@ class Admin
 
     /**
      * Define footer. The footer is displayed only when "end()" is called
-     * @param  string $body [description]
+     *
+     * @param string $body [description]
+     *
      * @return [type]       [description]
      */
     public function footer()
@@ -999,8 +986,10 @@ class Admin
         */
     }
 
+
     /**
      * `Properly` finish the html document and end the script
+     *
      * @return [type] [description]
      */
     public function end()
