@@ -8,17 +8,18 @@ $admin->config()->menu=(object)[];//unset the global menu
 $admin->title("403");
 echo $admin->head();//
 ?>
+<div class="content-wrapper">
+    <section class="content">
 
-<section class="content">
+    <div class='row'>
+      <div class='col-12'>
 
-<div class='row'>
-  <div class='col-12'>
+        <h1 style="font-size:128px">403</h1>
+        <h1 style="font-size:64px">Forbiden <small></small></h1>
 
-    <h1 style="font-size:128px">403</h1>
-    <h1 style="font-size:64px">Forbiden <small></small></h1>
-
-  </div>
+      </div>
+    </div>
+    </section>
 </div>
-</section>
 <?php
 $admin->end();
