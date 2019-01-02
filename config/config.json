@@ -1,11 +1,10 @@
 {
 	"title":"LTETurbo3",
+	"title-mini":"BIL",
 	"description":"La petite description dans la prairie",
 	"canonical":"https://www.jambonbill.org",
 	"homeurl":"index.php",
 	"favicon":"dist/img/favicon.ico",
-
-	"menusearch":false,
 
 	"meta":[
 		{"property":"og:url",      "content":"https://www.jambonbill.org"},
@@ -46,9 +45,22 @@
 		"sidebar-collapse":false
 	},
 
+	"navbar":{
+		"search":true,
+		"links":[],
+		"items":[
+			{
+				"text":"",
+				"title":"Log out",
+				"icon":"fa fa-sign-out",
+				"url":"../login/logout.php"
+			}
+		]
+	},
+
 	"footer":{
-		"left":"Text on the left",
-		"right":"Right text"
+		"left":"Powered by LTETurbo",
+		"right":"Version 1.0.0"
 	},
 
 	"menu":"menu.json"
