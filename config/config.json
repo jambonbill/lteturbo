@@ -1,9 +1,10 @@
 {
-	"title":"Admin",
+	"title":"LTETurbo3",
 	"description":"La petite description dans la prairie",
 	"canonical":"https://www.jambonbill.org",
 	"homeurl":"index.php",
 	"favicon":"dist/img/favicon.ico",
+
 	"menusearch":false,
 
 	"meta":[
@@ -23,7 +24,7 @@
 
 	"jsbak":[
 		"dist/plugins/jQuery/jquery-3.2.1.min.js",
-	    
+
 	    "dist/plugins/jQueryUI/jquery-ui-1.10.3.min.js",
 	    "dist/plugins/popper.js/popper.min.js"
 	],
