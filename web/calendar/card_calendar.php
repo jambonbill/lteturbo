@@ -3,7 +3,7 @@
  * Card calendar
  */
 
-$htm='<div id=calendar>calendar</div>';
+$htm='<div id=calendar></div>';
 
 $card=new LTE\Card;
 $card->id('cardCalendar');
