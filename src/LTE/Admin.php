@@ -139,7 +139,7 @@ class Admin
             //find the correct path for assets
             $diff=count(explode("/", realpath('.')))-count(explode("/", realpath(__DIR__."/../../web")));
             if ($diff > 0) {
-                $this->path=str_repeat("../", $diff);
+                $this->_path=str_repeat("../", $diff);
             }
         }
 
@@ -555,7 +555,7 @@ class Admin
                             $active='active';
                             $open='menu-open';
                         }
-                        $sub.='<a class="nav-link '.$active.'" href="'.$this->path.$obj->url.'">';
+                        $sub.='<a class="nav-link '.$active.'" href="'.$this->_path.$obj->url.'">';
                     }
 
                     if (isset($obj->icon)) {
@@ -602,7 +602,7 @@ class Admin
                 $htm.='<li class="nav-item" '.$title.'>';
 
                 if (isset($o->url)) {
-                    $htm.='<a class="nav-link '.$active.'" href="'.$this->path.$o->url.'">';
+                    $htm.='<a class="nav-link '.$active.'" href="'.$this->_path.$o->url.'">';
                 }
 
                 if (isset($o->icon)) {
@@ -807,7 +807,7 @@ class Admin
         }
 
         if (isset($this->config->apple_app_icon)) {
-            $htm.= '<link rel="apple-touch-icon" href="' . $this->path . $this->config->apple_app_icon . '">';
+            $htm.= '<link rel="apple-touch-icon" href="' . $this->_path . $this->config->apple_app_icon . '">';
         }
 
         $htm.= "<meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>\n";
@@ -832,8 +832,8 @@ class Admin
 
         }
 
-        if (isset($this->config->favicon) && is_file($this->path.$this->config->favicon)) {
-            $htm.='<link id="favicon" rel="shortcut icon" href="'.$this->path.$this->config->favicon.'">'."\n";
+        if (isset($this->config->favicon) && is_file($this->_path.$this->config->favicon)) {
+            $htm.='<link id="favicon" rel="shortcut icon" href="'.$this->_path.$this->config->favicon.'">'."\n";
         }
 
         // Css
@@ -842,7 +842,7 @@ class Admin
                 if (preg_match("/^http/i", $v)) {
                     $htm.='<link href="'.$v.'" rel="stylesheet" type="text/css" />'."\n";
                 } else {
-                    $htm.='<link href="'.$this->path.$v.'" rel="stylesheet" type="text/css" />'."\n";
+                    $htm.='<link href="'.$this->_path.$v.'" rel="stylesheet" type="text/css" />'."\n";
                 }
             }
         }
@@ -932,7 +932,7 @@ class Admin
         }
 
         if (isset($this->config->homeurl)) {
-            $homeurl=$this->path.$this->config->homeurl;
+            $homeurl=$this->_path.$this->config->homeurl;
         } else {
             $homeurl='#';
         }
@@ -963,7 +963,7 @@ class Admin
             if (preg_match("/^http/", $js)) {
                 $htm.='<script src="' . $js . '" type="text/javascript"></script>'."\n";
             } else {
-                $htm.='<script src="' . $this->path . $js . '" type="text/javascript"></script>'."\n";
+                $htm.='<script src="' . $this->_path . $js . '" type="text/javascript"></script>'."\n";
             }
         }
         return $htm;
