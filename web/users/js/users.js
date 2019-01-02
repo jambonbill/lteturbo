@@ -31,7 +31,7 @@ $(function(){
 	function displayUsers(){
 
 	    console.info('displayUsers');
-		
+
 		let dat=users;
 	    let htm='<table class="table table-sm table-hover" style="cursor:pointer">';
 
@@ -72,7 +72,7 @@ $(function(){
 	    });
 	}
 
-	$('#btnNew').click(function(){
+	$('#btnNewUser').click(function(){
 
 		var email=prompt("Enter email address","email");
 		if(!email)return;
