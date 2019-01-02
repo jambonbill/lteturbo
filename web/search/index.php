@@ -9,7 +9,7 @@ session_start();
 require __DIR__."/../../vendor/autoload.php";
 
 $admin = new LTE\Admin(__DIR__."/../../config/config.json");
-
+//$admin->config()->navbar=null;
 echo $admin;
 ?>
 
@@ -54,4 +54,6 @@ echo $admin;
 <!-- ./wrapper -->
 
 <?php
+$admin->config()->footer->left="username@domain.com - sign out";
+//$admin->config()->footer->right="Sign out";
 $admin->end();
