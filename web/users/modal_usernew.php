@@ -9,21 +9,21 @@ $htm='<div class="row">';
 $htm.='<div class="col-12">';
 $htm.='<div class="form-group">';
 $htm.='<label>Email</label>';
-$htm.='<input type="email" class="form-control form-control-sm" placeholder="email" autocomplete="off">';
+$htm.='<input type="email" id=email class="form-control form-control-sm" placeholder="email" autocomplete="off">';
 $htm.='</div>';
 $htm.='</div>';
 
 $htm.='<div class="col-6">';
 $htm.='<div class="form-group">';
 $htm.='<label>First name</label>';
-$htm.='<input type="text" class="form-control form-control-sm" placeholder="First" autocomplete="off">';
+$htm.='<input type="text" id=first_name class="form-control form-control-sm" placeholder="First" autocomplete="off">';
 $htm.='</div>';
 $htm.='</div>';
 
 $htm.='<div class="col-6">';
 $htm.='<div class="form-group">';
 $htm.='<label>Last name</label>';
-$htm.='<input type="text" class="form-control form-control-sm" placeholder="Last name" autocomplete="off">';
+$htm.='<input type="text" id=last_name class="form-control form-control-sm" placeholder="Last name" autocomplete="off">';
 $htm.='</div>';
 $htm.='</div>';
 $htm.='</div>';
