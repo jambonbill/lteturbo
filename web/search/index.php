@@ -1,5 +1,8 @@
 <?php
-// jambonbill.org - LTE3
+/**
+ * Search page
+ */
+
 header('Content-Type: text/html; charset=utf-8');
 session_start();
 
@@ -18,7 +21,7 @@ echo $admin;
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Search</h1>
+            <h1><i class="fa fa-search"></i></h1>
           </div>
         </div>
       </div><!-- /.container-fluid -->
@@ -30,17 +33,17 @@ echo $admin;
       <div class="container-fluid">
 
         <div class="row">
-          <div class="col-12">
-              <?php
-              echo '<pre>';print_r($_POST);echo '</pre>';
-              echo '<pre>';print_r($_GET);echo '</pre>';
-              //require "card_tablefull.php";
-              ?>
-          </div>
+            <div class="col-md-12">
+                <?php
+                require "card_search.php";
+                ?>
+            </div>
+            <div class="col-md-12">
+                <?php
+                require "card_result.php";
+                ?>
+            </div>
         </div>
-
-        more at https://adminlte.io/themes/dev/AdminLTE/pages/tables/simple.html#
-
 
       </div>
     </section>
