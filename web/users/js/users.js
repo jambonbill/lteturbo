@@ -73,26 +73,8 @@ $(function(){
 	}
 
 	$('#btnNewUser').click(function(){
-
-		var email=prompt("Enter email address","email");
-		if(!email)return;
-
-		let p={
-		    do:'userCreate',
-		    email:email
-		};
-
-		$('.overlay').show();
-		$.post('ctrl.php', p, function(json){
-			$('.overlay').hide();
-			console.log(json);
-		}).fail(function(e){
-			alert(e.responseText);
-			console.error(e.responseText);
-		}).always(function(){
-			$('.overlay').hide();
-		});
-
+		$('#modalUserNew').modal('show');
+		$('#email').focus();
 	});
 
 	$('table').tablesorter();
