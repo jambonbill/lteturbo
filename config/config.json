@@ -21,13 +21,6 @@
     	"dist/css/adminlte.css"
 	],
 
-	"jsbak":[
-		"dist/plugins/jQuery/jquery-3.2.1.min.js",
-
-	    "dist/plugins/jQueryUI/jquery-ui-1.10.3.min.js",
-	    "dist/plugins/popper.js/popper.min.js"
-	],
-
 	"js":[
 	    "https://code.jquery.com/jquery-3.2.1.min.js",
     	"https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js",
