@@ -1,14 +1,27 @@
 <?php
 /**
  * Php class for quick integration of AdminLTE2
- * @author Jambonbill <jambonbill@gmail.com>
+ * PHP version 7
+ *
+ * @category LTE
+ * @package  LTEturbo
+ * @author   jambonbill <jambonbill@gmail.com>
+ * @license  https://github.com/jambonbill  Jambon License 1.01
+ * @link     https://github.com/jambonbill
  */
 
 namespace LTE;
 
 /**
-* @brief Class providing adminlte2 skeleton
-*/
+ * Class providing adminlte2 skeleton
+ * PHP version 7
+ *
+ * @category LTE
+ * @package  LTEturbo
+ * @author   jambonbill <jambonbill@gmail.com>
+ * @license  https://github.com/jambonbill  Jambon License 1.01
+ * @link     https://github.com/jambonbill
+ */
 class Admin
 {
 
@@ -45,39 +58,36 @@ class Admin
 
 
     /**
-     * DEBUG mode (spit vars on screen)
-     *
-     * @var boolean
-     */
-    //public $DEBUG=false;
-
-
-    /**
      * AdminLte Constructor
-     * @param boolean $private [description]
+     *
+     * @param string $configfile [description]
      */
     public function __construct($configfile='')
     {
         // get the config file. it must be located next to the class
 
         if ($configfile) {
+
             if (is_file($configfile)) {
                 $this->_config_file=$configfile;
             } else {
-                throw new \Exception("Error : config file '$configfile' not found", 1);
+                throw new Exception("Error : file '$configfile' not found", 1);
             }
+
         } elseif (isset($_SESSION['lteconfig'])) {
             $this->config_file=$_SESSION['lteconfig'];
         }
 
         if ($this->_config_file) {
             $this->configLoad($this->_config_file);
+        } else {
+            // what should we do?
         }
 
         $dirname=pathinfo($_SERVER['SCRIPT_FILENAME'])['dirname'];
-        if (preg_match("/\b\/([a-z-0-9]+)$/i", $dirname, $o)) {
+
+        if (preg_match("/\b\/([a-z-0-9_-]+)$/i", $dirname, $o)) {
             $this->_menuMatch=$o[1];
-            //exit($this->_menuMatch);
         }
 
     }
@@ -348,66 +358,6 @@ class Admin
         //<!-- Sidebar -->
         $htm.='<div class="sidebar">'."\n";
 
-            //<!-- Sidebar user panel (optional) -->
-            /*
-            $htm.='<div class="user-panel mt-3 pb-3 mb-3 d-flex">';
-                $htm.='<div class="image"><img src="../dist/img/user2-128x128.jpg" class="img-circle elevation-2" alt="User Image"></div>';
-                $htm.='<div class="info"><a href="#" class="d-block">Jambon Bill</a></div>';
-            $htm.='</div>';
-            */
-
-
-        //<!-- Sidebar Menu -->
-        /*
-        $htm.='<nav class="mt-2">';
-
-        $htm.='<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">';
-          //<!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
-          $htm.='<li class="nav-item has-treeview">';
-
-            $htm.='<a href="#" class="nav-link">';
-              $htm.='<i class="nav-icon fa fa-users"></i>';
-              $htm.='<p>Users <i class="right fa fa-angle-left"></i></p>';
-            $htm.='</a>';
-
-            $htm.='<ul class="nav nav-treeview">';
-              $htm.='<li class="nav-item">';
-                $htm.='<a href="../index.html" class="nav-link"><i class="fa fa-circle-o nav-icon"></i><p>Dashboard v1</p></a>';
-              $htm.='</li>';
-              $htm.='<li class="nav-item">';
-                $htm.='<a href="../index2.html" class="nav-link"><i class="fa fa-circle-o nav-icon"></i><p>Dashboard v2</p></a>';
-              $htm.='</li>';
-
-            $htm.='</ul>';
-
-          $htm.='</li>';
-
-          $htm.='<li class="nav-item">';
-            $htm.='<a href="../infobox" class="nav-link">';
-              $htm.='<i class="nav-icon fa fa-th"></i>';
-              $htm.='<p>Infobox <span class="right badge badge-danger">New</span></p>';
-            $htm.='</a>';
-          $htm.='</li>';
-
-          $htm.='<li class="nav-item">';
-            $htm.='<a href="widgets.html" class="nav-link">';
-              $htm.='<i class="nav-icon fa fa-th"></i>';
-              $htm.='<p>AdminLTE3</p>';
-            $htm.='</a>';
-          $htm.='</li>';
-
-            // LOG OUT //
-          $htm.='<li class="nav-item">';
-            $htm.='<a href="../login/logout.php" class="nav-link">';
-              $htm.='<i class="nav-icon fa fa-sign-out"></i>';
-              $htm.='<p>Logout</p>';
-            $htm.='</a>';
-          $htm.='</li>';
-
-        $htm.='</ul>';
-        $htm.='</nav>';
-        */
-
         $htm.='<nav class="mt-2">';
         $htm.=$this->menuHTML()."\n";
         $htm.='</nav>';
@@ -551,10 +501,12 @@ class Admin
                     $sub.='<li class="nav-item">';
 
                     if (isset($obj->url)) {
-                        if (strpos($obj->url, $this->_menuMatch)!==false) {
+
+                        if ($this->_menuMatch&&strpos($obj->url, $this->_menuMatch)!==false) {
                             $active='active';
                             $open='menu-open';
                         }
+
                         $sub.='<a class="nav-link '.$active.'" href="'.$this->_path.$obj->url.'">';
                     }
 
@@ -585,17 +537,16 @@ class Admin
                 $htm.='</a>';
                 $htm.='<ul class="nav nav-treeview">';
 
-                //SUB HERE
-                $htm.=$sub;
+                $htm.=$sub;//SUB HERE
 
                 $htm.='</ul>';
                 $htm.='</li>';
 
             } else {
 
-                //match active
+                // match active
                 $active='';
-                if (strpos($o->url, $this->_menuMatch)!==false) {
+                if ($this->_menuMatch&&strpos($o->url, $this->_menuMatch)!==false) {
                     $active='active';
                 }
 
@@ -638,37 +589,86 @@ class Admin
 
 
     // opengraph methods //
+
+    /**
+     * Set opengraph URL
+     *
+     * @param string $str [description]
+     *
+     * @return [type]      [description]
+     */
     public function ogUrl($str='')
     {
         $this->addMeta(['property'=>'og:url',      'content'=>$str]);
     }
 
+
+    /**
+     * Set opengraph Type
+     *
+     * @param string $str [description]
+     *
+     * @return [type]      [description]
+     */
     public function ogType($str='')
     {
         $this->addMeta(['property'=>"og:type",     'content'=>$str]);
     }
 
+
+    /**
+     * Set opengraph Title
+     *
+     * @param string $str [description]
+     *
+     * @return [type]      [description]
+     */
     public function ogTitle($str='')
     {
         $this->addMeta(['property'=>"og:title",    'content'=>$str]);
     }
 
+
+    /**
+     * Set opengraph Description
+     *
+     * @param string $str [description]
+     *
+     * @return [type]      [description]
+     */
     public function ogDescription($str='')
     {
         $this->addMeta(['property'=>"og:description", 'content'=>$str]);
     }
 
+
+    /**
+     * Set opengraph Image URL
+     *
+     * @param string $str [description]
+     *
+     * @return [type]      [description]
+     */
     public function ogImage($str='')
     {
         $this->addMeta(['property'=>"og:image",    'content'=>$str]);
     }
 
+
+
+    /**
+     * Set opengraph Locale
+     *
+     * @param string $str [description]
+     *
+     * @return [type]      [description]
+     */
     public function ogLocale($str='')
     {
         $this->addMeta(['property'=>"og:locale",   'content'=>$str]);
     }
 
-    // twitter methods //
+
 
     /**
      * Define twitter title
@@ -1001,19 +1001,10 @@ class Admin
             $htm.=$this->config()->footer->left;
         }
 
-
-
-
         $htm.='</footer>';
 
         return $htm;
 
-        /*
-        if ($htm) {
-            $this->footer=$htm;
-        }
-        return $this->footer;
-        */
     }
 
 
