@@ -1,10 +1,27 @@
 <?php
+/**
+ * Php class for quick integration of AdminLTE2
+ * PHP version 7
+ *
+ * @category LTE
+ * @package  LTEturbo
+ * @author   jambonbill <jambonbill@gmail.com>
+ * @license  https://github.com/jambonbill  Jambon License 1.01
+ * @link     https://github.com/jambonbill
+ */
 
 namespace LTE;
 
 /**
  * AdminLte Card
  * http://almsaeedstudio.com/AdminLTE/pages/widgets.html
+ * PHP version 7
+ *
+ * @category LTE
+ * @package  LTEturbo
+ * @author   jambonbill <jambonbill@gmail.com>
+ * @license  https://github.com/jambonbill  Jambon License 1.01
+ * @link     https://github.com/jambonbill
  */
 class Card
 {
@@ -28,6 +45,7 @@ class Card
     private $removable=false;
     private $loading=false;
 
+
     public function __construct()
     {
         $this->id = md5(rand(0, time()));
@@ -35,7 +53,9 @@ class Card
 
     /**
      * Box types : default|primary|danger|success|warning
+     *
      * @param  string $type [description]
+     *
      * @return [type]       [description]
      */
     public function type($type = '')
@@ -48,7 +68,9 @@ class Card
 
     /**
      * The card title
+     *
      * @param  string $title [description]
+     *
      * @return [type]        [description]
      */
     public function title($title = '')
@@ -71,7 +93,9 @@ class Card
 
     /**
      * The 'small' title
+     *
      * @param  string $title [description]
+     *
      * @return [type]        [description]
      */
     public function small($str = '')
@@ -85,7 +109,9 @@ class Card
     /**
      * Card icon class. Use font awesome names, ex: 'fa fa-user'
      * You can pass multiple icons in a array, ex: ['fa fa-user','fa fa-file']
+     *
      * @param  string $classname [description]
+     *
      * @return [type]            [description]
      */
     public function icon($classname = '')
@@ -96,9 +122,12 @@ class Card
         return $this->icon;
     }
 
+
     /**
      * A target link on the icon
+     *
      * @param  string $url [description]
+     *
      * @return [type]      [description]
      */
     public function iconUrl($url = '')
@@ -111,7 +140,9 @@ class Card
 
     /**
      * Color Used for the 'tiles'
+     *
      * @param  string $color [description]
+     *
      * @return [type]        [description]
      */
     public function color($color = '')
@@ -124,7 +155,9 @@ class Card
 
     /**
      * The card id (html property)
+     *
      * @param  string $id [description]
+     *
      * @return [type]     [description]
      */
     public function id($id = '')
@@ -136,8 +169,10 @@ class Card
     }
 
     /**
-     * Box html body
+     * Card html body
+     *
      * @param  string $body [description]
+     *
      * @return [type]       [description]
      */
     public function body($body = '')
@@ -154,14 +189,16 @@ class Card
     /**
      * Set the body padding (add the class 'no-padding to the box boddy')
      * Padding is set (true) by default
+     *
      * @param  boolean $padding [description]
+     *
      * @return [type]           [description]
      */
     public function p0($padding = true)
     {
         if ($padding) {
             $this->p0=true;
-        }else{
+        } else {
             $this->p0=false;
         }
         return $this->p0;
@@ -170,7 +207,9 @@ class Card
 
     /**
      * Card html footer
+     *
      * @param  string $footer [description]
+     *
      * @return string
      */
     public function footer($footer = '')
@@ -185,7 +224,9 @@ class Card
     /**
      * When set to true, the box show a overlay and a loading image
      * You can hide it with $('#boxid .overlay, #boxid.loading-img').hide()
+     *
      * @param  boolean $loading [description]
+     *
      * @return boolean
      */
     public function loading($loading = false)
@@ -247,8 +288,10 @@ class Card
         return $this->style;
     }
 
+
     /**
      * Return the LTE Box as html
+     *
      * @return [type] [description]
      */
     public function html($body = '', $footer = '')
