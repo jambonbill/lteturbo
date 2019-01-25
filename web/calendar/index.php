@@ -7,9 +7,9 @@ require __DIR__."/../../vendor/autoload.php";
 
 $admin = new LTE\Admin(__DIR__."/../../config/config.json");
 
-if(true){
+if (true) {
   echo $admin;
-}else{
+} else {
   echo $admin->head();
   echo '<body class="hold-transition sidebar-mini">';
   echo '<div class="wrapper">';
