@@ -14,12 +14,13 @@ namespace LTE;
 
 class Modal
 {
-    private $id ='myModal';
-    private $type ='default';
-    private $icon ='';
-    private $title='';
-    private $body ='';
-    private $footer ='<button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Cancel</button>';
+    private $_id ='myModal';
+    private $_type ='default';
+    private $_size ='';
+    private $_icon ='';
+    private $_title='';
+    private $_body ='';
+    private $_footer ='<button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Cancel</button>';
 
     public function __construct($title = '', $body = '', $footer = '')
     {
@@ -34,69 +35,143 @@ class Modal
         }
     }
 
+
+    /**
+     * Define modal id
+     *
+     * @param string $str [description]
+     *
+     * @return [type]      [description]
+     */
     public function id($str = '')
     {
         if ($str) {
-            $this->id=$str;
+            $this->_id=$str;
         }
-        return $this->id;
+        return $this->_id;
     }
 
+    /**
+     * Define modal type
+     *
+     * @param string $str [description]
+     *
+     * @return [type]      [description]
+     */
     public function type($str = '')
     {
         if ($str) {
-            $this->type=$str;
+            $this->_type=$str;
         }
-        return $this->type;
+        return $this->_type;
     }
 
+
+    /**
+     * Define model size (sm|md|lg)
+     *
+     * @param string $str [description]
+     *
+     * @return [type]      [description]
+     */
+    public function size($str='')
+    {
+        if ($str) {
+            $this->_size=$str;
+        }
+        return $this->_size;
+
+    }
+
+    /**
+     * Set modal title
+     *
+     * @param string $str [description]
+     *
+     * @return [type]      [description]
+     */
     public function title($str = '')
     {
         if ($str) {
-            $this->title=$str;
+            $this->_title=$str;
         }
-        return $this->title;
+        return $this->_title;
     }
 
+
+    /**
+     * Set modal body
+     *
+     * @param string $str [description]
+     *
+     * @return [type]      [description]
+     */
     public function body($str = '')
     {
         if ($str) {
-            $this->body=$str;
+            $this->_body=$str;
         }
-        return $this->body;
+        return $this->_body;
     }
 
+
+    /**
+     * Set modal footer
+     *
+     * @param string $str [description]
+     *
+     * @return [type]      [description]
+     */
     public function footer($str = '')
     {
         if ($str) {
-            $this->footer=$str;
+            $this->_footer=$str;
         }
-        return $this->footer;
+        return $this->_footer;
     }
 
+    /**
+     * [icon description]
+     *
+     * @param string $str [description]
+     *
+     * @return [type]      [description]
+     */
     public function icon($str = '')
     {
         if ($str) {
-            $this->icon=$str;
+            $this->_icon=$str;
         }
-        return $this->icon;
+        return $this->_icon;
     }
 
+    /**
+     * [html description]
+     *
+     * @return [type] [description]
+     */
     public function html()
     {
 
-        $htm='<div class="modal modal-'.$this->type().'" id="'.$this->id.'">';
-        $htm.='<div class="modal-dialog">';
+        $htm='<div class="modal modal-'.$this->type().'" id="'.$this->_id.'">';
+
+        if ($this->_size) {
+            $htm.='<div class="modal-dialog modal-'.$this->_size.'">';
+        } else {
+            $htm.='<div class="modal-dialog">';
+        }
+
+
         $htm.='<div class="modal-content">';
 
         $htm.='<div class="modal-header">';
 
         $htm.='<h4 class="modal-title">';
-        
-        if ($this->icon) {
+
+        if ($this->_icon) {
             $htm.='<i class="'.$this->icon().'"></i> ';
         }
-        
+
         $htm.=$this->title().'</h4>';
 
         $htm.='<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>';
@@ -123,6 +198,12 @@ class Modal
         return $htm;
     }
 
+
+    /**
+     * [__toString description]
+     *
+     * @return string [description]
+     */
     public function __toString()
     {
         return $this->html();
