@@ -834,6 +834,9 @@ class Admin
 
         if (isset($this->config->favicon) && is_file($this->_path.$this->config->favicon)) {
             $htm.='<link id="favicon" rel="shortcut icon" href="'.$this->_path.$this->config->favicon.'">'."\n";
+        }else{
+            //define 'no favicon'
+            $htm.='<link rel="shortcut icon" href="#" />';
         }
 
         // Css
