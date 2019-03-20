@@ -1,6 +1,6 @@
 {
 	"title":"LTETurbo3",
-	"title-mini":"BIL",
+	"title-mini":"LTE3",
 	"description":"La petite description dans la prairie",
 	"canonical":"https://www.jambonbill.org",
 	"homeurl":"index.php",
@@ -31,19 +31,17 @@
     	"dist/js/adminlte.js"
 	],
 
-	"layout":{
-		"skin":"skin-black",
-		"fixed":false,
-		"layout-boxed":false,
-		"sidebar-collapse":false
-	},
-
 	"navbar":{
 		"search":true,
 		"links":[],
 		"items":[
 			{
-				"text":"",
+				"text":"{email}",
+				"title":"User",
+				"url":"#"
+			},
+			{
+				"text":"Log-out",
 				"title":"Log out",
 				"icon":"fa fa-sign-out",
 				"url":"../login/logout.php"
