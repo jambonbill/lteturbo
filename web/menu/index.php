@@ -6,6 +6,17 @@ session_start();
 require __DIR__."/../../vendor/autoload.php";
 
 $admin = new LTE\Admin(__DIR__."/../../config/config.json");
+
+$admin->keyword('email','testtoto@waandoo.fr');
+$admin->keyword('username','Brandon glasburn');
+//exit($admin->keyValue('email'));
+//$nb=$admin->navbar();
+//print_r($nb->items[0]);exit;
+//$nb->items[0]->text="youaou@waou.de";
+//print_r($nb);exit;
+//$x = (object)[];
+//$x->items=[];
+//$admin->navbar($nb);
 echo $admin;
 ?>
 
@@ -29,9 +40,14 @@ echo $admin;
       <div class="container-fluid">
 
         <div class="row">
-          <div class="col-12">
+          <div class="col-6">
               <?php
               require "card_menu.php";
+              ?>
+          </div>
+          <div class="col-6">
+              <?php
+              require "box_navbar.php";
               ?>
           </div>
         </div>
@@ -41,6 +57,10 @@ echo $admin;
 </div>
 
 <!-- ./wrapper -->
-
+<script type="text/javascript">
+  $(function(){
+    $('.overlay').hide();
+  });
+</script>
 <?php
 $admin->end();

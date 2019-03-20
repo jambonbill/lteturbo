@@ -1,8 +1,6 @@
 <?php
 
-echo '<pre>';print_r($admin->menu());echo '</pre>';
-
-$htm='please wait';
+$htm='<pre>'.print_r($admin->menu(),1).'</pre>';
 
 $card=new LTE\Card;
 $card->id('cardMenu');
