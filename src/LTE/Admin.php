@@ -56,6 +56,43 @@ class Admin
 
     //private $userPanel='';//html
 
+    
+    //private $keywords=[];//a list of keywords
+    /**
+     * Set a keyword
+     * @param  string $key   [description]
+     * @param  string $value [description]
+     * @return [type]        [description]
+     */
+    /*
+    public function keyword($key='',$value='')
+    {
+        $this->keywords[$key]=$value;
+    }
+    */
+   
+    /**
+     * Get a value from _SESSION[key]
+     * key should look as : '{key}'
+     * @param  string $key [description]
+     * @return [type]      [description]
+     */
+    public function keyValue($key='')
+    {   
+          
+        if (isset($_SESSION[$key])) {
+            return $_SESSION[$key];
+        }
+        
+        /*
+        if(isset($this->keywords[$key])){
+            return $this->keywords[$key];
+        }
+        */
+        return false;
+    }
+
+
 
     /**
      * AdminLte Constructor
@@ -261,20 +298,34 @@ class Admin
         $htm=$this->head();
         $htm.=$this->body();
         //$htm.=$this->header3();//(navbar)
-        $htm.=$this->navbar();//(navbar)
-        $htm.=$this->sidebar();//left menu
+        $htm.=$this->_navbar();//(navbar)
+        $htm.=$this->_sidebar();//left menu
 
         //$htm.='<aside class="right-side">';
         return $htm;
     }
 
 
+    
     /**
-     * Return navbar (top navbar)
+     * Get/Set navbar
+     * @param  [type] $navbar [description]
+     * @return [type]         [description]
+     */
+    public function navbar($nbo='')
+    {
+        if($nbo){
+            $this->config->navbar=$nbo;
+        }
+        return $this->config->navbar;
+    }
+
+    /**
+     * Return navbar html (top navbar)
      *
      * @return [type] [description]
      */
-    public function navbar()
+    private function _navbar()
     {
 
         if (!isset($this->config->navbar)) {
@@ -312,21 +363,55 @@ class Admin
         //<!-- Right navbar links -->
         $htm.='<ul class="navbar-nav ml-auto">';
 
+        $items=[];
+        if(isset($this->config->navbar->items)){
+            $items=$this->config->navbar->items;
+        }
+
+        foreach($items as $item){
+            //print_r($item);exit;
+            $title='';
+            if($item->title)$title=$item->title;
+            $htm.='<li class="nav-item" title="'.$title.'">';
+                $htm.='<a class="nav-link" href="'.$item->url.'">';
+                if (isset($item->icon)) {
+                    $htm.='<i class="'.$item->icon.'"></i> ';
+                }
+                $htm.=htmlentities($item->text);
+                $htm.='</a>';
+            $htm.='</li>';
+        }
+        
         /*
         //<!-- Control sidebar -->
         $htm.='<li class="nav-item">';
         $htm.='<a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#"><i class="fa fa-th-large"></i></a>';
         $htm.='</li>';
         */
-
+        /*
+        $htm.='<li class="nav-item" title="User">';
+        $htm.='<a class="nav-link" href="#">email@domain.com</a>';
+        $htm.='</li>';
+        */
+        /*
         $htm.='<li class="nav-item" title="Sign out">';
         $htm.='<a class="nav-link" href="#"><i class="fa fa-sign-out"></i> Sign out</a>';
         $htm.='</li>';
-
+        */
+       
         $htm.='</ul>';
 
         $htm.='</nav>';
         $htm.="\n";
+
+        // replace keys
+        preg_match_all("/{[a-z]+}/", $htm, $o);
+        foreach($o[0] as $key){
+            //replace those keys
+            if($val=$this->keyValue($key)){
+                $htm=str_replace($key, htmlentities($val), $htm);
+            }
+        }
 
         return $htm;
     }
@@ -336,7 +421,7 @@ class Admin
      * LTE3 Sidebar (left menu)
      * @return [type] [description]
      */
-    public function sidebar()
+    private function _sidebar()
     {
         $htm="<!-- Main Sidebar Container -->\n";
         $htm.='<aside class="main-sidebar sidebar-dark-primary elevation-4">';
@@ -353,8 +438,6 @@ class Admin
             $htm.='</a>';
         }
 
-
-
         //<!-- Sidebar -->
         $htm.='<div class="sidebar">'."\n";
 
@@ -365,6 +448,16 @@ class Admin
         $htm.='</div>'."\n";
 
         $htm.='</aside>'."\n";
+        
+        // replace keys
+        preg_match_all("/{[a-z]+}/", $htm, $o);
+        foreach($o[0] as $key){
+            //try to replace those keys
+            if($val=$this->keyValue($key)){
+                $htm=str_replace($key, htmlentities($val), $htm);
+            }
+        }
+
         return $htm;
     }
 
@@ -829,7 +922,6 @@ class Admin
                     $htm.="<meta ".implode(' ', $values).">\n";
                 }
             }
-
         }
 
         if (isset($this->config->favicon) && is_file($this->_path.$this->config->favicon)) {
