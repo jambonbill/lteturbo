@@ -591,7 +591,7 @@ class Admin
                 $open='';
                 foreach ($o->sub as $obj) {
                     $active='';
-                    $sub.='<li class="nav-item">';
+                    $sub.='<li class="nav-item" style="padding-left:16px">';
 
                     if (isset($obj->url)) {
 
@@ -607,7 +607,18 @@ class Admin
                         $sub.="<i class='nav-icon ".$obj->icon."'></i> ";
                     }
 
-                    $sub.='<p>'.$obj->text.'</p></a>';
+                    $sub.='<p>'.$obj->text;
+                    // Badge
+                    if (isset($o->badge)&&$o->badge->text) {// Badge
+                        $style='info';
+                        if ($o->badge->style) {
+                            $style=$o->badge->style;
+                        }
+                        $sub.='<span class="right badge badge-'.$style.'">'.$o->badge->text.'</span>';
+                    }
+
+                    $sub.='</p></a>';
+                    
                     $sub.='</li>';
                 }
 
@@ -653,7 +664,15 @@ class Admin
                     $htm.='<i class="nav-icon '.$o->icon.'"></i> ';
                 }
 
-                $htm.='<p>'.@$o->text.'</p>';
+                $htm.='<p>'.@$o->text;
+                
+                if (isset($o->badge)&&$o->badge->text) {// Badge
+                    $style='info';
+                    if($o->badge->style)$style=$o->badge->style;
+                    $htm.='<span class="right badge badge-'.$style.'">'.htmlentities($o->badge->text).'</span>';
+                }
+                
+                $htm.='</p>';
 
                 if (isset($o->url)) {
                     $htm.='</a>';
