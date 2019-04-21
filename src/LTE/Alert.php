@@ -12,9 +12,8 @@ class Alert
     private $id='';
     private $type='danger';
     private $title='Alert';
-    private $body='Lorem ipsum dolor sit amet, consectetur adipiscing elit';
-    private $icon='fa fa-ban';
-    
+    private $body='';
+    private $icon='';    
     
     public function __construct($type = '', $title = '', $body = '')
     {
