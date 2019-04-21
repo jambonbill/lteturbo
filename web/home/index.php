@@ -36,6 +36,7 @@ echo $admin;
                 <?php
 
                 $C=new LTE\Callout("warning", "Callout", "This is a new LTE\Callout");
+                $C->icon('fa fa-warning');
                 echo $C;
 
                 $A=new LTE\Alert("info", "Alert", "I'm a new LTE\Alert and i can be removed");
@@ -61,6 +62,20 @@ echo $admin;
                 $box->collapsable(1);
                 echo $box;
 
+
+                $box=new LTE\Card;
+                $box->title("Collapsable");
+                //$box->tools($tools);
+                $box->body('collpasable');
+                $box->collapsable(1);
+                echo $box;
+
+                $box=new LTE\Card;
+                $box->title("Collapsed");
+                //$box->tools($tools);
+                $box->body('collapsed ?');
+                $box->collapsed(1);
+                echo $box;
                 //echo '<pre>';print_r($_SESSION);echo '</pre>';
                 ?>
             </div>
