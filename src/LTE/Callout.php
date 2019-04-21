@@ -28,6 +28,11 @@ class Callout
     private $_type ='default';
 
     /**
+     * Callout Icon
+     */
+    private $_icon='';
+
+    /**
      * Callout Title
      */
     private $_title='title';
@@ -65,6 +70,22 @@ class Callout
             $this->_type=$str;
         }
         return $this->_type;
+    }
+
+
+    /**
+     * Set icon
+     *
+     * @param string $str [description]
+     *
+     * @return string      [description]
+     */
+    public function icon($str)
+    {
+        if ($str) {
+            $this->_icon=$str;
+        }
+        return $this->_icon;
     }
 
 
@@ -107,7 +128,14 @@ class Callout
     public function html()
     {
         $htm='<div class="callout callout-'.$this->_type.'">';
-        $htm.='<h4>'.$this->_title.'</h4>';
+        $htm.='<h4>';
+        
+        if($this->_icon){
+            $htm.='<i class="'.$this->_icon.'"></i> ';
+        }       
+        
+        $htm.=$this->_title;
+        $htm.='</h4>';
 
         if ($this->_body) {
             $htm.='<p>'.$this->_body.'</p>';
