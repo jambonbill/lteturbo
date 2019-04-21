@@ -314,11 +314,11 @@ class Card
         $class=[];
         $class[]='card';
         $class[]='card-'.$this->type();
-        /*
+        
         if ($this->collapsed) {
-            $class[]='collapsed-box';
+            $class[]='collapsed-card';
         }
-        */
+        
 
         if ($this->addClass()) {
             $class[]=$this->addClass();
@@ -360,11 +360,7 @@ class Card
 
             if ($this->collapsable()) {
 
-                if ($this->collapsed()) {
-                    $class="fa fa-plus";
-                } else {
-                    $class="fa fa-minus";
-                }
+                $class="fa fa-minus";
 
                 $htm.='<button class="btn btn-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse"><i class="'.$class.'"></i></button>';
             }
