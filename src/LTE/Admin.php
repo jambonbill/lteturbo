@@ -25,6 +25,8 @@ namespace LTE;
 class Admin
 {
 
+    private static $instance;//make sure we have only one instance
+    
     /**
      * Static path to assets
      */
@@ -126,6 +128,12 @@ class Admin
         if (preg_match("/\b\/([a-z-0-9_-]+)$/i", $dirname, $o)) {
             $this->_menuMatch=$o[1];
         }
+
+        if(self::$instance){
+            throw new \Exception("Admin instance already initialised", 1);          
+        }
+        
+        self::$instance = $this; // initialise the instance on load
 
     }
 
