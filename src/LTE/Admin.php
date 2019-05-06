@@ -55,7 +55,6 @@ class Admin
      * The string to match against the menu, to highlight menu item
      */
     private $_menuMatch='';
-
     //private $userPanel='';//html
 
     
@@ -66,12 +65,7 @@ class Admin
      * @param  string $value [description]
      * @return [type]        [description]
      */
-    /*
-    public function keyword($key='',$value='')
-    {
-        $this->keywords[$key]=$value;
-    }
-    */
+    
    
     /**
      * Get a value from _SESSION[key]
@@ -85,12 +79,6 @@ class Admin
         if (isset($_SESSION[$key])) {
             return $_SESSION[$key];
         }
-        
-        /*
-        if(isset($this->keywords[$key])){
-            return $this->keywords[$key];
-        }
-        */
         return false;
     }
 
@@ -349,8 +337,31 @@ class Admin
         $htm.='</li>';
 
         // Links //
+        $links=[];
+        
+        if (isset($this->config->navbar->links)) {
+            $links=$this->config->navbar->links;  
+        }        
+        
+        foreach($links as $link) {
+            
+            $url='#';
+            
+            if (isset($link->url)) {
+              $url='../'.$link->url;
+            }            
 
-        $htm.='<li class="nav-item d-none d-sm-inline-block"><a href="../home" class="nav-link">Home</a></li>';
+            $htm.='<li class="nav-item d-none d-sm-inline-block">';
+            $htm.='<a href="'.$url.'" class="nav-link">';
+            
+            if (isset($link->icon)) {
+                $htm.='<i class="'.$link->icon.'"></i> ';
+            }                       
+            
+            $htm.=$link->text;
+            $htm.='</a></li>';
+        }
+        
         //$htm.='<li class="nav-item d-none d-sm-inline-block"><a href="../calendar" class="nav-link">Calendar</a></li>';
 
 
