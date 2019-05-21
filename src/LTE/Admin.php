@@ -26,7 +26,7 @@ class Admin
 {
 
     private static $instance;//make sure we have only one instance
-    
+
     /**
      * Static path to assets
      */
@@ -57,7 +57,7 @@ class Admin
     private $_menuMatch='';
     //private $userPanel='';//html
 
-    
+
     //private $keywords=[];//a list of keywords
     /**
      * Set a keyword
@@ -65,8 +65,8 @@ class Admin
      * @param  string $value [description]
      * @return [type]        [description]
      */
-    
-   
+
+
     /**
      * Get a value from _SESSION[key]
      * key should look as : '{key}'
@@ -74,8 +74,8 @@ class Admin
      * @return [type]      [description]
      */
     public function keyValue($key='')
-    {   
-          
+    {
+
         if (isset($_SESSION[$key])) {
             return $_SESSION[$key];
         }
@@ -113,14 +113,15 @@ class Admin
 
         $dirname=pathinfo($_SERVER['SCRIPT_FILENAME'])['dirname'];
 
+        // get the current 'view' to allow menu item selection
         if (preg_match("/\b\/([a-z-0-9_-]+)$/i", $dirname, $o)) {
             $this->_menuMatch=$o[1];
         }
 
         if(self::$instance){
-            throw new \Exception("Admin instance already initialised", 1);          
+            throw new \Exception("Admin instance already initialised", 1);
         }
-        
+
         self::$instance = $this; // initialise the instance on load
 
     }
@@ -302,7 +303,7 @@ class Admin
     }
 
 
-    
+
     /**
      * Get/Set navbar
      * @param  [type] $navbar [description]
@@ -338,30 +339,30 @@ class Admin
 
         // Links //
         $links=[];
-        
+
         if (isset($this->config->navbar->links)) {
-            $links=$this->config->navbar->links;  
-        }        
-        
+            $links=$this->config->navbar->links;
+        }
+
         foreach($links as $link) {
-            
+
             $url='#';
-            
+
             if (isset($link->url)) {
               $url='../'.$link->url;
-            }            
+            }
 
             $htm.='<li class="nav-item d-none d-sm-inline-block">';
             $htm.='<a href="'.$url.'" class="nav-link">';
-            
+
             if (isset($link->icon)) {
                 $htm.='<i class="'.$link->icon.'"></i> ';
-            }                       
-            
+            }
+
             $htm.=$link->text;
             $htm.='</a></li>';
         }
-        
+
         //$htm.='<li class="nav-item d-none d-sm-inline-block"><a href="../calendar" class="nav-link">Calendar</a></li>';
 
 
@@ -400,7 +401,7 @@ class Admin
                 $htm.='</a>';
             $htm.='</li>';
         }
-        
+
         /*
         //<!-- Control sidebar -->
         $htm.='<li class="nav-item">';
@@ -417,7 +418,7 @@ class Admin
         $htm.='<a class="nav-link" href="#"><i class="fa fa-sign-out"></i> Sign out</a>';
         $htm.='</li>';
         */
-       
+
         $htm.='</ul>';
 
         $htm.='</nav>';
@@ -467,7 +468,7 @@ class Admin
         $htm.='</div>'."\n";
 
         $htm.='</aside>'."\n";
-        
+
         // replace keys
         preg_match_all("/{[a-z]+}/", $htm, $o);
         foreach($o[0] as $key){
@@ -549,12 +550,13 @@ class Admin
      *
      * @return [type]      [description]
      */
+    /*
     public function menuHighlight($str='')
     {
         $this->_menuMatch=$str;
         return $this->_menuMatch;
     }
-
+    */
 
     /**
      * Return left menu
@@ -612,13 +614,18 @@ class Admin
                     $active='';
                     $sub.='<li class="nav-item" style="padding-left:16px">';
 
-                    if (isset($obj->url)) {
+                    if(isset($obj->match)&&$obj->match&&$this->_menuMatch){
+                        if(preg_match("/".$obj->match."/", $this->_menuMatch)){
+                            $active='active';
+                            $open='menu-open';
+                        }
+                    }
 
+                    if (isset($obj->url)) {
                         if ($this->_menuMatch&&strpos($obj->url, $this->_menuMatch)!==false) {
                             $active='active';
                             $open='menu-open';
                         }
-
                         $sub.='<a class="nav-link '.$active.'" href="'.$this->_path.$obj->url.'">';
                     }
 
@@ -637,7 +644,7 @@ class Admin
                     }
 
                     $sub.='</p></a>';
-                    
+
                     $sub.='</li>';
                 }
 
@@ -669,6 +676,13 @@ class Admin
 
                 // match active
                 $active='';
+
+                if(isset($o->match)&&$o->match&&$this->_menuMatch){
+                    if(preg_match("/".$o->match."/", $this->_menuMatch)){
+                        $active='active';
+                    }
+                }
+
                 if ($this->_menuMatch&&strpos($o->url, $this->_menuMatch)!==false) {
                     $active='active';
                 }
@@ -684,13 +698,13 @@ class Admin
                 }
 
                 $htm.='<p>'.@$o->text;
-                
+
                 if (isset($o->badge)&&$o->badge->text) {// Badge
                     $style='info';
                     if($o->badge->style)$style=$o->badge->style;
                     $htm.='<span class="right badge badge-'.$style.'">'.htmlentities($o->badge->text).'</span>';
                 }
-                
+
                 $htm.='</p>';
 
                 if (isset($o->url)) {
