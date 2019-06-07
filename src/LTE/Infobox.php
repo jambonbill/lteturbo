@@ -13,7 +13,7 @@ class Infobox
     private $bg='';//danger, success, info, warning, etc
 
     private $icon='';
-    //private $iconUrl='';
+    private $_url='';
     private $color='';
     private $class='';
     private $style='';
@@ -83,15 +83,15 @@ class Infobox
      * @param  string $url [description]
      * @return [type]      [description]
      */
-    /*
-    public function iconUrl($url = '')
+
+    public function url($url = '')
     {
         if ($url) {
-            $this->iconUrl=$url;
+            $this->_url=$url;
         }
-        return $this->iconUrl;
+        return $this->_url;
     }
-    */
+
 
     /**
      * Color Used for the 'tiles'
@@ -159,42 +159,6 @@ class Infobox
 
 
 
-
-
-    /**
-     * When set to true, the box show a overlay and a loading image
-     * You can hide it with $('#boxid .overlay, #boxid.loading-img').hide()
-     * @param  boolean $loading [description]
-     * @return boolean
-     */
-    /*
-    public function loading($loading = false)
-    {
-        if ($loading) {
-            $this->loading=$loading;
-        }
-        return $this->loading;
-    }
-    */
-
-
-
-
-    /**
-     * Add a top-right "x" button that allow box desctruction
-     * @param  boolean $removable [description]
-     * @return [type]             [description]
-     */
-    /*
-    public function removable($removable = false)
-    {
-        if ($removable) {
-            $this->removable=$removable;
-        }
-        return $this->removable;
-    }
-    */
-
     public function addClass($str = '')
     {
         if ($str) {
@@ -245,7 +209,13 @@ class Infobox
             $class[]=$this->addClass();
         }
 
-        $htm='<div class="'.implode(" ", $class).'" '.$STYLE.' id="'.$this->id().'">';// box-solid
+        $htm='';
+
+        if ($this->_url) {
+            $htm.='<a href="'.$this->_url.'">';
+        }
+
+        $htm.='<div class="'.implode(" ", $class).'" '.$STYLE.' id="'.$this->id().'">';// box-solid
 
         //Icon
         if($this->type()){
@@ -286,6 +256,9 @@ class Infobox
         */
 
         $htm.='</div>';// end.box
+        if ($this->_url) {
+            $htm.='</a>';
+        }
 
         return $htm;
     }
