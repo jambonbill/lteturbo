@@ -1,6 +1,6 @@
 <?php
 /**
- * AdminLte2 Modal V4
+ * Bootstrap Modal V4
  * https://almsaeedstudio.com/themes/AdminLTE/pages/UI/modals.html
  * to pop the modal -> $("#modalwindow").modal(true);
  * to update the title -> $("#modalwindow .modal-title").html('html');
@@ -153,7 +153,7 @@ class Modal
     public function html()
     {
 
-        $htm='<div class="modal modal-'.$this->type().'" id="'.$this->_id.'">';
+        $htm='<div class="modal fade modal-'.$this->type().'" id="'.$this->_id.'">';
 
         if ($this->_size) {
             $htm.='<div class="modal-dialog modal-'.$this->_size.'">';
@@ -180,8 +180,6 @@ class Modal
         $htm.='<div class="modal-body">'.$this->body().'</div>';
 
         $htm.='<div class="modal-footer">';
-          //$htm.='<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>';
-          //$htm.='<button type="button" class="btn btn-primary">Save changes</button>';
 
         if (is_array($this->footer())) {
             $htm.=implode('', $this->footer());
