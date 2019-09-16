@@ -20,6 +20,7 @@ class Modal
     private $_icon ='';
     private $_title='';
     private $_body ='';
+    private $_fade ='';
     private $_footer ='<button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Cancel</button>';
 
     public function __construct($title = '', $body = '', $footer = '')
@@ -145,6 +146,18 @@ class Modal
         return $this->_icon;
     }
 
+
+    public function fade($fade=0)
+    {
+        if ($fade) {
+            $this->_fade='fade';
+        }else{
+            $this->_fade=''
+        }
+        return $this->_fade;
+    }
+
+
     /**
      * [html description]
      *
@@ -153,7 +166,7 @@ class Modal
     public function html()
     {
 
-        $htm='<div class="modal fade modal-'.$this->type().'" id="'.$this->_id.'">';
+        $htm='<div class="modal '.$this->_fade.' modal-'.$this->type().'" id="'.$this->_id.'">';
 
         if ($this->_size) {
             $htm.='<div class="modal-dialog modal-'.$this->_size.'">';
