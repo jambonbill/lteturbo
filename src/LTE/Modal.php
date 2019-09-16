@@ -147,12 +147,18 @@ class Modal
     }
 
 
+    /**
+     * Add class "fade" to enable fade-in-out effect
+     * Note that it delay the display, and may no be convenient
+     * @param  integer $fade [description]
+     * @return [type]        [description]
+     */
     public function fade($fade=0)
     {
         if ($fade) {
             $this->_fade='fade';
         }else{
-            $this->_fade=''
+            $this->_fade='';
         }
         return $this->_fade;
     }
