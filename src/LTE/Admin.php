@@ -683,13 +683,13 @@ class Admin
                     }
                 }
 
-                if ($this->_menuMatch&&strpos($o->url, $this->_menuMatch)!==false) {
-                    $active='active';
-                }
 
                 $htm.='<li class="nav-item" '.$title.'>';
 
                 if (isset($o->url)) {
+                    if ($this->_menuMatch&&strpos($o->url, $this->_menuMatch)!==false) {
+                        $active='active';
+                    }
                     $htm.='<a class="nav-link '.$active.'" href="'.$this->_path.$o->url.'">';
                 }
 
