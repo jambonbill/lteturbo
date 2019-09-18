@@ -330,7 +330,7 @@ class Card
         $class[]='card-'.$this->type();
 
         if ($this->outline) {
-            $class[]='collapsed-outline';
+            $class[]='card-outline';
         }
 
         if ($this->collapsed) {
