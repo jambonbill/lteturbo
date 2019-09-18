@@ -31,7 +31,6 @@ class Card
     private $iconUrl='';
     private $color='';
     private $class='';
-    private $p0=false;//no padding
     private $style='';
     private $title='';
     private $small='';//
@@ -44,7 +43,8 @@ class Card
     private $collapsed=false;
     private $removable=false;
     private $loading=false;
-
+    private $p0=false;//no padding
+    private $outline=false;//`card-outline`
 
     public function __construct()
     {
@@ -187,6 +187,20 @@ class Card
 
 
     /**
+     * Add class 'card-outline'
+     */
+    public function outline($outline=false)//card-outline
+    {
+        if ($outline) {
+            $this->outline=true;
+        }else{
+            $this->outline=false;
+        }
+        return $this->outline;
+    }
+
+
+    /**
      * Set the body padding (add the class 'no-padding to the box boddy')
      * Padding is set (true) by default
      *
@@ -314,11 +328,15 @@ class Card
         $class=[];
         $class[]='card';
         $class[]='card-'.$this->type();
-        
+
+        if ($this->outline) {
+            $class[]='collapsed-outline';
+        }
+
         if ($this->collapsed) {
             $class[]='collapsed-card';
         }
-        
+
 
         if ($this->addClass()) {
             $class[]=$this->addClass();
