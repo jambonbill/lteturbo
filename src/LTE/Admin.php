@@ -12,6 +12,8 @@
 
 namespace LTE;
 
+use Exception;
+
 /**
  * Class providing adminlte2 skeleton
  * PHP version 7
