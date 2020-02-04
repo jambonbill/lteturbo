@@ -124,6 +124,7 @@ class Admin
 
         self::$instance = $this; // initialise the instance on load
 
+        $_SESSION['REDIRECT_URL']=$_SERVER['REDIRECT_URL'];//remember where we are
     }
 
 
@@ -493,8 +494,8 @@ class Admin
     {
 
         if (!isset($this->config()->menu)) {
-            //throw new \Exception("Error : $this->config->menu must be a object", 1);
-            return '';
+            $this->config->menu=[];
+            return false;
         } else {
             $menu=$this->config()->menu;
         }
