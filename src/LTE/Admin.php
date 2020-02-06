@@ -92,6 +92,66 @@ class Admin
      *
      * @param string $configfile [description]
      */
+    /**
+     * AdminLte Constructor
+     *
+     * @param string $configfile [description]
+     */
+    public function __construct($configfile='')
+    {
+
+        $path=preg_replace("/\/vendor\/.*/","/config", __DIR__);//Find config path
+        //exit($path);
+
+        if (!$configfile) {
+            $configfile='config.json';//we assume its this one
+        }
+
+        if (is_file($configfile)) {
+            //config file is found
+            $this->_config_file=$configfile;
+
+        } else {
+
+            $test=$path.'/'.basename($configfile);
+            //echo "test=$test";
+            if (is_file($test)) {
+                $this->_config_file=$test;
+            }else{
+                throw new Exception("Error : file '$configfile' not found", 1);
+            }
+        }
+
+
+        if ($this->_config_file) {
+            $this->configLoad($this->_config_file);
+        } else {
+            // what should we do?
+            throw new Exception("LTE config file not found", 1);
+        }
+
+        //Deduce '$this->path'
+        //echo '<pre>';print_r($_SERVER);echo '</pre>';
+        //exit($_SERVER['SCRIPT_FILENAME']);
+        //$this->_path='../../';
+
+        $dirname=pathinfo($_SERVER['SCRIPT_FILENAME'])['dirname'];
+
+        // get the current 'view' to allow menu item selection
+        if (preg_match("/\b\/([a-z-0-9_-]+)$/i", $dirname, $o)) {
+            $this->_menuMatch=$o[1];
+        }
+
+        if(self::$instance){
+            throw new Exception("Admin instance already initialised", 1);
+        }
+
+        self::$instance = $this; // initialise the instance on load
+
+    }
+
+
+    /*
     public function __construct($configfile='')
     {
         // get the config file. it must be located next to the class
@@ -129,7 +189,7 @@ class Admin
 
         //$_SESSION['REDIRECT_URL']=$_SERVER['REDIRECT_URL'];//remember where we are
     }
-
+    */
 
     /**
      * Register path to configfile
