@@ -28,6 +28,7 @@ class Admin
 {
 
     private static $instance;//make sure we have only one instance
+    private $_version='1.01';//lteturbo version
 
     /**
      * Static path to assets
@@ -126,7 +127,7 @@ class Admin
 
         self::$instance = $this; // initialise the instance on load
 
-        $_SESSION['REDIRECT_URL']=$_SERVER['REDIRECT_URL'];//remember where we are
+        //$_SESSION['REDIRECT_URL']=$_SERVER['REDIRECT_URL'];//remember where we are
     }
 
 
@@ -152,6 +153,7 @@ class Admin
             } else {
                 //exit("yes sir");
             }
+
             //register to sessions
             $this->_config_file=$filename;
             $_SESSION['lteconfig']=$this->_config_file;
@@ -961,9 +963,7 @@ class Admin
         $htm.= "<meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>\n";
         $htm.='<meta name="apple-mobile-web-app-status-bar-style" content="black" />'."\n";
         $htm.='<meta name="apple-mobile-web-app-capable" content="yes" />'."\n";
-
-
-        //echo "<pre>";var_dump($this->config);exit;
+        $htm.='<meta name="application-name" content="LTETurbo Ver.'.$this->_version.'">'."\n";
 
         if (isset($this->config->meta)) {
 
