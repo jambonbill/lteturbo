@@ -15,7 +15,8 @@ namespace LTE;
 use Exception;
 
 /**
- * Class providing adminlte2 skeleton
+ * Class providing adminlte3 skeleton
+ * https://adminlte.io/themes/dev/AdminLTE/index3.html
  * PHP version 7
  *
  * @category LTE
@@ -28,12 +29,8 @@ class Admin
 {
 
     private static $instance;//make sure we have only one instance
-    private $_version='1.01';//lteturbo version
 
-    /**
-     * Static path to assets
-     */
-    private $_path='../';// static path
+    private $_version='1.4.1';
 
     /**
      * Path to json config file
@@ -104,7 +101,7 @@ class Admin
             //absolute path
         }else{
             $path=preg_replace("/\/vendor\/.*/","/config", __DIR__);//Find config path
-            exit($path);
+            //exit($path);
         }
 
 
@@ -135,10 +132,6 @@ class Admin
             throw new Exception("LTE config file not found", 1);
         }
 
-        //Deduce '$this->path'
-        //echo '<pre>';print_r($_SERVER);echo '</pre>';
-        //exit($_SERVER['SCRIPT_FILENAME']);
-        //$this->_path='../../';
 
         $dirname=pathinfo($_SERVER['SCRIPT_FILENAME'])['dirname'];
 
@@ -251,10 +244,12 @@ class Admin
             die("Error: Invalid config.json");
         } else {
             //find the correct path for assets
+            /*
             $diff=count(explode("/", realpath('.')))-count(explode("/", realpath(__DIR__."/../../web")));
             if ($diff > 0) {
                 $this->_path=str_repeat("../", $diff);
             }
+            */
         }
 
         if (isset($this->config->description)) {
@@ -696,7 +691,7 @@ class Admin
                             $active='active';
                             $open='menu-open';
                         }
-                        $sub.='<a class="nav-link '.$active.'" href="'.$this->_path.$obj->url.'">';
+                        $sub.='<a class="nav-link '.$active.'" href="'.$obj->url.'">';
                     }
 
                     if (isset($obj->icon)) {
@@ -760,7 +755,7 @@ class Admin
                     if ($this->_menuMatch&&strpos($o->url, $this->_menuMatch)!==false) {
                         $active='active';
                     }
-                    $htm.='<a class="nav-link '.$active.'" href="'.$this->_path.$o->url.'">';
+                    $htm.='<a class="nav-link '.$active.'" href="'.$o->url.'">';
                 }
 
                 if (isset($o->icon)) {
@@ -1024,7 +1019,7 @@ class Admin
         //$htm.='<base href="/web">'."\n";
 
         if (isset($this->config->apple_app_icon)) {
-            $htm.= '<link rel="apple-touch-icon" href="' . $this->_path . $this->config->apple_app_icon . '">';
+            $htm.= '<link rel="apple-touch-icon" href="' . $this->config->apple_app_icon . '">';
         }
 
         $htm.= "<meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>\n";
@@ -1046,8 +1041,8 @@ class Admin
             }
         }
 
-        if (isset($this->config->favicon) && is_file($this->_path.$this->config->favicon)) {
-            $htm.='<link id="favicon" rel="shortcut icon" href="'.$this->_path.$this->config->favicon.'">'."\n";
+        if (isset($this->config->favicon) && is_file($this->config->favicon)) {
+            $htm.='<link id="favicon" rel="shortcut icon" href="'.$this->config->favicon.'">'."\n";
         }else{
             //define 'no favicon'
             $htm.='<link rel="shortcut icon" href="#" />';
@@ -1057,14 +1052,6 @@ class Admin
         if (isset($this->config->assets->css)) {
             foreach ($this->config->assets->css as $v) {
                 $htm.='<link href="'.htmlentities($v).'" rel="stylesheet" type="text/css" />'."\n";
-                /*
-                //no more guessing
-                if (preg_match("/^http/i", $v)) {
-                    $htm.='<link href="'.$v.'" rel="stylesheet" type="text/css" />'."\n";
-                } else {
-                    $htm.='<link href="'.$this->_path.$v.'" rel="stylesheet" type="text/css" />'."\n";
-                }
-                */
             }
         }
 
@@ -1153,7 +1140,7 @@ class Admin
         }
 
         if (isset($this->config->homeurl)) {
-            $homeurl=$this->_path.$this->config->homeurl;
+            $homeurl=$this->config->homeurl;
         } else {
             $homeurl='#';
         }
@@ -1182,14 +1169,6 @@ class Admin
         $htm='';
         foreach ($this->config->assets->js as $k => $js) {
             $htm.='<script src="'.htmlentities($js).'" type="text/javascript"></script>'."\n";
-            /*
-            //no more guessing!
-            if (preg_match("/^http/", $js)) {
-                $htm.='<script src="' . $js . '" type="text/javascript"></script>'."\n";
-            } else {
-                $htm.='<script src="' . $this->_path . $js . '" type="text/javascript"></script>'."\n";
-            }
-            */
         }
         return $htm;
     }
