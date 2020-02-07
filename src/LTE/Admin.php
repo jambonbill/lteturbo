@@ -100,8 +100,13 @@ class Admin
     public function __construct($configfile='')
     {
 
-        $path=preg_replace("/\/vendor\/.*/","/config", __DIR__);//Find config path
-        //exit($path);
+        if(preg_match('/^\//', $configfile)){
+            //absolute path
+        }else{
+            $path=preg_replace("/\/vendor\/.*/","/config", __DIR__);//Find config path
+            exit($path);
+        }
+
 
         if (!$configfile) {
             $configfile='config.json';//we assume its this one
@@ -1007,7 +1012,7 @@ class Admin
      */
     public function head()
     {
-        $htm='<!DOCTYPE html>'."\n";
+        $htm ='<!DOCTYPE html>'."\n";
         $htm.='<html lang="' . $this->lang() . '">'."\n";
         $htm.='<head>'."\n";
         $htm.='<meta charset="UTF-8">'."\n";
@@ -1015,6 +1020,8 @@ class Admin
         if (isset($this->config->title)) {
             $htm.='<title>' . strip_tags($this->config->title) . '</title>'."\n";
         }
+
+        //$htm.='<base href="/web">'."\n";
 
         if (isset($this->config->apple_app_icon)) {
             $htm.= '<link rel="apple-touch-icon" href="' . $this->_path . $this->config->apple_app_icon . '">';
@@ -1047,13 +1054,17 @@ class Admin
         }
 
         // Css
-        if (isset($this->config->css)) {
-            foreach ($this->config->css as $v) {
+        if (isset($this->config->assets->css)) {
+            foreach ($this->config->assets->css as $v) {
+                $htm.='<link href="'.htmlentities($v).'" rel="stylesheet" type="text/css" />'."\n";
+                /*
+                //no more guessing
                 if (preg_match("/^http/i", $v)) {
                     $htm.='<link href="'.$v.'" rel="stylesheet" type="text/css" />'."\n";
                 } else {
                     $htm.='<link href="'.$this->_path.$v.'" rel="stylesheet" type="text/css" />'."\n";
                 }
+                */
             }
         }
 
@@ -1157,24 +1168,28 @@ class Admin
 
 
     /**
-     * The list of js scripts to be included
+     * The list of scripts to be included
      *
      * @return html
      */
     public function scripts()
     {
 
-        if (!isset($this->config->js)) {
+        if (!isset($this->config->assets->js)) {
             return '';
         }
 
         $htm='';
-        foreach ($this->config->js as $k => $js) {
+        foreach ($this->config->assets->js as $k => $js) {
+            $htm.='<script src="'.htmlentities($js).'" type="text/javascript"></script>'."\n";
+            /*
+            //no more guessing!
             if (preg_match("/^http/", $js)) {
                 $htm.='<script src="' . $js . '" type="text/javascript"></script>'."\n";
             } else {
                 $htm.='<script src="' . $this->_path . $js . '" type="text/javascript"></script>'."\n";
             }
+            */
         }
         return $htm;
     }
@@ -1193,7 +1208,7 @@ class Admin
     public function footer()
     {
 
-        //print_r($this->config()->footer);exit;
+        // auto require modal's ? now is the time
 
         if (!isset($this->config()->footer)) {
             return false;
