@@ -55,21 +55,14 @@ class Admin
      * The string to match against the menu, to highlight menu item
      */
     private $_menuMatch='';
-    //private $userPanel='';//html
 
 
-    //private $keywords=[];//a list of keywords
-    /**
-     * Set a keyword
-     * @param  string $key   [description]
-     * @param  string $value [description]
-     * @return [type]        [description]
-     */
 
 
     /**
      * Get a value from _SESSION[key]
      * key should look as : '{key}'
+     *
      * @param  string $key [description]
      * @return [type]      [description]
      */
@@ -97,10 +90,10 @@ class Admin
     public function __construct($configfile='')
     {
 
-        if(preg_match('/^\//', $configfile)){
+        if (preg_match('/^\//', $configfile)) {
             //absolute path
-        }else{
-            $path=preg_replace("/\/vendor\/.*/","/config", __DIR__);//Find config path
+        } else {
+            $path=preg_replace("/\/vendor\/.*/", "/config", __DIR__);// Find config path
             //exit($path);
         }
 
@@ -108,6 +101,8 @@ class Admin
         if (!$configfile) {
             $configfile='config.json';//we assume its this one
         }
+
+        //echo "Search for $configfile;";
 
         if (is_file($configfile)) {
             //config file is found
@@ -119,7 +114,7 @@ class Admin
             //echo "test=$test";
             if (is_file($test)) {
                 $this->_config_file=$test;
-            }else{
+            } else {
                 throw new Exception("Error : file '$configfile' not found", 1);
             }
         }
@@ -140,7 +135,7 @@ class Admin
             $this->_menuMatch=$o[1];
         }
 
-        if(self::$instance){
+        if (self::$instance) {
             throw new Exception("Admin instance already initialised", 1);
         }
 
@@ -242,14 +237,10 @@ class Admin
 
         if ($err) {
             die("Error: Invalid config.json");
-        } else {
-            //find the correct path for assets
-            /*
-            $diff=count(explode("/", realpath('.')))-count(explode("/", realpath(__DIR__."/../../web")));
-            if ($diff > 0) {
-                $this->_path=str_repeat("../", $diff);
-            }
-            */
+        }
+
+        if (!isset($this->config->assets)) {
+            die("Error: !config->assets. please define config->assets");
         }
 
         if (isset($this->config->description)) {
@@ -409,12 +400,17 @@ class Admin
             $links=$this->config->navbar->links;
         }
 
-        foreach($links as $link) {
+        foreach ($links as $link) {
 
             $url='#';
+            $target='';
 
             if (isset($link->url)) {
-              $url='../'.$link->url;
+                $url=$link->url;
+            }
+
+            if (isset($link->target)) {
+                //todo
             }
 
             $htm.='<li class="nav-item d-none d-sm-inline-block">';
@@ -427,8 +423,6 @@ class Admin
             $htm.=$link->text;
             $htm.='</a></li>';
         }
-
-        //$htm.='<li class="nav-item d-none d-sm-inline-block"><a href="../calendar" class="nav-link">Calendar</a></li>';
 
 
         $htm.='</ul>';
@@ -1043,7 +1037,7 @@ class Admin
 
         if (isset($this->config->favicon) && is_file($this->config->favicon)) {
             $htm.='<link id="favicon" rel="shortcut icon" href="'.$this->config->favicon.'">'."\n";
-        }else{
+        } else {
             //define 'no favicon'
             $htm.='<link rel="shortcut icon" href="#" />';
         }
