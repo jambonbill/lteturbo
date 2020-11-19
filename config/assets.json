@@ -1,0 +1,16 @@
+{
+
+	"css":[
+		"https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css",
+    	"https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css",
+    	"https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700",
+    	"https://adminlte.io/themes/v3/dist/css/adminlte.min.css"
+	],
+
+	"js":[
+	    "https://code.jquery.com/jquery-3.2.1.min.js",
+    	"https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js",
+    	"dist/plugins/slimScroll/jquery.slimscroll.min.js",
+    	"https://adminlte.io/themes/v3/dist/js/adminlte.js"
+	]
+}
