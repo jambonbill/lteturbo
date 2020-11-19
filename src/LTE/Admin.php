@@ -12,6 +12,7 @@
 
 namespace LTE;
 
+use LTE\Modal;
 use Exception;
 
 /**
@@ -1161,10 +1162,42 @@ class Admin
     }
 
 
+    /**
+     * Build modals
+     * @return [type] [description]
+     */
     public function automodal()
     {
-        $files=glob("*.json");
-        print_r($files);
+        $files=glob("modal*.json");
+
+        foreach ($files as $file)  {
+            $jso=$this->jso($file);
+            //print_r($jso);
+            $modal=new Modal();
+
+            if (isset($jso->id)) {
+                $modal->id($jso->id);
+            }
+
+            if (isset($jso->type)) {
+                $modal->type($jso->type);
+            }
+
+            if (isset($jso->icon)) {
+                $modal->icon($jso->icon);
+            }
+
+            $modal->title($jso->title);
+            $modal->body($jso->body);
+            $modal->footer($jso->footer);
+
+            if (isset($jso->size)) {
+                $modal->size($jso->size);
+            }
+
+
+            echo $modal;
+        }
     }
 
 
@@ -1179,6 +1212,9 @@ class Admin
         $htm.=$this->footer();
 
         $htm.='</div>';
+
+        $this->automodal();
+
         $htm.='</body>';
         $htm.='</html>';
         exit($htm);
