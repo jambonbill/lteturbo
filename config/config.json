@@ -16,5 +16,6 @@
 
 	"navbar":"navbar.json",
 	"menu":"menu.json",
-	"meta":"meta.json"
+	"meta":"meta.json",
+	"link":"link.json"
 }
