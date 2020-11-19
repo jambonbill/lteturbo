@@ -3,7 +3,7 @@
     "sape":{
         "header": "{email}"
     },
-    
+
     "home":{
         "text": "Home",
         "icon": "fa fa-home",
@@ -23,20 +23,6 @@
         "url": "calendar/"
     },
 
-    "finance":{
-        "text": "Finance",
-        "icon": "fa fa-bar-chart",
-        "url": "#menuFinance",
-        "sub":[{
-           "text": "Sales",
-            "icon": "fa fa-list",
-            "url": "#"
-        },{
-            "text": "Invoice",
-            "icon": "fa fa-file",
-            "url": "invoice"
-        }]
-    },
 
     "market":{
         "text": "Marketing",
