@@ -1,7 +1,8 @@
 {
 	"title":"LTETurbo3",
 	"title-mini":"LTE3",
-	"description":"La petite description dans la prairie",
+	"application-name":"AdminLTETurbo",
+	"description":"PHP Admin skeleton",
 	"canonical":"https://www.jambonbill.org",
 	"homeurl":"index.php",
 	"favicon":"dist/img/favicon.ico",
@@ -12,40 +13,19 @@
 		{"property":"og:content",  "content":"article"},
 		{"property":"og:description",  "content":"jambonbill LTE Turbo is good"}
 	],
+	"assets":{
+		"css":[
+			"https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css",
+	    	"https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css",
+	    	"https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700",
+	    	"https://adminlte.io/themes/v3/dist/css/adminlte.min.css"
+		],
 
-	"css":[
-		"https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css",
-    	"https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css",
-    	"https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700",
-    	"dist/fullcalendar/fullcalendar.min.css",
-    	"dist/css/adminlte.css"
-	],
-
-	"js":[
-	    "https://code.jquery.com/jquery-3.2.1.min.js",
-    	"https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js",
-    	"dist/plugins/slimScroll/jquery.slimscroll.min.js",
-    	"dist/fullcalendar/moment.js",
-    	"dist/fullcalendar/fullcalendar.min.js",
-    	"dist/js/jquery-tablesorter.min.js",
-    	"dist/js/adminlte.js"
-	],
-
-	"navbar":{
-		"search":true,
-		"links":[],
-		"items":[
-			{
-				"text":"{email}",
-				"title":"User",
-				"url":"#"
-			},
-			{
-				"text":"Log-out",
-				"title":"Log out",
-				"icon":"fa fa-sign-out",
-				"url":"../login/logout.php"
-			}
+		"js":[
+		    "https://code.jquery.com/jquery-3.2.1.min.js",
+	    	"https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js",
+	    	"dist/plugins/slimScroll/jquery.slimscroll.min.js",
+	    	"https://adminlte.io/themes/v3/dist/js/adminlte.js"
 		]
 	},
 
@@ -54,5 +34,6 @@
 		"right":"Version 1.0.0"
 	},
 
+	"navbar":"navbar.json",
 	"menu":"menu.json"
 }
