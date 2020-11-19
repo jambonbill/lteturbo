@@ -31,7 +31,7 @@ class Admin
 
     private static $instance;//make sure we have only one instance
 
-    private $_version='1.4.1';
+    private $_version='1.4.4';
 
     /**
      * Path to json config file
@@ -213,6 +213,11 @@ class Admin
         //decode meta
         if ($this->conf('meta')=='meta.json') {
             $this->config->meta=$this->jso($DIR.'/meta.json');
+        }
+
+        //decode link
+        if ($this->conf('link')=='link.json') {
+            $this->config->link=$this->jso($DIR.'/link.json');
         }
 
         //decode menu
@@ -951,8 +956,8 @@ class Admin
         }
 
         $htm.= "<meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>\n";
-        $htm.='<meta name="apple-mobile-web-app-status-bar-style" content="black" />'."\n";
-        $htm.='<meta name="apple-mobile-web-app-capable" content="yes" />'."\n";
+        //$htm.='<meta name="apple-mobile-web-app-status-bar-style" content="black" />'."\n";
+        //$htm.='<meta name="apple-mobile-web-app-capable" content="yes" />'."\n";
 
         $appName='LTETurbo Ver.'.$this->_version;
         if ($this->conf('application-name')) {
@@ -980,14 +985,29 @@ class Admin
         } else {
             //define 'no favicon'
             $htm.='<link rel="shortcut icon" href="#" />';
+            $htm.="\n";
+        }
+
+        //more link
+        if (isset($this->config->link)) {
+            foreach ($this->config->link as $v) {
+                $props=[];
+                foreach ((array)$v as $prop=>$value) {
+                    $props[]=$prop.'="'.$value.'"';
+                }
+                $htm.='<link '.implode(' ', $props).' />'."\n";
+            }
         }
 
         // Css
         if (isset($this->config->assets->css)) {
             foreach ($this->config->assets->css as $v) {
                 $htm.='<link href="'.htmlentities($v).'" rel="stylesheet" type="text/css" />';
+                $htm.="\n";
             }
         }
+
+
 
         // extra head //
         if ($this->_headHtml) {
