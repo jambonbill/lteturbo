@@ -115,7 +115,7 @@ class Admin
             if (is_file($test)) {
                 $this->_config_file=$test;
             } else {
-                throw new Exception("Error : file '$configfile' not found", 1);
+                throw new Exception("Error : file '$test' not found", 1);
             }
         }
 
@@ -143,46 +143,6 @@ class Admin
 
     }
 
-
-    /*
-    public function __construct($configfile='')
-    {
-        // get the config file. it must be located next to the class
-
-        if ($configfile) {
-
-            if (is_file($configfile)) {
-                $this->_config_file=$configfile;
-            } else {
-                throw new Exception("Error : file '$configfile' not found", 1);
-            }
-
-        } elseif (isset($_SESSION['lteconfig'])) {
-            $this->config_file=$_SESSION['lteconfig'];
-        }
-
-        if ($this->_config_file) {
-            $this->configLoad($this->_config_file);
-        } else {
-            // what should we do?
-        }
-
-        $dirname=pathinfo($_SERVER['SCRIPT_FILENAME'])['dirname'];
-
-        // get the current 'view' to allow menu item selection
-        if (preg_match("/\b\/([a-z-0-9_-]+)$/i", $dirname, $o)) {
-            $this->_menuMatch=$o[1];
-        }
-
-        if(self::$instance){
-            throw new \Exception("Admin instance already initialised", 1);
-        }
-
-        self::$instance = $this; // initialise the instance on load
-
-        //$_SESSION['REDIRECT_URL']=$_SERVER['REDIRECT_URL'];//remember where we are
-    }
-    */
 
     /**
      * Register path to configfile
@@ -231,6 +191,9 @@ class Admin
      */
     public function configLoad($filename = '')
     {
+        $DIR=dirname(realpath($filename));//get config folder
+        //exit($DIR);
+
         $string = file_get_contents($filename);
         $this->config=json_decode($string);
         $err=json_last_error();
@@ -246,19 +209,35 @@ class Admin
         if (isset($this->config->description)) {
             $this->description($this->config->description);
         }
-
-        if (isset($this->config->meta)) {//decode meta//
-            $type=gettype($this->config->meta);
+        /*
+        if ($this->conf('meta')) {//decode meta//
+            $type=gettype($this->conf('meta'));
             if ($type=='string') {
-                $DIR=dirname(realpath($this->config_file));//get config folder
-                if (is_file($DIR.'/'.$this->config->meta)) {
-                    $content=file_get_contents($DIR.'/'.$this->config->meta);
+
+                if (is_file($DIR.'/'.$this->conf('meta'))) {
+                    $content=file_get_contents($DIR.'/'.$this->conf('meta'));
                     $this->config->meta=json_decode($content);
                     if ($err=json_last_error()) {
                         die("error $err".json_last_error_msg()."<br>$content");
                     }
                 }
             }
+        }
+        */
+
+        //decode menu
+        if ($this->conf('menu')=='menu.json') {
+            //todo
+            //exit('todo menu');
+            //$this->config->menu=[];
+            $this->config->menu=json_decode(file_get_contents($DIR.'/menu.json'));
+        }
+
+        //decode navbar
+        if ($this->conf('navbar')=='navbar.json') {
+            //todo
+            //exit('todo navbar');
+            $this->config->navbar=json_decode(file_get_contents($DIR.'/navbar.json'));
         }
         return true;
     }
@@ -281,11 +260,26 @@ class Admin
 
 
     /**
+     * Return a config value
+     * @param  [type] $key [description]
+     * @return [type]      [description]
+     */
+    public function conf(string $key)
+    {
+        $cfg=(array)$this->config;
+        if (isset($cfg[$key])) {
+            return $cfg[$key];
+        }
+        return false;
+    }
+
+
+    /**
      * Return detected language
      *
      * @return [type] [description]
      */
-    public function lang()
+    public function lang(): string
     {
         return $this->_lang;
     }
@@ -315,7 +309,7 @@ class Admin
      *
      * @return [type]        [description]
      */
-    public function description($str = '')
+    public function description(string $str)
     {
         if ($str) {
             $this->config->description=trim($str);
@@ -335,13 +329,12 @@ class Admin
     public function __toString()
     {
         return $this->html();
-        //return $this->LTE3();//lte3
     }
 
 
 
     /**
-     * LTE3 Version 2019
+     * LTE3 Version 2020
      *
      * @return string [html]
      */
@@ -367,14 +360,15 @@ class Admin
      */
     public function navbar($nbo='')
     {
-        if($nbo){
+        if ($nbo) {
             $this->config->navbar=$nbo;
         }
         return $this->config->navbar;
     }
 
+
     /**
-     * Return navbar html (top navbar)
+     * Return top navbar html
      *
      * @return [type] [description]
      */
@@ -443,14 +437,16 @@ class Admin
         $htm.='<ul class="navbar-nav ml-auto">';
 
         $items=[];
-        if(isset($this->config->navbar->items)){
+        if (isset($this->config->navbar->items)) {
             $items=$this->config->navbar->items;
         }
 
-        foreach($items as $item){
+        foreach ($items as $item) {
             //print_r($item);exit;
             $title='';
-            if($item->title)$title=$item->title;
+            if ($item->title) {
+                $title=$item->title;
+            }
             $htm.='<li class="nav-item" title="'.$title.'">';
                 $htm.='<a class="nav-link" href="'.$item->url.'">';
                 if (isset($item->icon)) {
@@ -485,9 +481,9 @@ class Admin
 
         // replace keys
         preg_match_all("/{[a-z]+}/", $htm, $o);
-        foreach($o[0] as $key){
+        foreach ($o[0] as $key) {
             //replace those keys
-            if($val=$this->keyValue($key)){
+            if ($val=$this->keyValue($key)) {
                 $htm=str_replace($key, htmlentities($val), $htm);
             }
         }
@@ -530,9 +526,10 @@ class Admin
 
         // replace keys
         preg_match_all("/{[a-z]+}/", $htm, $o);
-        foreach($o[0] as $key){
+
+        foreach ($o[0] as $key) {
             //try to replace those keys
-            if($val=$this->keyValue($key)){
+            if ($val=$this->keyValue($key)) {
                 $htm=str_replace($key, htmlentities($val), $htm);
             }
         }
@@ -548,6 +545,7 @@ class Admin
      *
      * @return [type]       [description]
      */
+    /*
     private function menuDecode($json)
     {
 
@@ -560,12 +558,11 @@ class Admin
 
         if (!is_object($this->config->menu)) {
 
-            $DIR=dirname(realpath($this->_config_file));//get config folder
+            $DIR=dirname(realpath($this->_config_file));//get config folder`
 
             if ($this->config->menu&&is_file($DIR.'/'.$this->config->menu)) {
 
-                $content=file_get_contents($DIR.'/'.$this->config->menu);
-                $this->config->menu=json_decode($content);
+                $this->config->menu=json_decode(file_get_contents($DIR.'/'.$this->config->menu));
 
                 $err=json_last_error();
 
@@ -578,13 +575,10 @@ class Admin
                 //die("this->config->menu not found");
                 return '';
             }
-
         }
-
         return true;
-
     }
-
+    */
 
     /**
      * Return menu for inspection/manipulation
@@ -622,11 +616,10 @@ class Admin
      *
      * @return string html
      */
-    public function menuHTML($json = '')
+    public function menuHTML()
     {
         //echo '<pre>';print_r($_SERVER);exit;
-        $this->menuDecode($json);
-
+        //$this->menuDecode($json);
 
         //exit($this->_menuMatch);
 
@@ -641,7 +634,7 @@ class Admin
           $htm.='</li>';
         */
 
-        foreach (@$this->config->menu as $name => $o) {
+        foreach ($this->config->menu as $name => $o) {
 
             $title='';
             $class='';
@@ -673,8 +666,8 @@ class Admin
                     $active='';
                     $sub.='<li class="nav-item" style="padding-left:16px">';
 
-                    if(isset($obj->match)&&$obj->match&&$this->_menuMatch){
-                        if(preg_match("/".$obj->match."/", $this->_menuMatch)){
+                    if (isset($obj->match)&&$obj->match&&$this->_menuMatch) {
+                        if (preg_match("/".$obj->match."/", $this->_menuMatch)) {
                             $active='active';
                             $open='menu-open';
                         }
@@ -1019,7 +1012,13 @@ class Admin
         $htm.= "<meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>\n";
         $htm.='<meta name="apple-mobile-web-app-status-bar-style" content="black" />'."\n";
         $htm.='<meta name="apple-mobile-web-app-capable" content="yes" />'."\n";
-        $htm.='<meta name="application-name" content="LTETurbo Ver.'.$this->_version.'">'."\n";
+
+        $appName='LTETurbo Ver.'.$this->_version;
+        if ($this->conf('application-name')) {
+            $appName=$this->conf('application-name');
+        }
+
+        $htm.='<meta name="application-name" content="'.$appName.'">'."\n";
 
         if (isset($this->config->meta)) {
 
@@ -1036,7 +1035,7 @@ class Admin
         }
 
         if (isset($this->config->favicon) && is_file($this->config->favicon)) {
-            $htm.='<link id="favicon" rel="shortcut icon" href="'.$this->config->favicon.'">'."\n";
+            $htm.='<link id="favicon" rel="shortcut icon" href="'.$this->config->favicon.'">';
         } else {
             //define 'no favicon'
             $htm.='<link rel="shortcut icon" href="#" />';
@@ -1045,7 +1044,7 @@ class Admin
         // Css
         if (isset($this->config->assets->css)) {
             foreach ($this->config->assets->css as $v) {
-                $htm.='<link href="'.htmlentities($v).'" rel="stylesheet" type="text/css" />'."\n";
+                $htm.='<link href="'.htmlentities($v).'" rel="stylesheet" type="text/css" />';
             }
         }
 
