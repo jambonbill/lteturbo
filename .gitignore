@@ -3,6 +3,9 @@
 # Vendor folder
 vendor/
 
+#Test folder
+public/
+
 profiles/*.json
 
 cli/*.json
