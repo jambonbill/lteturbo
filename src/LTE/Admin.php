@@ -202,44 +202,44 @@ class Admin
             die("Error: Invalid config.json");
         }
 
+
         if (!isset($this->config->assets)) {
             die("Error: !config->assets. please define config->assets");
+        } else if($this->conf('assets')=='assets.json') {
+            $this->config->assets=$this->jso($DIR.'/assets.json');
         }
 
-        if (isset($this->config->description)) {
-            $this->description($this->config->description);
+        //decode meta
+        if ($this->conf('meta')=='meta.json') {
+            $this->config->meta=$this->jso($DIR.'/meta.json');
         }
-        /*
-        if ($this->conf('meta')) {//decode meta//
-            $type=gettype($this->conf('meta'));
-            if ($type=='string') {
-
-                if (is_file($DIR.'/'.$this->conf('meta'))) {
-                    $content=file_get_contents($DIR.'/'.$this->conf('meta'));
-                    $this->config->meta=json_decode($content);
-                    if ($err=json_last_error()) {
-                        die("error $err".json_last_error_msg()."<br>$content");
-                    }
-                }
-            }
-        }
-        */
 
         //decode menu
         if ($this->conf('menu')=='menu.json') {
-            //todo
-            //exit('todo menu');
-            //$this->config->menu=[];
-            $this->config->menu=json_decode(file_get_contents($DIR.'/menu.json'));
+            $this->config->menu=$this->jso($DIR.'/menu.json');
         }
 
         //decode navbar
         if ($this->conf('navbar')=='navbar.json') {
-            //todo
-            //exit('todo navbar');
-            $this->config->navbar=json_decode(file_get_contents($DIR.'/navbar.json'));
+            $this->config->navbar=$this->jso($DIR.'/navbar.json');
         }
         return true;
+    }
+
+
+    /**
+     * Return json file content
+     * @param  string $path [description]
+     * @return [type]       [description]
+     */
+    private function jso(string $path)
+    {
+        $jso=json_decode(file_get_contents($path));
+        $err=json_last_error();
+        if ($err) {
+            throw new Exception("JSON config error ".json_last_error_msg()." in $path", 1);
+        }
+        return $jso;
     }
 
 
