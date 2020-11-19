@@ -539,60 +539,16 @@ class Admin
     }
 
 
-    /**
-     * Decode the menu object
-     *
-     * @param [type] $json [description]
-     *
-     * @return [type]       [description]
-     */
-    /*
-    private function menuDecode($json)
-    {
-
-        if (!isset($this->config()->menu)) {
-            $this->config->menu=[];
-            return false;
-        } else {
-            $menu=$this->config()->menu;
-        }
-
-        if (!is_object($this->config->menu)) {
-
-            $DIR=dirname(realpath($this->_config_file));//get config folder`
-
-            if ($this->config->menu&&is_file($DIR.'/'.$this->config->menu)) {
-
-                $this->config->menu=json_decode(file_get_contents($DIR.'/'.$this->config->menu));
-
-                $err=json_last_error();
-
-                if ($err) {
-                    die("error $err".json_last_error_msg()."<br>$content");
-                    //throw new \Exception("JSON Error $err", 1);
-                }
-
-            } else {
-                //die("this->config->menu not found");
-                return '';
-            }
-        }
-        return true;
-    }
-    */
 
     /**
      * Return menu for inspection/manipulation
+     *
      * @return [type] [description]
      */
     public function menu()
     {
         return $this->config->menu;
     }
-
-
-
-
 
 
 
@@ -761,9 +717,9 @@ class Admin
     /**
      * GET config meta's
      * debug with https://search.google.com/structured-data/testing-tool/u/0/
+     *
      * @return [type] [description]
      */
-
     public function meta($meta=null)
     {
         return $this->config->meta;
@@ -1171,6 +1127,7 @@ class Admin
         $files=glob("modal*.json");
 
         foreach ($files as $file)  {
+
             $jso=$this->jso($file);
             //print_r($jso);
             $modal=new Modal();
@@ -1194,7 +1151,6 @@ class Admin
             if (isset($jso->size)) {
                 $modal->size($jso->size);
             }
-
 
             echo $modal;
         }
