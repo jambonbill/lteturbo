@@ -675,8 +675,8 @@ class Admin
                 // match active
                 $active='';
 
-                if(isset($o->match)&&$o->match&&$this->_menuMatch){
-                    if(preg_match("/".$o->match."/", $this->_menuMatch)){
+                if (isset($o->match)&&$o->match&&$this->_menuMatch) {
+                    if (preg_match("/".$o->match."/", $this->_menuMatch)) {
                         $active='active';
                     }
                 }
@@ -699,7 +699,9 @@ class Admin
 
                 if (isset($o->badge)&&$o->badge->text) {// Badge
                     $style='info';
-                    if($o->badge->style)$style=$o->badge->style;
+                    if ($o->badge->style) {
+                        $style=$o->badge->style;
+                    }
                     $htm.='<span class="right badge badge-'.$style.'">'.htmlentities($o->badge->text).'</span>';
                 }
 
@@ -955,9 +957,9 @@ class Admin
             $htm.= '<link rel="apple-touch-icon" href="' . $this->config->apple_app_icon . '">';
         }
 
-        $htm.= "<meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>\n";
-        //$htm.='<meta name="apple-mobile-web-app-status-bar-style" content="black" />'."\n";
-        //$htm.='<meta name="apple-mobile-web-app-capable" content="yes" />'."\n";
+        $htm.="<meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>\n";
+        $htm.='<meta name="apple-mobile-web-app-status-bar-style" content="black" />'."\n";
+        $htm.='<meta name="apple-mobile-web-app-capable" content="yes" />'."\n";
 
         $appName='LTETurbo Ver.'.$this->_version;
         if ($this->conf('application-name')) {
