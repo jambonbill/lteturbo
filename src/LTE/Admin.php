@@ -595,22 +595,6 @@ class Admin
 
 
 
-
-    /**
-     * Define matching string for menu selection
-     *
-     * @param string $str [description]
-     *
-     * @return [type]      [description]
-     */
-    /*
-    public function menuHighlight($str='')
-    {
-        $this->_menuMatch=$str;
-        return $this->_menuMatch;
-    }
-    */
-
     /**
      * Return left menu
      *
@@ -1085,34 +1069,6 @@ class Admin
         $class[]='hold-transition';
         $class[]='sidebar-mini';
 
-        /*
-        if (isset($this->config()->layout->skin)) {
-            $class[]=$this->config()->layout->skin;
-        } else {
-            $class[]='skin-black';
-        }
-        */
-
-        /*
-        if (isset($this->config()->layout->fixed)) {
-            $class[]='fixed';
-        }
-        */
-
-        /*
-        if (isset($this->config()->layout->{'sidebar-collapse'})) {
-            if ($this->config()->layout->{'sidebar-collapse'}) {
-                $class[]='sidebar-collapse';
-            }
-        }
-        */
-        /*
-        if (isset($this->config()->layout->{'layout-boxed'})) {
-            $class[]='layout-boxed';
-        }
-        */
-
-
         $htm="\n<body class='".implode(" ", $class)."'>\n";
         $htm.='<div class="wrapper">'."\n";
         return $htm;
@@ -1202,6 +1158,13 @@ class Admin
 
         return $htm;
 
+    }
+
+
+    public function automodal()
+    {
+        $files=glob("*.json");
+        print_r($files);
     }
 
 
