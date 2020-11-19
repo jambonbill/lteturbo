@@ -5,6 +5,7 @@
     "keywords": ["admin","lte","jambonbill"],
     "homepage": "https://github.com/jambonbill/lteturbo",
     "license": "MIT",
+
     "authors": [
         {
             "name": "Jambonbill",
@@ -15,7 +16,7 @@
     ],
 
     "require": {
-        "php": ">=7.0",
+        "php": ">=7.0"
     },
 
     "require-dev": {
@@ -24,8 +25,7 @@
 
     "autoload": {
         "psr-0": {
-            "LTE": "src",
-            "CRM": "src"
+            "LTE": "src"
         }
     },
     "minimum-stability" : "dev",
