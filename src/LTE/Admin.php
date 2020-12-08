@@ -12,7 +12,8 @@
 
 namespace LTE;
 
-use LTE\Modal;
+//use LTE\Modal;
+use LTE\Config;
 use Exception;
 
 /**
@@ -29,19 +30,14 @@ use Exception;
 class Admin
 {
 
-    private static $instance;//make sure we have only one instance
+    private static $_instance;//make sure we have only one instance
 
-    private $_version='1.4.4';
-
-    /**
-     * Path to json config file
-     */
-    private $_config_file='';
+    private $_version='1.5.0';//Config object
 
     /**
-     * Config object
+     * LTE Config object
      */
-    private $_config=[];
+    private $_config=null;
 
     /**
      * Menu object
@@ -52,11 +48,11 @@ class Admin
 
     private $_lang= 'en';
 
+
     /**
      * The string to match against the menu, to highlight menu item
      */
     private $_menuMatch='';
-
 
 
 
@@ -83,51 +79,9 @@ class Admin
      *
      * @param string $configfile [description]
      */
-    /**
-     * AdminLte Constructor
-     *
-     * @param string $configfile [description]
-     */
     public function __construct($configfile='')
     {
-
-        if (preg_match('/^\//', $configfile)) {
-            //absolute path
-        } else {
-            $path=preg_replace("/\/vendor\/.*/", "/config", __DIR__);// Find config path
-            //exit($path);
-        }
-
-
-        if (!$configfile) {
-            $configfile='config.json';//we assume its this one
-        }
-
-        //echo "Search for $configfile;";
-
-        if (is_file($configfile)) {
-            //config file is found
-            $this->_config_file=$configfile;
-
-        } else {
-
-            $test=$path.'/'.basename($configfile);
-            //echo "test=$test";
-            if (is_file($test)) {
-                $this->_config_file=$test;
-            } else {
-                throw new Exception("Error : file '$test' not found", 1);
-            }
-        }
-
-
-        if ($this->_config_file) {
-            $this->configLoad($this->_config_file);
-        } else {
-            // what should we do?
-            throw new Exception("LTE config file not found", 1);
-        }
-
+        $this->_config=new Config($configfile);
 
         $dirname=pathinfo($_SERVER['SCRIPT_FILENAME'])['dirname'];
 
@@ -136,148 +90,25 @@ class Admin
             $this->_menuMatch=$o[1];
         }
 
-        if (self::$instance) {
+        if (self::$_instance) {
             throw new Exception("Admin instance already initialised", 1);
         }
 
-        self::$instance = $this; // initialise the instance on load
-
+        self::$_instance = $this; // initialise the instance on load
     }
 
 
     /**
-     * Register path to configfile
-     *
-     * @param string $filename [description]
+     * Return config object
      *
      * @return [type]           [description]
      */
-    public function configfile($filename='')
+
+    public function config()
     {
-        //echo __FUNCTION__."($filename)";exit;
-        if (is_file($filename)) {
-
-            //make sure it decode well
-            $string = file_get_contents($filename);
-            $this->_config=json_decode($string);
-            $err=json_last_error();
-
-            if ($err) {
-                throw new Exception("Error decoding json from $filename", 1);
-            } else {
-                //exit("yes sir");
-            }
-
-            //register to sessions
-            $this->_config_file=$filename;
-            $_SESSION['lteconfig']=$this->_config_file;
-            //exit('_SESSION[lteconfig]='.$this->config_file);
-
-            $this->configLoad($this->_config_file);
-        } elseif ($filename) {
-            throw new \Exception("$filename not found", 1);
-
-        }
-
-        return $this->_config_file;
+        return $this->_config;
     }
 
-
-    /**
-     * Load and decode config file
-     *
-     * @param  string $filename [description]
-     *
-     * @return [type]           [description]
-     */
-    public function configLoad($filename = '')
-    {
-        $DIR=dirname(realpath($filename));//get config folder
-        //exit($DIR);
-
-        $string = file_get_contents($filename);
-        $this->config=json_decode($string);
-        $err=json_last_error();
-
-        if ($err) {
-            die("Error: Invalid config.json");
-        }
-
-
-        if (!isset($this->config->assets)) {
-            die("Error: !config->assets. please define config->assets");
-        } else if($this->conf('assets')=='assets.json') {
-            $this->config->assets=$this->jso($DIR.'/assets.json');
-        }
-
-        //decode meta
-        if ($this->conf('meta')=='meta.json') {
-            $this->config->meta=$this->jso($DIR.'/meta.json');
-        }
-
-        //decode link
-        if ($this->conf('link')=='link.json') {
-            $this->config->link=$this->jso($DIR.'/link.json');
-        }
-
-        //decode menu
-        if ($this->conf('menu')=='menu.json') {
-            $this->config->menu=$this->jso($DIR.'/menu.json');
-        }
-
-        //decode navbar
-        if ($this->conf('navbar')=='navbar.json') {
-            $this->config->navbar=$this->jso($DIR.'/navbar.json');
-        }
-        return true;
-    }
-
-
-    /**
-     * Return json file content
-     * @param  string $path [description]
-     * @return [type]       [description]
-     */
-    private function jso(string $path)
-    {
-        $jso=json_decode(file_get_contents($path));
-        $err=json_last_error();
-        if ($err) {
-            throw new Exception("JSON config error ".json_last_error_msg()." in $path", 1);
-        }
-        return $jso;
-    }
-
-
-    /**
-     * Get/Set config
-     *
-     * @param array  $config [description]
-     *
-     * @return [type]         [description]
-     */
-    public function config($config = [])
-    {
-        if ($config) {
-            $this->config=$config;
-        }
-        return $this->config;
-    }
-
-
-    /**
-     * Return a config value
-     * @param  [type] $key [description]
-     * @return [type]      [description]
-     */
-    public function conf(string $key)
-    {
-        $cfg=(array)$this->config;
-        if (isset($cfg[$key])) {
-            return $cfg[$key];
-        }
-        return false;
-    }
 
 
     /**
@@ -298,6 +129,7 @@ class Admin
      *
      * @return [type]        [description]
      */
+    /*
     public function title($title = '')
     {
         if ($title) {
@@ -306,7 +138,7 @@ class Admin
 
         return $this->config->title;
     }
-
+    */
 
     /**
      * Get/Set document description
@@ -315,6 +147,7 @@ class Admin
      *
      * @return [type]        [description]
      */
+    /*
     public function description(string $str)
     {
         if ($str) {
@@ -324,7 +157,7 @@ class Admin
 
         return false;
     }
-
+    */
 
 
     /**
@@ -381,7 +214,9 @@ class Admin
     private function _navbar()
     {
 
-        if (!isset($this->config->navbar)) {
+        $navbar=$this->_config->navbar();
+
+        if (!isset($navbar)) {
             return '';
         }
 
@@ -396,8 +231,8 @@ class Admin
         // Links //
         $links=[];
 
-        if (isset($this->config->navbar->links)) {
-            $links=$this->config->navbar->links;
+        if (isset($navbar->links)) {
+            $links=$navbar->links;
         }
 
         foreach ($links as $link) {
@@ -427,7 +262,7 @@ class Admin
 
         $htm.='</ul>';
 
-        if (isset($this->config->navbar->search)&&$this->config->navbar->search) {
+        if (isset($navbar->search)&&$navbar->search) {
             //<!-- SEARCH FORM -->
             $htm.='<form class="form-inline ml-3" action="../search/" method="get">';
             $htm.='<div class="input-group input-group-sm">';
@@ -443,21 +278,28 @@ class Admin
         $htm.='<ul class="navbar-nav ml-auto">';
 
         $items=[];
-        if (isset($this->config->navbar->items)) {
-            $items=$this->config->navbar->items;
+
+        if (isset($navbar->items)) {
+            $items=$navbar->items;
         }
 
         foreach ($items as $item) {
             //print_r($item);exit;
+
             $title='';
+
             if ($item->title) {
                 $title=$item->title;
             }
+
             $htm.='<li class="nav-item" title="'.$title.'">';
+
                 $htm.='<a class="nav-link" href="'.$item->url.'">';
+
                 if (isset($item->icon)) {
                     $htm.='<i class="'.$item->icon.'"></i> ';
                 }
+
                 $htm.=htmlentities($item->text);
                 $htm.='</a>';
             $htm.='</li>';
@@ -508,16 +350,15 @@ class Admin
         $htm.='<aside class="main-sidebar sidebar-dark-primary elevation-4">';
 
         //<!-- Brand Logo -->
-        if (isset($this->config()->title)) {
-            $htm.='<a href="#" class="brand-link">';
-            /*
-            if (isset($this->config()->{'title-mini'})) {
-                $htm.='<span class="logo-mini">'.$this->config()->{'title-mini'}.'</span>';
-            }
-            */
-            $htm.='<span class="brand-text font-weight-light">'.$this->config()->title.'</span>';
-            $htm.='</a>';
+        $htm.='<a href="#" class="brand-link">';
+        /*
+        if (isset($this->config()->{'title-mini'})) {
+            $htm.='<span class="logo-mini">'.$this->config()->{'title-mini'}.'</span>';
         }
+        */
+        $htm.='<span class="brand-text font-weight-light">'.$this->_config->title().'</span>';
+        $htm.='</a>';
+
 
         //<!-- Sidebar -->
         $htm.='<div class="sidebar">'."\n";
@@ -580,7 +421,7 @@ class Admin
           $htm.='</li>';
         */
 
-        foreach ($this->config->menu as $name => $o) {
+        foreach ($this->_config->menu() as $name => $o) {
 
             $title='';
             $class='';
@@ -727,13 +568,14 @@ class Admin
      *
      * @return [type] [description]
      */
+    /*
     public function meta($meta=null)
     {
         return $this->config->meta;
     }
+    */
 
-
-    // opengraph methods //
+    // opengraph methods, its crap, must improve //
 
     /**
      * Set opengraph URL
@@ -744,7 +586,7 @@ class Admin
      */
     public function ogUrl($str='')
     {
-        $this->addMeta(['property'=>'og:url',      'content'=>$str]);
+        $this->config()->addMeta(['property'=>'og:url',      'content'=>$str]);
     }
 
 
@@ -757,7 +599,7 @@ class Admin
      */
     public function ogType($str='')
     {
-        $this->addMeta(['property'=>"og:type",     'content'=>$str]);
+        $this->config()->addMeta(['property'=>"og:type",     'content'=>$str]);
     }
 
 
@@ -770,7 +612,7 @@ class Admin
      */
     public function ogTitle($str='')
     {
-        $this->addMeta(['property'=>"og:title",    'content'=>$str]);
+        $this->config()->addMeta(['property'=>"og:title",    'content'=>$str]);
     }
 
 
@@ -783,7 +625,7 @@ class Admin
      */
     public function ogDescription($str='')
     {
-        $this->addMeta(['property'=>"og:description", 'content'=>$str]);
+        $this->config()->addMeta(['property'=>"og:description", 'content'=>$str]);
     }
 
 
@@ -796,7 +638,7 @@ class Admin
      */
     public function ogImage($str='')
     {
-        $this->addMeta(['property'=>"og:image",    'content'=>$str]);
+        $this->config()->addMeta(['property'=>"og:image",    'content'=>$str]);
     }
 
 
@@ -810,7 +652,7 @@ class Admin
      */
     public function ogLocale($str='')
     {
-        $this->addMeta(['property'=>"og:locale",   'content'=>$str]);
+        $this->config()->addMeta(['property'=>"og:locale",   'content'=>$str]);
     }
 
 
@@ -824,7 +666,7 @@ class Admin
      */
     public function twitterTitle($title='Jambonbill LTETurbo')
     {
-        $this->addMeta(['name'=>"twitter:title",   'content'=>$title]);
+        $this->config()->addMeta(['name'=>"twitter:title",   'content'=>$title]);
     }
 
 
@@ -837,7 +679,7 @@ class Admin
      */
     public function twitterCard($type='summary')
     {
-        $this->addMeta(['name'=>"twitter:card",   'content'=>$type]);
+        $this->config()->addMeta(['name'=>"twitter:card",   'content'=>$type]);
     }
 
 
@@ -850,7 +692,7 @@ class Admin
      */
     public function twitterSite($str='@jambonbill')
     {
-        $this->addMeta(['name'=>"twitter:site",   'content'=>$str]);
+        $this->config()->addMeta(['name'=>"twitter:site",   'content'=>$str]);
     }
 
 
@@ -863,7 +705,7 @@ class Admin
      */
     public function twitterDescription($str='description')
     {
-        $this->addMeta(['name'=>"twitter:description",   'content'=>$str]);
+        $this->config()->addMeta(['name'=>"twitter:description",   'content'=>$str]);
     }
 
     /**
@@ -875,64 +717,11 @@ class Admin
      */
     public function twitterImage($url='')
     {
-        $this->addMeta(['name'=>"twitter:image",   'content'=>$url]);
+        $this->config()->addMeta(['name'=>"twitter:image",   'content'=>$url]);
     }
 
 
-    /**
-     * Add one meta record.
-     * auto-replace duplicates
-     *
-     * @param array $newmeta [description]
-     *
-     * @return bool      [description]
-     */
-    public function addMeta($newmeta=[])
-    {
-        //echo "addMeta()";print_r($newmeta);exit;
 
-        if (!isset($this->config->meta)) {
-            $this->config->meta=[];
-        }
-
-        if (!is_array($this->config->meta)) {
-            $this->config->meta=[];
-        }
-
-        $key=false;
-
-        if (isset($newmeta['name'])) {
-            $key=$newmeta['name'];
-        }
-
-        if (isset($newmeta['property'])) {
-            $key=$newmeta['property'];
-        }
-
-        $meta=[];
-        $replace=false;
-        foreach ($this->config->meta as $k=>$metar) {
-            //Replace previous property-value, or name-value if any
-            foreach ($metar as $name=>$value) {
-                if ($value==$key) {
-                    $replace=$newmeta;
-                }
-            }
-
-            if ($replace) {
-                $meta[]=$replace;
-            } else {
-                $meta[]=$metar;
-            }
-        }
-
-        if (!$replace) {//we didnt replace one, so we must add it
-            $meta[]=$newmeta;
-        }
-
-        $this->config->meta=$meta;
-        return true;
-    }
 
 
     /**
@@ -961,28 +750,23 @@ class Admin
         $htm.='<meta name="apple-mobile-web-app-status-bar-style" content="black" />'."\n";
         $htm.='<meta name="apple-mobile-web-app-capable" content="yes" />'."\n";
 
-        $appName='LTETurbo Ver.'.$this->_version;
-        if ($this->conf('application-name')) {
-            $appName=$this->conf('application-name');
-        }
+        //$appName='LTETurbo Ver.'.$this->_version;
 
-        $htm.='<meta name="application-name" content="'.$appName.'">'."\n";
+        //if ($this->config->('application-name')) {
+        //    $appName=$this->_config->application-name;
+        //}
 
-        if (isset($this->config->meta)) {
+        //$htm.='<meta name="application-name" content="'.$appName.'">'."\n";
 
-            if (is_array($this->config->meta)) {
-                //echo "<pre>";print_r($this->config->meta);exit;
-                foreach ($this->config->meta as $meta) {
-                    $values=[];
-                    foreach ($meta as $k => $v) {
-                        $values[]=$k.'="'.$v.'"';
-                    }
-                    $htm.="<meta ".implode(' ', $values).">\n";
-                }
+        foreach ($this->_config->meta() as $meta) {
+            $values=[];
+            foreach ($meta as $k => $v) {
+                $values[]=$k.'="'.$v.'"';
             }
+            $htm.="<meta ".implode(' ', $values).">\n";
         }
 
-        if (isset($this->config->favicon) && is_file($this->config->favicon)) {
+        if (isset($this->_config->favicon) && is_file($this->config->favicon)) {
             $htm.='<link id="favicon" rel="shortcut icon" href="'.$this->config->favicon.'">';
         } else {
             //define 'no favicon'
@@ -1002,11 +786,9 @@ class Admin
         }
 
         // Css
-        if (isset($this->config->assets->css)) {
-            foreach ($this->config->assets->css as $v) {
-                $htm.='<link href="'.htmlentities($v).'" rel="stylesheet" type="text/css" />';
-                $htm.="\n";
-            }
+        foreach ($this->_config->css() as $v) {
+            $htm.='<link href="'.htmlentities($v).'" rel="stylesheet" type="text/css" />';
+            $htm.="\n";
         }
 
 
@@ -1089,13 +871,16 @@ class Admin
      */
     public function scripts()
     {
+        /*
+        $js=$this->_config->js();
 
-        if (!isset($this->config->assets->js)) {
+        if (!isset($js)) {
             return '';
         }
+        */
 
         $htm='';
-        foreach ($this->config->assets->js as $k => $js) {
+        foreach ($this->_config->js() as $k => $js) {
             $htm.='<script src="'.htmlentities($js).'" type="text/javascript"></script>'."\n";
         }
         return $htm;
@@ -1116,21 +901,22 @@ class Admin
     {
 
         // auto require modal's ? now is the time
+        $footer=$this->_config->prop('footer');
 
-        if (!isset($this->config()->footer)) {
+        if (!$footer) {
             return false;
         }
 
         $htm='<footer class="main-footer">';
 
-        if (isset($this->config()->footer->right)) {
+        if (isset($footer->right)) {
             $htm.='<div class="float-right d-none d-sm-block">';
-            $htm.=$this->config()->footer->right;
+            $htm.=$footer->right;
             $htm.='</div>';
         }
 
-        if ($this->config()->footer->left) {
-            $htm.=$this->config()->footer->left;
+        if ($footer->left) {
+            $htm.=$footer->left;
         }
 
         $htm.='</footer>';
@@ -1144,6 +930,7 @@ class Admin
      * Build modals
      * @return [type] [description]
      */
+    /*
     public function automodal()
     {
         $files=glob("modal*.json");
@@ -1177,7 +964,7 @@ class Admin
             echo $modal;
         }
     }
-
+    */
 
     /**
      * `Properly` finish the html document and end the script
@@ -1191,7 +978,7 @@ class Admin
 
         $htm.='</div>';
 
-        $this->automodal();
+        //$this->automodal();
 
         $htm.='</body>';
         $htm.='</html>';
