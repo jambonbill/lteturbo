@@ -215,7 +215,10 @@ class Config
             $this->_js=$ass->js;
         }
 
-        //Make sure we have all our keys here
+        // Make sure we have all our keys here
+        if (isset($config->title)) {
+            $this->_title=$config->title;
+        }
 
         // decode meta
         if ($config->meta=='meta.json') {
