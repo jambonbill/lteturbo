@@ -35,9 +35,17 @@ class Admin
     private $_version='1.5.0';//Config object
 
     /**
-     * LTE Config object
+     * Config object
      */
     private $_config=null;
+
+
+    /**
+     * Page title
+     *
+     * @var string
+     */
+    private $_title='';
 
     /**
      * Menu object
@@ -125,25 +133,23 @@ class Admin
     /**
      * Get/Set document title
      *
-     * @param  string $title [description]
+     * @param string $title [description]
      *
      * @return [type]        [description]
      */
-    /*
     public function title($title = '')
     {
         if ($title) {
-            $this->config->title=$title;
+            $this->_title=$title;
         }
 
-        return $this->config->title;
+        return $this->_title;
     }
-    */
 
     /**
      * Get/Set document description
      *
-     * @param  string $title [description]
+     * @param string $title [description]
      *
      * @return [type]        [description]
      */
@@ -736,8 +742,11 @@ class Admin
         $htm.='<head>'."\n";
         $htm.='<meta charset="UTF-8">'."\n";
 
-        if (isset($this->config->title)) {
-            $htm.='<title>' . strip_tags($this->config->title) . '</title>'."\n";
+
+        if ($this->_title) {
+            $htm.='<title>' . strip_tags($this->_title) . '</title>'."\n";
+        } else if ($this->config()->title()) {
+            $htm.='<title>' . strip_tags($this->config()->title()) . '</title>'."\n";
         }
 
         //$htm.='<base href="/web">'."\n";
