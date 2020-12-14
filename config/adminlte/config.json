@@ -1,0 +1,16 @@
+{
+	"name":"LTETurbo3",
+	"title":"Admin",
+	"title-mini":"LTE3",
+	"description":"Admin skeleton",
+	"canonical":"https://www.jambonbill.org",
+	"homeurl":"index.php",
+	"assets":"assets.json",
+	"navbar":{},
+	"menu":"menu.json",
+	"meta":{},
+	"footer":{
+		"left":"Powered by LTETurbo",
+		"right":"Version {version}"
+	}
+}
