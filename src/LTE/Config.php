@@ -72,6 +72,14 @@ class Config
      */
     private $_link=[];
 
+
+    /**
+     * Footer config
+     *
+     * @var null
+     */
+    private $_footer=null;
+
     /*
     private $_menu=null;
     private $_navbar=null;
@@ -348,6 +356,17 @@ class Config
     public function title()
     {
         return $this->_title;
+    }
+
+
+    /**
+     * Footer config
+     *
+     * @return [type] [description]
+     */
+    public function footer()
+    {
+        return $this->_footer;
     }
 
 

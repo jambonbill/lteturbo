@@ -956,11 +956,11 @@ class Admin
      *
      * @return [type]       [description]
      */
-    public function footer()
+    public function footerHtml()
     {
 
         // auto require modal's ? now is the time
-        $footer=$this->_config->prop('footer');
+        $footer=$this->_config->footer();
 
         if (!$footer) {
             return false;
@@ -1033,7 +1033,7 @@ class Admin
     public function end()
     {
         $htm='';// end aside class="right-side"
-        $htm.=$this->footer();
+        $htm.=$this->footerHtml();
 
         $htm.='</div>';
 
