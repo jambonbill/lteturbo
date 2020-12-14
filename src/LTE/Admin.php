@@ -32,7 +32,7 @@ class Admin
 
     private static $_instance;//make sure we have only one instance
 
-    private $_version='1.5.1';//Config object
+    private $_version='1.5.2';//Fatal Fury
 
     /**
      * Config object
@@ -203,7 +203,7 @@ class Admin
      */
     public function addJs(string $path)
     {
-        //nake sure its not already in the list
+        //make sure its not already in the list
         $this->_js[]=$path;
         //echo '<pre>';var_dump($this->_config->js());exit;
     }
@@ -846,10 +846,6 @@ class Admin
         }
 
         // Css
-        foreach ($this->_config->css() as $v) {
-            $htm.='<link href="'.htmlentities($v).'" rel="stylesheet" type="text/css" />';
-            $htm.="\n";
-        }
         foreach ($this->_css as $v) {
             $htm.='<link href="'.htmlentities($v).'" rel="stylesheet" type="text/css" />';
             $htm.="\n";
@@ -935,10 +931,6 @@ class Admin
     public function scriptTags()
     {
         $htm='';
-        foreach ($this->_config->js() as $k => $js) {
-            $htm.='<script src="'.htmlentities($js).'" type="text/javascript"></script>'."\n";
-        }
-
         foreach ($this->_js as $k => $js) {
             $htm.='<script src="'.htmlentities($js).'" type="text/javascript"></script>'."\n";
         }
