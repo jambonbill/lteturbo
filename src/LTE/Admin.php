@@ -56,6 +56,20 @@ class Admin
 
     private $_lang= 'en';
 
+    /**
+     * Javascript files
+     *
+     * @var array
+     */
+    private $_js=[];
+
+
+    /**
+     * Css files
+     *
+     * @var array
+     */
+    private $_css=[];
 
     /**
      * The string to match against the menu, to highlight menu item
@@ -69,6 +83,7 @@ class Admin
      * key should look as : '{key}'
      *
      * @param  string $key [description]
+     *
      * @return [type]      [description]
      */
     public function keyValue($key='')
@@ -90,6 +105,11 @@ class Admin
     public function __construct($configfile='')
     {
         $this->_config=new Config($configfile);
+
+        $this->_menu=$this->_config->menu();
+        $this->_js=$this->_config->js();
+        $this->_css=$this->_config->css();
+
 
         $dirname=pathinfo($_SERVER['SCRIPT_FILENAME'])['dirname'];
 
@@ -177,6 +197,32 @@ class Admin
 
 
     /**
+     * Add js file
+     *
+     * @param string $path [description]
+     */
+    public function addJs(string $path)
+    {
+        //nake sure its not already in the list
+        $this->_js[]=$path;
+        //echo '<pre>';var_dump($this->_config->js());exit;
+    }
+
+
+    /**
+     * Add css file
+     *
+     * @param string $path [description]
+     */
+    public function addCss(string $path)
+    {
+        //check
+        $this->_css[]=$path;
+    }
+
+
+
+    /**
      * Return the html blob
      *
      * @return string [description]
@@ -195,13 +241,10 @@ class Admin
      */
     public function html()
     {
-
         $htm=$this->head();
         $htm.=$this->body();
-        //$htm.=$this->header3();//(navbar)
         $htm.=$this->_navbar();//(navbar)
         $htm.=$this->_sidebar();//left menu
-
         //$htm.='<aside class="right-side">';
         return $htm;
     }
@@ -402,14 +445,15 @@ class Admin
 
 
 
+
     /**
-     * Return menu for inspection/manipulation
+     * Return menu data
      *
      * @return [type] [description]
      */
     public function menu()
     {
-        return $this->config->menu;
+        return $this->_menu;
     }
 
 
@@ -421,9 +465,6 @@ class Admin
      */
     public function menuHTML()
     {
-        //echo '<pre>';print_r($_SERVER);exit;
-        //$this->menuDecode($json);
-
         //exit($this->_menuMatch);
 
         //$htm='<ul class="sidebar-menu">';//old
@@ -437,7 +478,7 @@ class Admin
           $htm.='</li>';
         */
 
-        foreach ($this->_config->menu() as $name => $o) {
+        foreach ($this->_menu as $name => $o) {
 
             $title='';
             $class='';
@@ -809,6 +850,10 @@ class Admin
             $htm.='<link href="'.htmlentities($v).'" rel="stylesheet" type="text/css" />';
             $htm.="\n";
         }
+        foreach ($this->_css as $v) {
+            $htm.='<link href="'.htmlentities($v).'" rel="stylesheet" type="text/css" />';
+            $htm.="\n";
+        }
 
 
 
@@ -817,8 +862,7 @@ class Admin
             $htm.=$this->_headHtml;
         }
 
-        //Scripts goes here
-        $htm.=$this->scripts();
+        $htm.=$this->scriptTags();
 
         $htm.="</head>";
 
@@ -884,22 +928,18 @@ class Admin
 
 
     /**
-     * The list of scripts to be included
+     * The html script tags
      *
      * @return html
      */
-    public function scripts()
+    public function scriptTags()
     {
-        /*
-        $js=$this->_config->js();
-
-        if (!isset($js)) {
-            return '';
-        }
-        */
-
         $htm='';
         foreach ($this->_config->js() as $k => $js) {
+            $htm.='<script src="'.htmlentities($js).'" type="text/javascript"></script>'."\n";
+        }
+
+        foreach ($this->_js as $k => $js) {
             $htm.='<script src="'.htmlentities($js).'" type="text/javascript"></script>'."\n";
         }
         return $htm;

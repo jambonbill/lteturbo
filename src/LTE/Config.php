@@ -211,8 +211,17 @@ class Config
         } else if ($config->assets=='assets.json') {
             $ass=$this->jso($DIR.'/assets.json');
             //var_dump($ass);
-            $this->_css=$ass->css;
-            $this->_js=$ass->js;
+
+            foreach ($ass->css as $str) {
+                $this->addCss($str);
+            }
+
+            //$this->_css=$ass->css;
+
+            foreach ($ass->js as $str) {
+                $this->addJs($str);
+            }
+            //$this->_js=$ass->js;
         }
 
         // Make sure we have all our keys here
@@ -345,7 +354,7 @@ class Config
     /**
      * Css config object
      *
-     * @return [type] [description]
+     * @return array [list of css file]
      */
     public function css()
     {
@@ -363,7 +372,7 @@ class Config
     /**
      * Js config object
      *
-     * @return [type] [description]
+     * @return array [list of js file to embed]
      */
     public function js()
     {
@@ -377,6 +386,27 @@ class Config
         return $this->_js;
     }
 
+
+    /**
+     * Add one js file
+     *
+     * @param string $path [description]
+     */
+    public function addJs(string $path)
+    {
+        $this->_js[]=$path;
+    }
+
+
+    /**
+     * Add one css file
+     *
+     * @param string $path [description]
+     */
+    public function addCss(string $path)
+    {
+        $this->_css[]=$path;
+    }
 
     /**
      * Meta config object
