@@ -149,44 +149,7 @@ class Config
         return realpath($this->_config_file);
     }
 
-    /**
-     * Register path to configfile
-     *
-     * @param string $filename [description]
-     *
-     * @return [type]           [description]
-     */
-    /*
-    public function configfile($filename='')
-    {
-        //echo __FUNCTION__."($filename)";exit;
-        if (is_file($filename)) {
 
-            //make sure it decode well
-            $string = file_get_contents($filename);
-            $this->_config=json_decode($string);
-            $err=json_last_error();
-
-            if ($err) {
-                throw new Exception("Error decoding json from $filename", 1);
-            } else {
-                //exit("yes sir");
-            }
-
-            //register to sessions
-            $this->_config_file=$filename;
-            $_SESSION['lteconfig']=$this->_config_file;
-            //exit('_SESSION[lteconfig]='.$this->config_file);
-
-            $this->configLoad($this->_config_file);
-        } elseif ($filename) {
-            throw new \Exception("$filename not found", 1);
-
-        }
-
-        return $this->_config_file;
-    }
-    */
 
 
     /**
@@ -198,6 +161,7 @@ class Config
      */
     private function load()
     {
+        //echo "<li>load()\n";
 
         //$filename=$this->_path;
         $DIR=dirname(realpath($this->_path));//get config folder
@@ -217,6 +181,7 @@ class Config
         if (!isset($config->assets)) {
             throw new Exception("!config->assets. please define config->assets", 1);
         } else if ($config->assets=='assets.json') {
+
             $ass=$this->jso($DIR.'/assets.json');
             //var_dump($ass);
 
@@ -389,7 +354,7 @@ class Config
 
 
     /**
-     * Js config object
+     * Js files
      *
      * @return array [list of js file to embed]
      */
