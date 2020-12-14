@@ -304,6 +304,7 @@ class Config
     }
     */
 
+
     /**
      * Menu config object
      *
@@ -311,13 +312,10 @@ class Config
      */
     public function menu()
     {
-        /*
-        $menu=$this->prop('menu');
-        if ($menu) {
-            return $menu;
+        if ($this->_menu) {
+            return $this->_menu;
         }
-        */
-        return $this->_menu;
+        return [];
     }
 
 
