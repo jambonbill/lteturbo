@@ -32,7 +32,7 @@ class Admin
 
     private static $_instance;//make sure we have only one instance
 
-    private $_version='1.5.0';//Config object
+    private $_version='1.5.1';//Config object
 
     /**
      * Config object
@@ -107,11 +107,21 @@ class Admin
 
 
     /**
+     * Get version
+     *
+     * @return [type] [description]
+     */
+    public function version()
+    {
+        return $this->_version;
+    }
+
+
+    /**
      * Return config object
      *
      * @return [type]           [description]
      */
-
     public function config()
     {
         return $this->_config;
