@@ -40,5 +40,6 @@ class Install
     public static function warmCache(Event $event)
     {
         // make cache toasty
+        echo "making chache toasty jambon stuff.";
     }
 }
