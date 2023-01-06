@@ -1,6 +1,12 @@
 # LTE Turbo
 lteturbo package. Use with Bootstrap v5.3 - https://getbootstrap.com/docs/5.3/c
 
+## Description
+
+A bunch of classes and methods to create AdminLTE widgets and forms in a lazy way.
+
+Check the docs/examples
+
 ## Installation
 
 Install the latest version with
