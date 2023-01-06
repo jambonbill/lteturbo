@@ -19,7 +19,7 @@ class Install
         // do stuff
         echo "this is Install::postUpdate()";
     }
-
+    /*
     public static function postAutoloadDump(Event $event)
     {
         $vendorDir = $event->getComposer()->getConfig()->get('vendor-dir');
@@ -27,19 +27,26 @@ class Install
 
         some_function_from_an_autoloaded_file();
     }
-
+    */
+   
     public static function postPackageInstall(PackageEvent $event)
     {
         $installedPackage = $event->getOperation()->getPackage();
+        
         // do stuff
-        echo "doing jambon stuff.";
-        //make sure we have the config/adminlte folder ready
-        //copy json files into it 
+        echo "postPackageInstall doing jambon stuff.\n";
+        
+        $this->installLte();
     }
 
-    public static function warmCache(Event $event)
+    public static function installLte()
     {
-        // make cache toasty
-        echo "making chache toasty jambon stuff.";
+        //make sure we have the config/adminlte folder ready
+        mkdir('config/adminlte',0777,true);
+        
+        //Get list files
+        //$files=glob("config/adminlte/*.json");
+        //copy files to 
     }
+
 }
