@@ -1,5 +1,5 @@
 # LTE Turbo
-lteturbo package
+lteturbo package. Use with Bootstrap v5.3 - https://getbootstrap.com/docs/5.3/c
 
 ## Installation
 
