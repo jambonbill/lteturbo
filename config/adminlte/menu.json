@@ -1,0 +1,32 @@
+{
+	"user":{
+        "header": "{username}"
+    },
+    
+	"examples":{
+		"text":"Examples",
+		"icon":"far fa-folder-open",
+		"sub":[
+			{
+			"text":"Modals",
+			"url":"/modals",
+			"icon":"fas fa-list"
+		},{
+			"text":"Lists",
+			"url":"/lists",
+			"icon":"fas fa-list"
+		}]
+	},
+
+
+	"sep":{
+		"header":""
+	},
+
+
+	"logout":{
+		"text":"Logout",
+		"icon":"fas fa-sign-out-alt",
+		"url":"/auth/logout"
+	}
+}
