@@ -30,7 +30,12 @@
     },
 
      "scripts": {
-                
+        
+        "post-package-install": [
+            "LTE\\Install::postPackageInstall"
+        ],
+
+
         "post-install-cmd": [
             "LTE\\Install::installLte"
         ],
