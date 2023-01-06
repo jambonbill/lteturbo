@@ -41,6 +41,8 @@ class Install
 
     public static function installLte()
     {
+        echo "installLte()\n";
+        
         //make sure we have the config/adminlte folder ready
         mkdir('config/adminlte',0777,true);
         
