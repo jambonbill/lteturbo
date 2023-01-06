@@ -30,13 +30,9 @@
     },
 
      "scripts": {
-        
-        "test":"phpunit --help",
-        "postinstall":"LTE\\Install::installLte",
-        
+                
         "post-install-cmd": [
-            "LTE\\Install::warmCache",
-            "phpunit -c app/"
+            "LTE\\Install::installLte"
         ],
 
         "post-create-project-cmd": [
